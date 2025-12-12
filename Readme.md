@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Рахим Абдраев](https://up.htmlacademy.ru/ecmascript-individual/2/user/2290335).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Сударев](https://htmlacademy.ru/profile/id1152185).
 
 ---
 
