@@ -1,10 +1,10 @@
-import { createElement } from '../render.js';
-import { createHeaderInfoTemplate } from './templates/header-info-template.js';
+import { createElement } from '../../render.js';
+import { createListTemplate } from './event-list-template.js';
 
-export default class HeaderInfo {
+export default class EventList {
 
   getTemplate() {
-    return createHeaderInfoTemplate();
+    return createListTemplate();
   }
 
   getElement() {
@@ -18,4 +18,3 @@ export default class HeaderInfo {
     this.element = null;
   }
 }
-

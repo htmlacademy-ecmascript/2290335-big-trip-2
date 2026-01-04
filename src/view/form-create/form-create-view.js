@@ -1,10 +1,10 @@
-import { createElement } from '../render.js';
-import { createEditMenuTemplate } from './templates/form-edit-template.js';
+import { createElement } from '../../render.js';
+import { createCreationMenuTemplate } from './form-create-template.js';
 
-export default class EditMenu {
+export default class CreationMenu {
 
   getTemplate() {
-    return createEditMenuTemplate();
+    return createCreationMenuTemplate();
   }
 
   getElement() {

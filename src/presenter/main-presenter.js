@@ -11,7 +11,6 @@ const pageMainElement = document.querySelector('.page-main');
 const tripEventsElement = pageMainElement.querySelector('.trip-events');
 
 const pointModel = new PointModel();
-
 const headerPresenter = new HeaderPresenter({container: tripMainElement});
 const boardPresenter = new BoardPresenter({container: tripEventsElement, pointModel});
 

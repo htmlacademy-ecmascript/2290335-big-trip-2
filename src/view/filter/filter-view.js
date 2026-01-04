@@ -1,10 +1,10 @@
-import { createElement } from '../render.js';
-import { createListTemplate } from './templates/event-list-template.js';
+import { createElement } from '../../render.js';
+import { createHeaderFiltersTemplate } from './filter-template.js';
 
-export default class EventList {
+export default class HeaderFilters {
 
   getTemplate() {
-    return createListTemplate();
+    return createHeaderFiltersTemplate();
   }
 
   getElement() {

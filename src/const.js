@@ -1,3 +1,6 @@
-const COLORS = ['black', 'yellow', 'blue', 'green', 'pink'];
+const DATE_FORMAT = {
+  monthDay: 'MMM DD',
+  hours: 'HH mm'
+};
 
-export {COLORS};
+export { DATE_FORMAT };

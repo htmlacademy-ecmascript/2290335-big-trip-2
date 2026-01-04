@@ -1,10 +1,10 @@
-import { createElement } from '../render.js';
-import { createHeaderFiltersTemplate } from './templates/filter-template.js';
+import { createElement } from '../../render.js';
+import { createHeaderInfoTemplate } from './header-info-template.js';
 
-export default class HeaderFilters {
+export default class HeaderInfo {
 
   getTemplate() {
-    return createHeaderFiltersTemplate();
+    return createHeaderInfoTemplate();
   }
 
   getElement() {
@@ -18,3 +18,4 @@ export default class HeaderFilters {
     this.element = null;
   }
 }
+

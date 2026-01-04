@@ -1,4 +1,4 @@
-function createEditMenuTemplate() {
+function createEditMenuTemplate(point, offers, destination) {
   return `
   <form class="event event--edit" action="#" method="post">
       <header class="event__header">

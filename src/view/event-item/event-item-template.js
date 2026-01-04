@@ -1,3 +1,6 @@
+import { DATE_FORMAT } from '../../const.js';
+import { humanizeDueDate, getDifferenceInTime } from '../../utils.js';
+
 function createOfferTemplate({title, price}) {
   return (
     `<ul class="event__selected-offers">
@@ -16,18 +19,18 @@ function createPointTemplate(point, offers, destination) {
   return `
     <li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime=${dateFrom}>MAR 18</time>
+        <time class="event__date" datetime=${dateFrom}>${humanizeDueDate(dateFrom, DATE_FORMAT.monthDay)}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime=${dateFrom}>10:30</time>
+            <time class="event__start-time" datetime=${dateFrom}>${humanizeDueDate(dateFrom, DATE_FORMAT.hours)}</time>
             &mdash;
-            <time class="event__end-time" datetime=${dateTo}>11:00</time>
+            <time class="event__end-time" datetime=${dateTo}>${humanizeDueDate(dateTo, DATE_FORMAT.hours)}</time>
           </p>
-          <p class="event__duration">30M</p>
+          <p class="event__duration">${getDifferenceInTime(dateFrom, dateTo)}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>

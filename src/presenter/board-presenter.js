@@ -1,8 +1,8 @@
-import SortView from '../view/sort-view';
-import EventList from '../view/event-list-view';
-import PointView from '../view/event-item-view.js';
-import CreationMenu from '../view/form-create-view.js';
-import EditMenu from '../view/form-edit-view.js';
+import SortView from '../view/sort/sort-view.js';
+import EventList from '../view/event-list/event-list-view.js';
+import PointView from '../view/event-item/event-item-view.js';
+import CreationMenu from '../view/form-create/form-create-view.js';
+import EditMenu from '../view/form-edit/form-edit-view.js';
 import { render, RenderPosition } from '../render.js';
 
 export default class BoardPresenter {
@@ -25,9 +25,9 @@ export default class BoardPresenter {
     // Рендер первого поинта
     render(new EditMenu({
       point: this.boardPoints[0],
-      checkedOffers: [...this.pointModel.getOfferById(this.boardPoints[0].type, this.boardPoints[0].offers)],
-      offers: this.pointModel.getOffersByType(this.boardPoints[0].type),
-      destination: this.pointModel.getDestinationById(this.boardPoints[0].destination)
+      offers: this.pointModel.getAllOffersBySpecificType(this.boardPoints[0].type),
+      destination: this.pointModel.getDestinationById(this.boardPoints[0].destination),
+      checkedOffers: [...this.pointModel.getOfferById(this.boardPoints[0].type, this.boardPoints[0].offers)]
     }), this.EventListComponent.getElement());
 
     // Рендер последующих поинтов

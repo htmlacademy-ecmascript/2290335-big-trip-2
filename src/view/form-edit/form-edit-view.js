@@ -1,8 +1,7 @@
-import { createElement } from '../render.js';
-import { createPointTemplate } from './templates/event-item-template.js';
+import { createElement } from '../../render.js';
+import { createEditMenuTemplate } from './form-edit-template.js';
 
-
-export default class PointView {
+export default class EditMenu {
   constructor({point, offers, destination}) {
     this.point = point;
     this.offers = offers;
@@ -10,7 +9,7 @@ export default class PointView {
   }
 
   getTemplate() {
-    return createPointTemplate(this.point, this.offers, this.destination);
+    return createEditMenuTemplate(this.point, this.offers, this.destination);
   }
 
   getElement() {
@@ -24,4 +23,3 @@ export default class PointView {
     this.element = null;
   }
 }
-

@@ -9,30 +9,36 @@ export default class PointModel {
   offers = mockOffers;
   destinations = mockDestinations;
 
+  // Все возможные поинты
   getAllPoints() {
     return this.points;
   }
 
+  // Все возможные офферы
   getAllOffers() {
     return this.offers;
   }
 
-  getOffersByType(type) {
+  // Все офферы по определенным типам: такси, автобус и прочее
+  getAllOffersBySpecificType(type) {
     const allOffers = this.getAllOffers();
     return allOffers.find((offer) => offer.type === type);
   }
 
+  // Только офферы из поинтов
   getOfferById(type, itemsId) {
-    const offersType = this.getOffersByType(type);
+    const offersType = this.getAllOffersBySpecificType(type);
     return offersType.offers.filter((item) => itemsId.find((id) => item.id === id));
   }
 
-  getDestination() {
+  // Все возможные маршруты
+  getAllDestinations() {
     return this.destinations;
   }
 
+  // Только маршруты из поинтов
   getDestinationById(id) {
-    const allDestinations = this.getDestination();
+    const allDestinations = this.getAllDestinations();
     return allDestinations.find((item) => item.id === id);
   }
 }
