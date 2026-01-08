@@ -1,7 +1,7 @@
 import { DATE_FORMAT, POINTS_TYPE } from '../../const.js';
 import { humanizeDueDate } from '../../utils.js';
 
-function createTypeTemplate(type) {
+function getTypeTemplate(type) {
   return (
     `
       <div class="event__type-item">
@@ -12,7 +12,18 @@ function createTypeTemplate(type) {
   );
 }
 
-function createOfferTemplate(offer, checkedOffers) {
+function getDestinationDescriptionTemplate(description) {
+  return (
+    `
+      <section class="event__section  event__section--destination">
+        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+        <p class="event__destination-description">${description}</p>
+      </section>
+    `
+  );
+}
+
+function getOfferTemplate(offer, checkedOffers) {
   const {id, title, price} = offer;
   const isChecked = checkedOffers.map((item) => item.id).includes(id) ? 'checked' : '';
   return (
@@ -29,23 +40,20 @@ function createOfferTemplate(offer, checkedOffers) {
   );
 }
 
-function createOfferListTemplate({offers}, checkedOffers) {
-  if (offers.length !== 0) {
-    return (
-      `
-        <section class="event__section  event__section--offers">
-          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-          ${offers.map((offer) => createOfferTemplate(offer, checkedOffers)).join('')}
-        </section>
-
-      `
-    );
-  }
+function getAllOffersTemplate({offers}, checkedOffers) {
+  return offers.length > 0 ? `
+    <section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+        ${offers.map((offer) => getOfferTemplate(offer, checkedOffers)).join('')}
+      </dv>
+    </section>
+    ` : '';
 }
 
-function createEditMenuTemplate(point, offers, destination, checkedOffers) {
+function createEditFormTemplate(point, offers, destination, checkedOffers) {
   const { type, dateFrom, dateTo, basePrice } = point;
-  const { name } = destination;
+  const { name, description } = destination;
   return `
   <form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -59,7 +67,7 @@ function createEditMenuTemplate(point, offers, destination, checkedOffers) {
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Event type</legend>
-              ${POINTS_TYPE.map((item) => createTypeTemplate(item)).join('')}
+              ${POINTS_TYPE.map((item) => getTypeTemplate(item)).join('')}
             </fieldset>
           </div>
         </div>
@@ -97,14 +105,11 @@ function createEditMenuTemplate(point, offers, destination, checkedOffers) {
         </button>
       </header>
       <section class="event__details">
-        ${createOfferListTemplate(offers, checkedOffers)}
-        <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description"></p>
-        </section>
+        ${getAllOffersTemplate(offers, checkedOffers)}
+        ${getDestinationDescriptionTemplate(description)}
       </section>
 </form>
   `;
 }
 
-export { createEditMenuTemplate };
+export { createEditFormTemplate };

@@ -1,5 +1,5 @@
 import { createElement } from '../../render.js';
-import { createEditMenuTemplate } from './form-edit-template.js';
+import { createEditFormTemplate } from './form-edit-template.js';
 
 export default class EditFormView {
   constructor({point, offers, destination, checkedOffers}) {
@@ -10,7 +10,7 @@ export default class EditFormView {
   }
 
   getTemplate() {
-    return createEditMenuTemplate(this.point, this.offers, this.destination, this.checkedOffers);
+    return createEditFormTemplate(this.point, this.offers, this.destination, this.checkedOffers);
   }
 
   getElement() {

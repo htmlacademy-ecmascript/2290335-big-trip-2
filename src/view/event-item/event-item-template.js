@@ -36,7 +36,7 @@ function createPointTemplate(point, offers, destination) {
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         ${offers.length > 0 ? `
-          <h4 class="visually-hidden">Offers:</h4>
+        <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
             ${offers.map((offer) => createOfferTemplate(offer)).join('')}
           </ul>
