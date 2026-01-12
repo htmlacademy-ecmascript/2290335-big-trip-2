@@ -1,15 +1,14 @@
-import { render, RenderPosition } from '../render.js';
-// import {render, RenderPosition} from '../framework/render.js';
+import {render, RenderPosition} from '../framework/render.js';
 import SortView from '../view/sort/sort-view.js';
 import PointListView from '../view/event-list/event-list-view.js';
 import PointView from '../view/event-item/event-item-view.js';
 import EditFormView from '../view/form-edit/form-edit-view.js';
-import CreationFormView from '../view/form-create/form-create-view.js';
+// import CreationFormView from '../view/form-create/form-create-view.js';
 
 export default class BoardPresenter {
   sortComponent = new SortView();
   EventListComponent = new PointListView();
-  CreationMenuComponent = new CreationFormView();
+  // CreationMenuComponent = new CreationFormView();
 
   constructor({ container, pointModel }) {
     this.container = container;
@@ -38,7 +37,7 @@ export default class BoardPresenter {
         destination: this.pointModel.getDestinationById(this.modelBoardPoints[0].destination)
       }), this.EventListComponent.element);
     }
-    render(this.CreationMenuComponent, this.container);
+    // render(this.CreationMenuComponent, this.container);
   }
 }
 

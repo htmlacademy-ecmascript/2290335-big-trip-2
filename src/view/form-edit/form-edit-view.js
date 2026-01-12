@@ -1,26 +1,16 @@
-import { createElement } from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 import { createEditFormTemplate } from './form-edit-template.js';
 
-export default class EditFormView {
+export default class EditFormView extends AbstractView {
   constructor({point, offers, destination, checkedOffers}) {
+    super();
     this.point = point;
     this.offers = offers;
     this.destination = destination;
     this.checkedOffers = checkedOffers;
   }
 
-  getTemplate() {
+  get template() {
     return createEditFormTemplate(this.point, this.offers, this.destination, this.checkedOffers);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

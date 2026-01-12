@@ -1,20 +1,8 @@
-import { createElement } from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 import { createHeaderFiltersTemplate } from './filter-template.js';
 
-export default class HeaderFiltersView {
-
-  getTemplate() {
+export default class HeaderFiltersView extends AbstractView {
+  get template() {
     return createHeaderFiltersTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
