@@ -1,42 +1,78 @@
-import SortView from '../view/sort-view';
-import EventList from '../view/event-list-view';
-import PointView from '../view/event-item-view.js';
-import CreationMenu from '../view/form-create-view.js';
-import EditMenu from '../view/form-edit-view.js';
-import { render, RenderPosition } from '../render.js';
+import {render, RenderPosition, replace} from '../framework/render.js';
+import SortView from '../view/sort/sort-view.js';
+import PointListView from '../view/event-list/event-list-view.js';
+import PointView from '../view/event-item/event-item-view.js';
+import EditFormView from '../view/form-edit/form-edit-view.js';
 
 export default class BoardPresenter {
   sortComponent = new SortView();
-  EventListComponent = new EventList();
-  CreationMenuComponent = new CreationMenu();
-  EditMenuComponent = new EditMenu();
+  EventListComponent = new PointListView();
 
-  constructor({ container, pointModel }) {
+  constructor({
+    container,
+    pointModel,
+    offerModel,
+    destinationModel
+  }) {
     this.container = container;
     this.pointModel = pointModel;
+    this.offerModel = offerModel;
+    this.destinationModel = destinationModel;
   }
 
   init() {
-    this.boardPoints = [...this.pointModel.getPoint()];
+    this.modelBoardPoints = [...this.pointModel.getAllPoints()];
     render(this.sortComponent, this.container, RenderPosition.AFTERBEGIN);
     render(this.EventListComponent, this.container);
-    // render(this.EditMenuComponent, this.EventListComponent.getElement());
-    render(new EditMenu({
-      point: this.boardPoints[0],
-      checkedOffers: [...this.pointModel.getOfferById(this.boardPoints[0].type, this.boardPoints[0].offers)],
-      offers: this.pointModel.getOfferByTipe(this.boardPoints[0].type),
-      destination: this.pointModel.getDestinationById(this.boardPoints[0].destination)
-    }), this.EventListComponent.getElement());
 
-    for (let i = 1; i < this.boardPoints.length; i++) {
-      render(new PointView({
-        point: this.boardPoints[i],
-        offers: [...this.pointModel.getOfferById(this.boardPoints[i].type, this.boardPoints[i].offers)],
-        destination: this.pointModel.getDestinationById(this.boardPoints[0].destination)
-      }), this.EventListComponent.getElement());
+    for (let i = 1; i < this.modelBoardPoints.length; i++) {
+      this.#renderPoint(this.modelBoardPoints[i]);
+    }
+  }
+
+  #renderPoint(task) {
+    const escKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        replaceFormToCard();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    };
+    const taskComponent = new PointView({
+      point: task,
+      offers: [...this.offerModel.getOfferById(task.type, task.offers)],
+      destination: this.destinationModel.getDestinationById(task.destination),
+      onEditClick: () => {
+        replaceCardToForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    const taskEditComponent = new EditFormView({
+      point: task,
+      offers: [...this.offerModel.getOfferById(task.type, task.offers)],
+      destination: this.destinationModel.getDestinationById(task.destination),
+      checkedOffers: [...this.offerModel.getOfferById(task.type, task.offers)],
+      onFormSubmit: () => {
+        replaceFormToCard();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
+      onFormClose: () => {
+        replaceFormToCard();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    function replaceCardToForm() {
+      replace(taskEditComponent, taskComponent);
     }
 
-    render(this.CreationMenuComponent, this.container);
+    function replaceFormToCard() {
+      replace(taskComponent, taskEditComponent);
+    }
+
+    render(taskComponent, this.EventListComponent.element);
   }
+
 }
 
