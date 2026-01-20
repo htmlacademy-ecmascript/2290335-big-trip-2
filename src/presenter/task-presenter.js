@@ -4,6 +4,7 @@ import EditFormView from '../view/form-edit/form-edit-view.js';
 
 export default class TaskPresenter {
   #taskListContainer = null;
+  #handleDataChange = null;
 
   #taskComponent = null;
   #taskEditComponent = null;
@@ -12,8 +13,9 @@ export default class TaskPresenter {
   #offers = null;
   #destinations = null;
 
-  constructor({taskListContainer}) {
+  constructor({taskListContainer, onDataChange}) {
     this.#taskListContainer = taskListContainer;
+    this.#handleDataChange = onDataChange;
   }
 
   init(task, proposals, purposes) {
@@ -28,7 +30,8 @@ export default class TaskPresenter {
       point: this.#task,
       offers: [...this.#offers.getOfferById(task.type, task.offers)],
       destination: this.#destinations.getDestinationById(task.destination),
-      onEditClick: this.#handleEditClick
+      onEditClick: this.#handleEditClick,
+      onFavoriteClick: this.#handleFavoriteClick,
     });
 
     this.#taskEditComponent = new EditFormView({
@@ -40,7 +43,6 @@ export default class TaskPresenter {
       onFormClose: this.#handleFormClose
     });
 
-    // render(this.#taskComponent, this.#taskListContainer);
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
       render(this.#taskComponent, this.#taskListContainer);
       return;
@@ -65,6 +67,12 @@ export default class TaskPresenter {
     remove(this.#taskEditComponent);
   }
 
+  #handleFavoriteClick = () => {
+    console.log('dfdfd');
+    console.log(this.#task);
+    this.#handleDataChange({...this.#task, isFavorite: !this.#task.isFavorite});
+  };
+
   #replaceCardToForm() {
     replace(this.#taskEditComponent, this.#taskComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
@@ -86,7 +94,8 @@ export default class TaskPresenter {
     this.#replaceCardToForm();
   };
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (task) => {
+    this.#handleDataChange(task);
     this.#replaceFormToCard();
   };
 
