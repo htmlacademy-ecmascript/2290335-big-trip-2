@@ -34,17 +34,22 @@ export default class BoardPresenter {
     for (let i = 0; i < this.#modelBoardPoints.length; i++) {
       this.#renderPoint(this.#modelBoardPoints[i], this.#offerModel, this.#destinationModel);
     }
-    console.log(this.#modelBoardPoints)
+    // console.log(this.#modelBoardPoints);
   }
 
   #renderPoint(task, proposals, purposes) {
     const taskPresenter = new TaskPresenter({
       taskListContainer: this.#eventListComponent.element,
-      onDataChange: this.#handleTaskChange
+      onDataChange: this.#handleTaskChange,
+      onModeChange: this.#handleModeChange
     });
     taskPresenter.init(task, proposals, purposes);
     this.#taskPresenters.set(task.id, taskPresenter);
   }
+
+  #handleModeChange = () => {
+    this.#taskPresenters.forEach((presenter) => presenter.resetView());
+  };
 
   #clearTaskList() {
     this.#taskPresenters.forEach((presenter) => presenter.destroy());

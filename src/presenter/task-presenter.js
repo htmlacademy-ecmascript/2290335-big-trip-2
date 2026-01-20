@@ -2,6 +2,11 @@ import {render, replace, remove} from '../framework/render.js';
 import PointView from '../view/event-item/event-item-view.js';
 import EditFormView from '../view/form-edit/form-edit-view.js';
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
 export default class TaskPresenter {
   #taskListContainer = null;
   #handleDataChange = null;
@@ -13,9 +18,13 @@ export default class TaskPresenter {
   #offers = null;
   #destinations = null;
 
-  constructor({taskListContainer, onDataChange}) {
+  #handleModeChange = null;
+  #mode = Mode.DEFAULT;
+
+  constructor({taskListContainer, onDataChange, onModeChange}) {
     this.#taskListContainer = taskListContainer;
     this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
   }
 
   init(task, proposals, purposes) {
@@ -50,16 +59,23 @@ export default class TaskPresenter {
 
     // Проверка на наличие в DOM необходима,
     // чтобы не пытаться заменить то, что не было отрисовано
-    if (this.#taskListContainer.contains(prevTaskComponent.element)) {
+
+    if (this.#mode === Mode.DEFAULT) {
       replace(this.#taskComponent, prevTaskComponent);
     }
 
-    if (this.#taskListContainer.contains(prevTaskEditComponent.element)) {
+    if (this.#mode === Mode.EDITING) {
       replace(this.#taskEditComponent, prevTaskEditComponent);
     }
 
     remove(prevTaskComponent);
     remove(prevTaskEditComponent);
+  }
+
+  resetView() {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceFormToCard();
+    }
   }
 
   destroy() {
@@ -68,19 +84,22 @@ export default class TaskPresenter {
   }
 
   #handleFavoriteClick = () => {
-    console.log('dfdfd');
-    console.log(this.#task);
+    // console.log('dfdfd');
+    // console.log(this.#task);
     this.#handleDataChange({...this.#task, isFavorite: !this.#task.isFavorite});
   };
 
   #replaceCardToForm() {
     replace(this.#taskEditComponent, this.#taskComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#handleModeChange();
+    this.#mode = Mode.EDITING;
   }
 
   #replaceFormToCard() {
     replace(this.#taskComponent, this.#taskEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = Mode.DEFAULT;
   }
 
   #escKeyDownHandler = (evt) => {
