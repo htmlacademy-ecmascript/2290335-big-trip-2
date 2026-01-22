@@ -2,6 +2,10 @@ import AbstractView from '../../framework/view/abstract-view.js';
 import { createEditFormTemplate } from './form-edit-template.js';
 
 export default class EditFormView extends AbstractView {
+  #point = null;
+  #offers = null;
+  #destination = null;
+  #checkedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
 
@@ -14,22 +18,22 @@ export default class EditFormView extends AbstractView {
     onFormClose
   }) {
     super();
-    this.point = point;
-    this.offers = offers;
-    this.destination = destination;
-    this.checkedOffers = checkedOffers;
+    this.#point = point;
+    this.#offers = offers;
+    this.#destination = destination;
+    this.#checkedOffers = checkedOffers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
     this.#registerEvents();
   }
 
   get template() {
-    return createEditFormTemplate(this.point, this.offers, this.destination, this.checkedOffers);
+    return createEditFormTemplate(this.#point, this.#offers, this.#destination, this.#checkedOffers);
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(this.#point);
   };
 
   #formCloseHandler = (evt) => {

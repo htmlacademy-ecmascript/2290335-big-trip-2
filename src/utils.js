@@ -26,4 +26,8 @@ function getDifferenceInTime(start, end) {
   }
 }
 
-export { getRandomArrayElement, humanizeDueDate, getDifferenceInTime };
+function updateItem(items, update) {
+  return items.map((item) => item.id === update.id ? update : item);
+}
+
+export { getRandomArrayElement, humanizeDueDate, getDifferenceInTime, updateItem };
