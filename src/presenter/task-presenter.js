@@ -90,8 +90,6 @@ export default class TaskPresenter {
   }
 
   #handleFavoriteClick = () => {
-    // console.log('dfdfd');
-    // console.log(this.#task);
     this.#handleDataChange({...this.#task, isFavorite: !this.#task.isFavorite});
   };
 

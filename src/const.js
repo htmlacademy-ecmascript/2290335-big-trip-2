@@ -6,4 +6,10 @@ const DATE_FORMAT = {
 
 const POINTS_TYPE = ['taxi', 'train', 'flight', 'bus', 'ship', 'drive', 'check-in', 'sightseeing', 'restaurant'];
 
-export { DATE_FORMAT, POINTS_TYPE };
+const SortType = {
+  Day: 'day',
+  PRICE: 'price',
+  TIME: 'time',
+};
+
+export { DATE_FORMAT, POINTS_TYPE, SortType };

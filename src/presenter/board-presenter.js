@@ -1,11 +1,12 @@
 import {render, RenderPosition} from '../framework/render.js';
 import {updateItem} from '../utils.js';
 import SortView from '../view/sort/sort-view.js';
+import {SortType} from '../const.js';
 import PointListView from '../view/event-list/event-list-view.js';
 import TaskPresenter from './task-presenter.js';
 
 export default class BoardPresenter {
-  #sortComponent = new SortView();
+  #sortComponent = null;
   #eventListComponent = new PointListView();
   #container = null;
   #pointModel = null;
@@ -13,6 +14,8 @@ export default class BoardPresenter {
   #destinationModel = null;
   #taskPresenters = new Map();
   #modelBoardPoints = [];
+  #currentSortType = SortType.Day;
+  #startedBoardPoints = [];
 
   constructor({
     container,
@@ -28,8 +31,8 @@ export default class BoardPresenter {
 
   init() {
     this.#modelBoardPoints = [...this.#pointModel.getAllPoints()];
-    render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
-    render(this.#eventListComponent, this.#container);
+    this.#startedBoardPoints = [...this.#pointModel.getAllPoints()];
+    this.#renderBoard();
 
     for (let i = 0; i < this.#modelBoardPoints.length; i++) {
       this.#renderPoint(this.#modelBoardPoints[i], this.#offerModel, this.#destinationModel);
@@ -48,6 +51,47 @@ export default class BoardPresenter {
     this.#taskPresenters.set(task.id, taskPresenter);
   }
 
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    // - Сортируем задачи
+    this.#sortTasks(sortType);
+
+    // - Очищаем список
+    this.#clearTaskList();
+
+    // - Рендерим список заново
+    render(this.#eventListComponent, this.#container);
+    for (let i = 0; i < this.#modelBoardPoints.length; i++) {
+      this.#renderPoint(this.#modelBoardPoints[i], this.#offerModel, this.#destinationModel);
+    }
+  };
+
+  #renderSort() {
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+    render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderBoard() {
+    this.#renderSort();
+    render(this.#eventListComponent, this.#container);
+  }
+
+  #sortTasks(sortType) {
+    switch (sortType) {
+      case SortType.PRICE:
+        this.#modelBoardPoints.sort((a, b) => b.basePrice - a.basePrice);
+        break;
+      default:
+        this.#modelBoardPoints = [...this.#startedBoardPoints];
+    }
+
+    this.#currentSortType = sortType;
+  }
+
   #handleModeChange = () => {
     this.#taskPresenters.forEach((presenter) => presenter.resetView());
   };
@@ -59,6 +103,7 @@ export default class BoardPresenter {
 
   #handleTaskChange = (updatedTask) => {
     this.#modelBoardPoints = updateItem(this.#modelBoardPoints, updatedTask);
+    this.#startedBoardPoints = updateItem(this.#startedBoardPoints, updatedTask);
     this.#taskPresenters.get(updatedTask.id).init(updatedTask);
   };
 
