@@ -5,7 +5,7 @@ import { getRandomArrayElement } from '../utils.js';
 
 const mockPoints = [
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 3000,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-07-11T11:22:13.375Z',
@@ -19,7 +19,7 @@ const mockPoints = [
     type: 'taxi',
   },
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 2500,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-07-11T11:22:13.375Z',
@@ -32,7 +32,7 @@ const mockPoints = [
     type: 'train',
   },
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 10000,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-07-11T11:22:13.375Z',
@@ -46,7 +46,7 @@ const mockPoints = [
     type: 'flight',
   },
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 800,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-07-11T11:22:13.375Z',
@@ -58,7 +58,7 @@ const mockPoints = [
     type: 'bus',
   },
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 535000,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-07-11T11:22:13.375Z',
@@ -72,7 +72,7 @@ const mockPoints = [
     type: 'ship',
   },
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 999,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-07-11T11:22:13.375Z',
@@ -82,7 +82,7 @@ const mockPoints = [
     type: 'drive',
   },
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 300,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-07-11T11:22:30.375Z',
@@ -92,7 +92,7 @@ const mockPoints = [
     type: 'check-in',
   },
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 10,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-09-11T11:22:13.375Z',
@@ -105,7 +105,7 @@ const mockPoints = [
     type: 'sightseeing',
   },
   {
-    id: `${nanoid()}`,
+    id: getRandomId(),
     basePrice: 500,
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-08-11T11:22:13.375Z',
@@ -118,6 +118,10 @@ const mockPoints = [
     type: 'restaurant',
   },
 ];
+
+function getRandomId() {
+  return nanoid();
+}
 
 function getRandomPoint() {
   return getRandomArrayElement(mockPoints);
