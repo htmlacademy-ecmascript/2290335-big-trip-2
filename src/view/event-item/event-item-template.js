@@ -1,5 +1,5 @@
-import { DATE_FORMAT } from '../../const.js';
-import { humanizeDueDate, getDifferenceInTime } from '../../utils.js';
+import {DATE_FORMAT} from '../../const.js';
+import {humanizeDueDate, getDifferenceInTime} from '../../utils/task-utils.js';
 
 function createOfferTemplate({title, price}) {
   return (

@@ -1,14 +1,7 @@
 import dayjs from 'dayjs';
-import minMax from 'dayjs/plugin/minMax';
-
-dayjs.extend(minMax);
 
 const SECONDS_IN_MINUTES = 60;
 const HOURS_IN_DAY = 24;
-
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
 
 function humanizeDueDate(dueDate, dateFormat) {
   return dueDate ? dayjs(dueDate).format(dateFormat) : '';
@@ -26,9 +19,18 @@ function getDifferenceInTime(start, end) {
   }
 }
 
-function updateItem(items, update) {
-  return items.map((item) => item.id === update.id ? update : item);
+function sortByTime(pointA, pointB) {
+  const pointADuration = getEventDuration(pointA);
+  const pointBDuration = getEventDuration(pointB);
+  return pointBDuration - pointADuration;
 }
 
+function getEventDuration(event) {
+  return dayjs(event.dateTo).diff(dayjs(event.dateFrom));
+}
 
-export { getRandomArrayElement, humanizeDueDate, getDifferenceInTime, updateItem };
+function sortByPrice(pointA, pointB) {
+  return pointB.basePrice - pointA.basePrice;
+}
+
+export {humanizeDueDate, getDifferenceInTime, sortByTime, sortByPrice};

@@ -1,5 +1,5 @@
-import { DATE_FORMAT, POINTS_TYPE } from '../../const.js';
-import { humanizeDueDate } from '../../utils.js';
+import {DATE_FORMAT, POINTS_TYPE} from '../../const.js';
+import {humanizeDueDate} from '../../utils/task-utils.js';
 
 function getTypeTemplate(type) {
   return (
