@@ -1,7 +1,7 @@
-import AbstractView from '../../framework/view/abstract-view.js';
-import { createEditFormTemplate } from './form-edit-template.js';
+import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
+import {createEditFormTemplate} from './form-edit-template.js';
 
-export default class EditFormView extends AbstractView {
+export default class EditFormView extends AbstractStatefulView {
   #point = null;
   #offers = null;
   #destination = null;

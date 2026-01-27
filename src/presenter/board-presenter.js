@@ -62,9 +62,7 @@ export default class BoardPresenter {
 
     // - Рендерим список заново
     render(this.#eventListComponent, this.#container);
-    for (let i = 0; i < this.#modelBoardPoints.length; i++) {
-      this.#renderPoint(this.#modelBoardPoints[i], this.#offerModel, this.#destinationModel);
-    }
+    this.#renderPoints();
   };
 
   #renderSort() {
