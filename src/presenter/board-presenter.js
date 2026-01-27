@@ -1,8 +1,10 @@
 import {render, RenderPosition} from '../framework/render.js';
-import {updateItem} from '../utils.js';
+import {updateItem} from '../utils/common-utils.js';
+import {sortByTime, sortByPrice} from '../utils/task-utils.js';
 import SortView from '../view/sort/sort-view.js';
 import {SortType} from '../const.js';
 import PointListView from '../view/event-list/event-list-view.js';
+import NoPointView from '../view/no-event-item/no-event-item-view.js';
 import TaskPresenter from './task-presenter.js';
 
 export default class BoardPresenter {
@@ -32,11 +34,8 @@ export default class BoardPresenter {
   init() {
     this.#modelBoardPoints = [...this.#pointModel.getAllPoints()];
     this.#startedBoardPoints = [...this.#pointModel.getAllPoints()];
-    this.#renderBoard();
-
-    for (let i = 0; i < this.#modelBoardPoints.length; i++) {
-      this.#renderPoint(this.#modelBoardPoints[i], this.#offerModel, this.#destinationModel);
-    }
+    this.#renderSortAndPointsList();
+    this.#renderPoints();
   }
 
   #renderPoint(task, offers, destinations) {
@@ -75,18 +74,32 @@ export default class BoardPresenter {
     render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
-  #renderBoard() {
+  #renderSortAndPointsList() {
     this.#renderSort();
     render(this.#eventListComponent, this.#container);
+  }
+
+  #renderPoints() {
+    if (this.#modelBoardPoints.length === 0) {
+      render(new NoPointView(), this.#eventListComponent.element);
+      return;
+    }
+    for (let i = 0; i < this.#modelBoardPoints.length; i++) {
+      this.#renderPoint(this.#modelBoardPoints[i], this.#offerModel, this.#destinationModel);
+    }
   }
 
   #sortTasks(sortType) {
     switch (sortType) {
       case SortType.PRICE:
-        this.#modelBoardPoints.sort((a, b) => b.basePrice - a.basePrice);
+        this.#modelBoardPoints.sort(sortByPrice);
         break;
-      default:
+      case SortType.TIME:
+        this.#modelBoardPoints.sort(sortByTime);
+        break;
+      case SortType.Day:
         this.#modelBoardPoints = [...this.#startedBoardPoints];
+        break;
     }
 
     this.#currentSortType = sortType;

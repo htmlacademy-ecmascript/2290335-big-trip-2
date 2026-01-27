@@ -1,7 +1,6 @@
-import { getRandomArrayElement } from '../utils.js';
+import {getRandomArrayElement} from '../utils/common-utils.js';
 
 // Получение списка дополнительных предложений
-
 const mockOffers = [
   {
     type: 'taxi',

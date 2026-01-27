@@ -1,4 +1,4 @@
-import { getRandomArrayElement } from '../utils.js';
+import {getRandomArrayElement} from '../utils/common-utils.js';
 
 // Destinations. Получение списка пунктов назначения
 const mockDestinations = [
