@@ -51,8 +51,26 @@ function getAllOffersTemplate(offers, checkedOffers) {
     ` : '';
 }
 
-function createEditFormTemplate(point, offers, destination, checkedOffers) {
-  const { type, dateFrom, dateTo, basePrice } = point;
+function getDestinationOptionTemplate(destination) {
+  return (
+    `<option value="${destination.name}">${destination.name}</option>`
+  );
+}
+
+function getDestinationListTemplate(name, type, destinations) {
+  return (
+    `<label class="event__label  event__type-output" for="event-destination-1">${type}</label>
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+      <datalist id="destination-list-1">
+        ${getDestinationOptionTemplate(destinations[0])}
+        ${getDestinationOptionTemplate(destinations[1])}
+        ${getDestinationOptionTemplate(destinations[2])}
+      </datalist>`
+  );
+}
+
+function createEditFormTemplate(state, offers, destination, destinations, checkedOffers) {
+  const { point: {type, dateFrom, dateTo, basePrice} } = state;
   const { name, description } = destination;
   return `
   <form class="event event--edit" action="#" method="post">
@@ -73,13 +91,7 @@ function createEditFormTemplate(point, offers, destination, checkedOffers) {
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          <label class="event__label  event__type-output" for="event-destination-1">${type}</label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
-          <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
-          </datalist>
+          ${getDestinationListTemplate(name, type, destinations)}
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -112,4 +124,4 @@ function createEditFormTemplate(point, offers, destination, checkedOffers) {
   `;
 }
 
-export { createEditFormTemplate };
+export {createEditFormTemplate};

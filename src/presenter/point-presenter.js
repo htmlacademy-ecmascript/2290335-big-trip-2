@@ -52,6 +52,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: [...this.#offers.getOfferById(point.type, point.offers)],
       destination: this.#destinations.getDestinationById(point.destination),
+      destinations: this.#destinations.getAllDestinations(),
       checkedOffers: [...this.#offers.getOfferById(this.#point.type, this.#point.offers)],
       onFormSubmit: this.#handleFormSubmit,
       onFormClose: this.#handleFormClose
