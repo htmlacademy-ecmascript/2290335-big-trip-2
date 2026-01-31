@@ -1,56 +1,53 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
-import {createEditFormTemplate} from './form-edit-template.js';
+import {templateEditFormView} from './form-edit-template.js';
 
 export default class EditFormView extends AbstractStatefulView {
-  #point = null;
   #offers = null;
-  #destination = null;
+  #activeDestination = null;
   #destinations = null;
   #checkedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
 
   constructor({
-    point,
-    offers,
-    destination,
+    concretePoint,
+    specialOffers,
+    concreateDestination,
     destinations,
     checkedOffers,
     onFormSubmit,
     onFormClose
   }) {
     super();
-    this._setState(EditFormView.parsePointToState({point: point}));
-    this.#offers = offers;
-    this.#destination = destination;
+    this._setState(EditFormView.parseTaskToState({
+      point: concretePoint,
+      offers: specialOffers,
+      destinations: destinations
+    }));
+    this.#offers = specialOffers;
+    this.#activeDestination = concreateDestination;
     this.#destinations = destinations;
     this.#checkedOffers = checkedOffers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
     this.#registerEvents();
-    this._restoreHandlers();
   }
 
   get template() {
-    return createEditFormTemplate(this._state, this.#offers, this.#destination, this.#destinations, this.#checkedOffers);
+    // console.log('ActiveDestination: ', this.#activeDestination, 'Состояние конкретного поинта: ', this._state);
+    return templateEditFormView(this._state, this.#offers, this.#activeDestination, this.#destinations, this.#checkedOffers);
   }
 
   _restoreHandlers() {
     this.#registerEvents();
-    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-    if (this.element.querySelector('.event__available-offers')) {
-      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
-    }
-    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
   }
 
-  static parsePointToState = ({point}) => ({point});
-  static parseStateToPoint = (state) => state.point;
+  static parseTaskToState = ({point, offers, destination}) => ({point, offers, destination});
+  static parseStateToTask = (state) => state.point;
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
+    this.#handleFormSubmit(EditFormView.parseStateToTask(this._state));
   };
 
   #typeChangeHandler = (evt) => {
@@ -58,8 +55,11 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = this.#destination.find((pointDestination) => pointDestination.name === evt.target.value);
+    // console.log(this.#activeDestination, this.#destinations);
+    const selectedDestination = this.#destinations.find((pointDestination) => pointDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
+    console.log('selectedDestinationId: ', selectedDestinationId);
+    console.log(this._state);
     this.updateElement({point: {...this._state.point, destination: selectedDestinationId}});
   };
 
@@ -80,5 +80,11 @@ export default class EditFormView extends AbstractStatefulView {
   #registerEvents = () => {
     this.element?.addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    if (this.element.querySelector('.event__available-offers')) {
+      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
+    }
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
   };
 }

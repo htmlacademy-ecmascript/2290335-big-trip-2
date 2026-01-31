@@ -41,18 +41,18 @@ export default class PointPresenter {
     const prevPointEditComponent = this.#pointEditComponent;
 
     this.#pointComponent = new PointView({
-      point: this.#point,
-      offers: [...this.#offers.getOfferById(point.type, point.offers)],
-      destination: this.#destinations.getDestinationById(point.destination),
+      concretePoint: this.#point,
+      specialOffers: [...this.#offers.getOfferById(point.type, point.offers)],
+      concreateDestination: this.#destinations.getDestinationById(point.destination),
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
     this.#pointEditComponent = new EditFormView({
-      point: this.#point,
-      offers: [...this.#offers.getOfferById(point.type, point.offers)],
-      destination: this.#destinations.getDestinationById(point.destination),
-      destinations: this.#destinations.getAllDestinations(),
+      concretePoint: this.#point,
+      specialOffers: [...this.#offers.getOfferById(point.type, point.offers)],
+      concreateDestination: this.#destinations.getDestinationById(point.destination),
+      destinations: this.#destinations.total,
       checkedOffers: [...this.#offers.getOfferById(this.#point.type, this.#point.offers)],
       onFormSubmit: this.#handleFormSubmit,
       onFormClose: this.#handleFormClose

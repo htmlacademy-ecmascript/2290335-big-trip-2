@@ -32,8 +32,8 @@ export default class BoardPresenter {
   }
 
   init() {
-    this.#modelBoardPoints = [...this.#pointModel.getAllPoints()];
-    this.#startedBoardPoints = [...this.#pointModel.getAllPoints()];
+    this.#modelBoardPoints = [...this.#pointModel.total];
+    this.#startedBoardPoints = [...this.#pointModel.total];
     this.#renderBoard();
     this.#renderPoints();
   }

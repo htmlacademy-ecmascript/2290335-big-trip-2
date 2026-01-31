@@ -3,14 +3,13 @@ import { mockOffers } from '../mock/offers.js';
 export default class OffersModel {
   #offers = mockOffers;
   // Все возможные офферы
-  getAllOffers() {
+  get total() {
     return this.#offers;
   }
 
   // Все офферы по определенным типам: такси, автобус и прочее
   getAllOffersBySpecificType(type) {
-    const allOffers = this.getAllOffers();
-    return allOffers.find((offer) => offer.type === type);
+    return this.total.find((offer) => offer.type === type);
   }
 
   // Только офферы из поинтов

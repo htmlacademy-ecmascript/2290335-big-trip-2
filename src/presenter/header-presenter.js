@@ -13,7 +13,7 @@ export default class HeaderPresenter {
   init() {
     render(new HeaderInfoView(), this.container, RenderPosition.AFTERBEGIN);
 
-    const filters = generateFilter(this.pointModel.getAllPoints());
+    const filters = generateFilter(this.pointModel.total);
     render(new HeaderFiltersView({filters}), this.container);
   }
 }
