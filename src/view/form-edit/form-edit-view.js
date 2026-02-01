@@ -2,8 +2,8 @@ import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js
 import {templateEditFormView} from './form-edit-template.js';
 
 export default class EditFormView extends AbstractStatefulView {
-  #offers = null;
-  #activeDestination = null;
+  #specialOffers = null;
+  #concreateDestination = null;
   #destinations = null;
   #checkedOffers = null;
   #handleFormSubmit = null;
@@ -21,11 +21,11 @@ export default class EditFormView extends AbstractStatefulView {
     super();
     this._setState(EditFormView.parseTaskToState({
       point: concretePoint,
-      offers: specialOffers,
-      destinations: destinations
     }));
-    this.#offers = specialOffers;
-    this.#activeDestination = concreateDestination;
+    console.log(this._state);
+    console.log(concreateDestination);
+    this.#specialOffers = specialOffers;
+    this.#concreateDestination = concreateDestination;
     this.#destinations = destinations;
     this.#checkedOffers = checkedOffers;
     this.#handleFormSubmit = onFormSubmit;
@@ -35,14 +35,14 @@ export default class EditFormView extends AbstractStatefulView {
 
   get template() {
     // console.log('ActiveDestination: ', this.#activeDestination, 'Состояние конкретного поинта: ', this._state);
-    return templateEditFormView(this._state, this.#offers, this.#activeDestination, this.#destinations, this.#checkedOffers);
+    return templateEditFormView(this._state, this.#specialOffers, this.#concreateDestination, this.#destinations, this.#checkedOffers);
   }
 
   _restoreHandlers() {
     this.#registerEvents();
   }
 
-  static parseTaskToState = ({point, offers, destination}) => ({point, offers, destination});
+  static parseTaskToState = ({point}) => ({point});
   static parseStateToTask = (state) => state.point;
 
   #formSubmitHandler = (evt) => {
@@ -61,6 +61,7 @@ export default class EditFormView extends AbstractStatefulView {
     console.log('selectedDestinationId: ', selectedDestinationId);
     console.log(this._state);
     this.updateElement({point: {...this._state.point, destination: selectedDestinationId}});
+    console.log(this._state);
   };
 
   #offerChangeHandler = () => {

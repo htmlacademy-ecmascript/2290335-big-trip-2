@@ -63,9 +63,9 @@ function getDestinationListTemplate(name, type, destinations) {
   );
 }
 
-function templateEditFormView(state, offers, destination, destinations, checkedOffers) {
-  const { point: {type, dateFrom, dateTo, basePrice} } = state;
-  const { name, description } = destination;
+function templateEditFormView(state, offers, concreateDestination, destinations, checkedOffers) {
+  const { point: {type, dateFrom, dateTo, basePrice, } } = state;
+  const { name, description } = concreateDestination;
   return (
     `<form class="event event--edit" action="#" method="post">
       <header class="event__header">
