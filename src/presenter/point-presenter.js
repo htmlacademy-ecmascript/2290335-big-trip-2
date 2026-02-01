@@ -50,12 +50,13 @@ export default class PointPresenter {
 
     this.#pointEditComponent = new EditFormView({
       concretePoint: this.#point,
-      specialOffers: [...this.#offers.getOfferById(point.type, point.offers)],
-      concreateDestination: this.#destinations.getDestinationById(point.destination),
-      destinations: this.#destinations.total,
+      concreateOffers: [...this.#offers.getOfferById(point.type, point.offers)],
       checkedOffers: [...this.#offers.getOfferById(this.#point.type, this.#point.offers)],
+      concreateDestination: this.#destinations.getDestinationById(point.destination),
       onFormSubmit: this.#handleFormSubmit,
-      onFormClose: this.#handleFormClose
+      onFormClose: this.#handleFormClose,
+      offers: this.#offers.total,
+      destinations: this.#destinations.total,
     });
 
     // - Проверка на наличие в DOM, чтобы не пытаться заменить то, что не было отрисовано

@@ -2,45 +2,46 @@ import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js
 import {templateEditFormView} from './form-edit-template.js';
 
 export default class EditFormView extends AbstractStatefulView {
-  #specialOffers = null;
-  #destinations = null;
   #checkedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
+  #allOffers = null;
+  #allDestinations = null;
 
   constructor({
     concretePoint,
-    specialOffers,
-    concreateDestination,
-    destinations,
+    concreateOffers,
     checkedOffers,
+    concreateDestination,
     onFormSubmit,
-    onFormClose
+    onFormClose,
+    offers,
+    destinations,
   }) {
     super();
     this._setState(EditFormView.parseTaskToState({
       point: concretePoint,
+      offers: concreateOffers,
       destination: concreateDestination
     }));
-    this.#specialOffers = specialOffers;
-    this.#destinations = destinations;
     this.#checkedOffers = checkedOffers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
+    this.#allOffers = offers;
+    this.#allDestinations = destinations;
     this.#registerEvents();
   }
 
   get template() {
-    // console.log('ActiveDestination: ', this.#activeDestination, 'Состояние конкретного поинта: ', this._state);
-    // console.log(this._state);
-    return templateEditFormView(this._state, this.#specialOffers, this.#destinations, this.#checkedOffers);
+    console.log(this.#checkedOffers);
+    return templateEditFormView(this._state, this.#allDestinations, this.#checkedOffers);
   }
 
   _restoreHandlers() {
     this.#registerEvents();
   }
 
-  static parseTaskToState = ({point, destination}) => ({point, destination});
+  static parseTaskToState = ({point, offers, destination}) => ({point, offers, destination});
   static parseStateToTask = (state) => state.point;
 
   #formSubmitHandler = (evt) => {
@@ -53,15 +54,17 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = this.#destinations.find((pointDestination) => pointDestination.name === evt.target.value);
+    const selectedDestination = this.#allDestinations.find((pointDestination) => pointDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({point: {...this._state.point, destination: selectedDestinationId}});
     this.updateElement({destination: selectedDestination});
   };
 
   #offerChangeHandler = () => {
-    const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    this._setState({point: {...this._state.point, offers: checkedBoxes.map((item) => item.dataset.offerId)}});
+    // const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    const specialOffers = this.#allOffers.find((item) => item.type === this._state.point.type);
+    this.updateElement({point: {...this._state.point, offers: specialOffers.offers}});
+    this.updateElement({offers: specialOffers.offers});
   };
 
   #priceChangeHandler = (evt) => {
@@ -79,7 +82,7 @@ export default class EditFormView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     if (this.element.querySelector('.event__available-offers')) {
-      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
+      this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
     }
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
   };

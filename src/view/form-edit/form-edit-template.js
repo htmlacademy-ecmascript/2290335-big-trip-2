@@ -64,7 +64,7 @@ function getDestinationListTemplate(name, type, destinations) {
   );
 }
 
-function templateEditFormView(state, offers, destinations, checkedOffers) {
+function templateEditFormView(state, destinations, checkedOffers) {
   const { point: {type, dateFrom, dateTo, basePrice, } } = state;
   const { destination: {name, description} } = state;
   return (
@@ -112,7 +112,7 @@ function templateEditFormView(state, offers, destinations, checkedOffers) {
         </button>
       </header>
       <section class="event__details">
-        ${templateOffers(offers, checkedOffers)}
+        ${templateOffers(state.offers, checkedOffers)}
         ${templateDescription(description)}
       </section>
 </form>`);
