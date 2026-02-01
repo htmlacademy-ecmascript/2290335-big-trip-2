@@ -52,6 +52,7 @@ function templateDestinationOption(destination) {
 }
 
 function getDestinationListTemplate(name, type, destinations) {
+  // console.log(destinations);
   return (
     `<label class="event__label  event__type-output" for="event-destination-1">${type}</label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
@@ -63,9 +64,9 @@ function getDestinationListTemplate(name, type, destinations) {
   );
 }
 
-function templateEditFormView(state, offers, concreateDestination, destinations, checkedOffers) {
+function templateEditFormView(state, offers, destinations, checkedOffers) {
   const { point: {type, dateFrom, dateTo, basePrice, } } = state;
-  const { name, description } = concreateDestination;
+  const { destination: {name, description} } = state;
   return (
     `<form class="event event--edit" action="#" method="post">
       <header class="event__header">

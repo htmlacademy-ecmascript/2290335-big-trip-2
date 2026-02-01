@@ -3,7 +3,6 @@ import {templateEditFormView} from './form-edit-template.js';
 
 export default class EditFormView extends AbstractStatefulView {
   #specialOffers = null;
-  #concreateDestination = null;
   #destinations = null;
   #checkedOffers = null;
   #handleFormSubmit = null;
@@ -21,11 +20,9 @@ export default class EditFormView extends AbstractStatefulView {
     super();
     this._setState(EditFormView.parseTaskToState({
       point: concretePoint,
+      destination: concreateDestination
     }));
-    console.log(this._state);
-    console.log(concreateDestination);
     this.#specialOffers = specialOffers;
-    this.#concreateDestination = concreateDestination;
     this.#destinations = destinations;
     this.#checkedOffers = checkedOffers;
     this.#handleFormSubmit = onFormSubmit;
@@ -35,14 +32,15 @@ export default class EditFormView extends AbstractStatefulView {
 
   get template() {
     // console.log('ActiveDestination: ', this.#activeDestination, 'Состояние конкретного поинта: ', this._state);
-    return templateEditFormView(this._state, this.#specialOffers, this.#concreateDestination, this.#destinations, this.#checkedOffers);
+    // console.log(this._state);
+    return templateEditFormView(this._state, this.#specialOffers, this.#destinations, this.#checkedOffers);
   }
 
   _restoreHandlers() {
     this.#registerEvents();
   }
 
-  static parseTaskToState = ({point}) => ({point});
+  static parseTaskToState = ({point, destination}) => ({point, destination});
   static parseStateToTask = (state) => state.point;
 
   #formSubmitHandler = (evt) => {
@@ -55,13 +53,10 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    // console.log(this.#activeDestination, this.#destinations);
     const selectedDestination = this.#destinations.find((pointDestination) => pointDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
-    console.log('selectedDestinationId: ', selectedDestinationId);
-    console.log(this._state);
     this.updateElement({point: {...this._state.point, destination: selectedDestinationId}});
-    console.log(this._state);
+    this.updateElement({destination: selectedDestination});
   };
 
   #offerChangeHandler = () => {
