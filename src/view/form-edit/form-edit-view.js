@@ -33,7 +33,7 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   get template() {
-    console.log(this.#checkedOffers);
+    console.log(this._state);
     return templateEditFormView(this._state, this.#allDestinations, this.#checkedOffers);
   }
 

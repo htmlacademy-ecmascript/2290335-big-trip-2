@@ -10,11 +10,23 @@ function templateType(type) {
   );
 }
 
-function templateDescription(description) {
+function templatePicture(picture) {
+  return (
+    `<img class="event__photo" src=${picture.src} alt="Event photo">`
+  );
+}
+
+function templateDestination(description, pictures) {
+
   return (
     `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description}</p>
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${pictures.map((item) => templatePicture(item)).join('')}
+          </div>
+          </div>
       </section>`
   );
 }
@@ -66,7 +78,7 @@ function getDestinationListTemplate(name, type, destinations) {
 
 function templateEditFormView(state, destinations, checkedOffers) {
   const { point: {type, dateFrom, dateTo, basePrice, } } = state;
-  const { destination: {name, description} } = state;
+  const { destination: {name, description, pictures} } = state;
   return (
     `<form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -113,7 +125,7 @@ function templateEditFormView(state, destinations, checkedOffers) {
       </header>
       <section class="event__details">
         ${templateOffers(state.offers, checkedOffers)}
-        ${templateDescription(description)}
+        ${templateDestination(description, pictures)}
       </section>
 </form>`);
 }
