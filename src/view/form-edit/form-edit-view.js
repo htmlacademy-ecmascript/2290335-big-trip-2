@@ -1,5 +1,7 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import {templateEditFormView} from './form-edit-template.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EditFormView extends AbstractStatefulView {
   #checkedOffers = null;
@@ -7,6 +9,9 @@ export default class EditFormView extends AbstractStatefulView {
   #handleFormClose = null;
   #allOffers = null;
   #allDestinations = null;
+  #datepicker = null;
+  #datepickerFrom = null;
+  #datepickerTo = null;
 
   constructor({
     concretePoint,
@@ -34,6 +39,52 @@ export default class EditFormView extends AbstractStatefulView {
 
   get template() {
     return templateEditFormView(this._state, this.#allDestinations, this.#checkedOffers);
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datepicker) {
+      this.#datepicker.destroy();
+      this.#datepicker = null;
+    }
+  }
+
+  #dateFromHandler = ([userDate]) => {
+    this.updateElement({point: {...this._state.point, dateFrom: userDate}});
+  };
+
+  #dateToHandler = ([userDate]) => {
+    this.updateElement({point: {...this._state.point, dateTo: userDate}});
+  };
+
+  #setDatepickers() {
+    const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
+    const commonConfig = {
+      dateFormat: 'd/m/y H:i',
+      enableTime: true,
+      locale: {firstDayOfWeek: 1}, 'time_24hr': true,
+    };
+
+    this.#datepickerFrom = flatpickr(
+      dateFromElement,
+      {
+        ...commonConfig,
+        defaultDate: this._state.point.dateFrom,
+        maxDate: this._state.point.dateTo,
+        onChange: this.#dateFromHandler,
+      }
+    );
+
+    this.#datepickerTo = flatpickr(
+      dateToElement,
+      {
+        ...commonConfig,
+        defaultDate: this._state.point.dateTo,
+        minDate: this._state.point.dateFrom,
+        onChange: this.#dateToHandler,
+      }
+    );
   }
 
   _restoreHandlers() {
@@ -84,5 +135,6 @@ export default class EditFormView extends AbstractStatefulView {
       this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
     }
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+    this.#setDatepickers();
   };
 }
