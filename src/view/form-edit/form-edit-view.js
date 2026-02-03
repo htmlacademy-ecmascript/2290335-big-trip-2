@@ -1,5 +1,7 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import {templateEditFormView} from './form-edit-template.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EditFormView extends AbstractStatefulView {
   #checkedOffers = null;
@@ -7,6 +9,7 @@ export default class EditFormView extends AbstractStatefulView {
   #handleFormClose = null;
   #allOffers = null;
   #allDestinations = null;
+  #datepicker = null;
 
   constructor({
     concretePoint,
@@ -33,7 +36,36 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   get template() {
+    console.log(this._state);
     return templateEditFormView(this._state, this.#allDestinations, this.#checkedOffers);
+  }
+
+  // Перегружаем метод родителя removeElement,
+  // чтобы при удалении удалялся более не нужный календарь
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datepicker) {
+      this.#datepicker.destroy();
+      this.#datepicker = null;
+    }
+  }
+
+  #dueDateChangeHandler = ([userDate]) => {
+    this.updateElement({point: {...this._state.point, dateFrom: userDate}});
+  };
+
+  #setDatepicker() {
+    this.#datepicker = flatpickr(
+      this.element.querySelector('#event-start-time-1'),
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        locale: {firstDayOfWeek: 1}, 'time_24hr': true,
+        defaultDate: this._state.point.dateFrom,
+        onChange: this.#dueDateChangeHandler,
+      },
+    );
   }
 
   _restoreHandlers() {
@@ -84,5 +116,6 @@ export default class EditFormView extends AbstractStatefulView {
       this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
     }
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+    this.#setDatepicker();
   };
 }
