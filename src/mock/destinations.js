@@ -8,8 +8,16 @@ const mockDestinations = [
     name: 'Chamonix',
     pictures: [
       {
-        src: './images/london1.jpg',
+        src: './images/chamonix1.jpg',
         description: 'Chamonix parliament building',
+      },
+      {
+        src: './images/chamonix2.jpg',
+        description: 'Chamonix central street',
+      },
+      {
+        src: './images/chamonix3.jpg',
+        description: 'Chamonix museum',
       }
     ]
   },
@@ -23,11 +31,11 @@ const mockDestinations = [
         description: 'London`s Big-Ban',
       },
       {
-        src: './images/london1.jpg',
+        src: './images/london2.jpg',
         description: 'London`s double-decker-bus',
       },
       {
-        src: './images/london1.jpg',
+        src: './images/london3.jpg',
         description: 'London`s Eye',
       }
     ]
@@ -38,15 +46,15 @@ const mockDestinations = [
     name: 'Paris',
     pictures: [
       {
-        src: './images/london1.jpg',
+        src: './images/paris1.jpg',
         description: 'Eiffel tower',
       },
       {
-        src: './images/london1.jpg',
+        src: './images/paris2.webp',
         description: 'Елисейские поля',
       },
       {
-        src: './images/london1.jpg',
+        src: './images/paris3.jpg',
         description: 'Мулен Руж',
       }
     ]
