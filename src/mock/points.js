@@ -60,8 +60,6 @@ const mockPoints = [
     isFavorite: true,
     offers: [
       'dddddd1-293f-4c3d-a702-94eec4a2808b',
-      'dddddd2-293f-4c3d-a702-94eec4a2808b',
-      'dddddd3-293f-4c3d-a702-94eec4a2808b',
     ],
     type: 'ship',
   },

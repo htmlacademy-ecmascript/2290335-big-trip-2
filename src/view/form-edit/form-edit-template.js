@@ -1,61 +1,86 @@
 import {DATE_FORMAT, POINTS_TYPE} from '../../const.js';
 import {humanizeDueDate} from '../../utils/task-utils.js';
 
-function getTypeTemplate(type) {
+function templateType(type) {
   return (
-    `
-      <div class="event__type-item">
+    `<div class="event__type-item">
         <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
         <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
-      </div>
-    `
+      </div> `
   );
 }
 
-function getDestinationDescriptionTemplate(description) {
+function templatePicture(picture) {
   return (
-    `
-      <section class="event__section  event__section--destination">
+    `<img class="event__photo" src=${picture.src} alt="Event photo">`
+  );
+}
+
+function templateDestination(description, pictures) {
+
+  return (
+    `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description}</p>
-      </section>
-    `
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${pictures.map((item) => templatePicture(item)).join('')}
+          </div>
+          </div>
+      </section>`
   );
 }
 
-function getOfferTemplate(offer, checkedOffers) {
+function templateOffer(offer, checkedOffers) {
   const {id, title, price} = offer;
   const isChecked = checkedOffers.map((item) => item.id).includes(id) ? 'checked' : '';
   return (
-    `
-      <div class="event__offer-selector">
+    `<div class="event__offer-selector">
         <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="${id}" ${isChecked}>
         <label class="event__offer-label" for="${id}">
           <span class="event__offer-title">${title}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${price}</span>
         </label>
-      </div>
-    `
+      </div>`
   );
 }
 
-function getAllOffersTemplate(offers, checkedOffers) {
+function templateOffers(offers, checkedOffers) {
   return offers.length > 0 ? `
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        ${offers.map((offer) => getOfferTemplate(offer, checkedOffers)).join('')}
+        ${offers.map((offer) => templateOffer(offer, checkedOffers)).join('')}
       </dv>
     </section>
     ` : '';
 }
 
-function createEditFormTemplate(point, offers, destination, checkedOffers) {
-  const { type, dateFrom, dateTo, basePrice } = point;
-  const { name, description } = destination;
-  return `
-  <form class="event event--edit" action="#" method="post">
+function templateDestinationOption(destination) {
+  return (
+    `<option value="${destination.name}">${destination.name}</option>`
+  );
+}
+
+function getDestinationListTemplate(name, type, destinations) {
+  // console.log(destinations);
+  return (
+    `<label class="event__label  event__type-output" for="event-destination-1">${type}</label>
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+      <datalist id="destination-list-1">
+        ${templateDestinationOption(destinations[0])}
+        ${templateDestinationOption(destinations[1])}
+        ${templateDestinationOption(destinations[2])}
+      </datalist>`
+  );
+}
+
+function templateEditFormView(state, destinations, checkedOffers) {
+  const { point: {type, dateFrom, dateTo, basePrice, } } = state;
+  const { destination: {name, description, pictures} } = state;
+  return (
+    `<form class="event event--edit" action="#" method="post">
       <header class="event__header">
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -67,19 +92,13 @@ function createEditFormTemplate(point, offers, destination, checkedOffers) {
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Event type</legend>
-              ${POINTS_TYPE.map((item) => getTypeTemplate(item)).join('')}
+              ${POINTS_TYPE.map((item) => templateType(item)).join('')}
             </fieldset>
           </div>
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          <label class="event__label  event__type-output" for="event-destination-1">${type}</label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
-          <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
-          </datalist>
+          ${getDestinationListTemplate(name, type, destinations)}
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -105,11 +124,10 @@ function createEditFormTemplate(point, offers, destination, checkedOffers) {
         </button>
       </header>
       <section class="event__details">
-        ${getAllOffersTemplate(offers, checkedOffers)}
-        ${getDestinationDescriptionTemplate(description)}
+        ${templateOffers(state.offers, checkedOffers)}
+        ${templateDestination(description, pictures)}
       </section>
-</form>
-  `;
+</form>`);
 }
 
-export { createEditFormTemplate };
+export {templateEditFormView};

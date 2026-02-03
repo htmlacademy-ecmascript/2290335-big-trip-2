@@ -6,7 +6,7 @@ export default class PointsModel {
   #points = Array.from({length: POINTS_COUNT}, getRandomPoint);
 
   // Все возможные поинты
-  getAllPoints() {
+  get total() {
     return this.#points;
   }
 }

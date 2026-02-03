@@ -5,7 +5,7 @@ import SortView from '../view/sort/sort-view.js';
 import {SortType} from '../const.js';
 import PointListView from '../view/event-list/event-list-view.js';
 import NoPointView from '../view/no-event-item/no-event-item-view.js';
-import TaskPresenter from './task-presenter.js';
+import PointPresenter from './point-presenter.js';
 
 export default class BoardPresenter {
   #sortComponent = null;
@@ -14,7 +14,7 @@ export default class BoardPresenter {
   #pointModel = null;
   #offerModel = null;
   #destinationModel = null;
-  #taskPresenters = new Map();
+  #pointPresenters = new Map();
   #modelBoardPoints = [];
   #currentSortType = SortType.Day;
   #startedBoardPoints = [];
@@ -32,51 +32,30 @@ export default class BoardPresenter {
   }
 
   init() {
-    this.#modelBoardPoints = [...this.#pointModel.getAllPoints()];
-    this.#startedBoardPoints = [...this.#pointModel.getAllPoints()];
-    this.#renderSortAndPointsList();
+    this.#modelBoardPoints = [...this.#pointModel.total];
+    this.#startedBoardPoints = [...this.#pointModel.total];
+    this.#renderBoard();
     this.#renderPoints();
   }
 
-  #renderPoint(task, offers, destinations) {
-    const taskPresenter = new TaskPresenter({
-      taskListContainer: this.#eventListComponent.element,
-      onDataChange: this.#handleTaskChange,
-      onModeChange: this.#handleModeChange,
-      offers,
-      destinations
-    });
-    taskPresenter.init(task);
-    this.#taskPresenters.set(task.id, taskPresenter);
-  }
-
-  #handleSortTypeChange = (sortType) => {
-    if (this.#currentSortType === sortType) {
-      return;
-    }
-    // - Сортируем задачи
-    this.#sortTasks(sortType);
-
-    // - Очищаем список
-    this.#clearTaskList();
-
-    // - Рендерим список заново
-    render(this.#eventListComponent, this.#container);
-    for (let i = 0; i < this.#modelBoardPoints.length; i++) {
-      this.#renderPoint(this.#modelBoardPoints[i], this.#offerModel, this.#destinationModel);
-    }
-  };
-
-  #renderSort() {
+  #renderBoard() {
     this.#sortComponent = new SortView({
       onSortTypeChange: this.#handleSortTypeChange
     });
     render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
+    render(this.#eventListComponent, this.#container);
   }
 
-  #renderSortAndPointsList() {
-    this.#renderSort();
-    render(this.#eventListComponent, this.#container);
+  #renderPoint(point, offers, destinations) {
+    const pointPresenter = new PointPresenter({
+      eventListComponent: this.#eventListComponent.element,
+      onDataChange: this.#handlePointChange,
+      onModeChange: this.#handleModeChange,
+      offers,
+      destinations
+    });
+    pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #renderPoints() {
@@ -88,6 +67,21 @@ export default class BoardPresenter {
       this.#renderPoint(this.#modelBoardPoints[i], this.#offerModel, this.#destinationModel);
     }
   }
+
+  ///// Код, связанный с работой сортировки /////
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    // - Сортируем задачи
+    this.#sortTasks(sortType);
+    // - Очищаем список
+    this.#clearTaskList();
+    // - Рендерим список заново
+    render(this.#eventListComponent, this.#container);
+    this.#renderPoints();
+  };
 
   #sortTasks(sortType) {
     switch (sortType) {
@@ -101,23 +95,25 @@ export default class BoardPresenter {
         this.#modelBoardPoints = [...this.#startedBoardPoints];
         break;
     }
-
     this.#currentSortType = sortType;
   }
 
-  #handleModeChange = () => {
-    this.#taskPresenters.forEach((presenter) => presenter.resetView());
-  };
-
   #clearTaskList() {
-    this.#taskPresenters.forEach((presenter) => presenter.destroy());
-    this.#taskPresenters.clear();
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
   }
 
-  #handleTaskChange = (updatedTask) => {
-    this.#modelBoardPoints = updateItem(this.#modelBoardPoints, updatedTask);
-    this.#startedBoardPoints = updateItem(this.#startedBoardPoints, updatedTask);
-    this.#taskPresenters.get(updatedTask.id).init(updatedTask);
+
+  // - Меняем режим просмотра поинта
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  // - Преображаем поинт
+  #handlePointChange = (updatedPoint) => {
+    this.#modelBoardPoints = updateItem(this.#modelBoardPoints, updatedPoint);
+    this.#startedBoardPoints = updateItem(this.#startedBoardPoints, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
 
 }

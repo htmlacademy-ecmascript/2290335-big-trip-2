@@ -17,7 +17,6 @@ export default class SortView extends AbstractView {
 
   #sortTypeChangeHandler = (evt) => {
     if (evt.target.classList.contains('filter-avaible')) {
-      evt.preventDefault();
       this.#handleSortTypeChange(evt.target.dataset.sortType);
     }
   };
