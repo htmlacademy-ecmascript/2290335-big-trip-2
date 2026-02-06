@@ -26,6 +26,7 @@ export default class BoardPresenter {
     this.#pointModel = pointModel;
     this.#offerModel = offerModel;
     this.#destinationModel = destinationModel;
+    this.#pointModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
@@ -48,7 +49,8 @@ export default class BoardPresenter {
   #renderPoint(point, offers, destinations) {
     const pointPresenter = new PointPresenter({
       eventListComponent: this.#eventListComponent.element,
-      onDataChange: this.#handlePointChange,
+      // onDataChange: this.#handlePointChange,
+      onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
       offers,
       destinations
@@ -94,8 +96,23 @@ export default class BoardPresenter {
   };
 
   // - Преображаем поинт
-  #handlePointChange = (updatedPoint) => {
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  // #handlePointChange = (updatedPoint) => {
+  //   this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  // };
+  #handleViewAction = (actionType, updateType, update) => {
+    console.log(actionType, updateType, update);
+    // Здесь будем вызывать обновление модели.
+    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
+    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
+    // update - обновленные данные
+  };
+
+  #handleModelEvent = (updateType, data) => {
+    console.log(updateType, data);
+    // В зависимости от типа изменений решаем, что делать:
+    // - обновить часть списка (например, когда поменялось описание)
+    // - обновить список (например, когда задача ушла в архив)
+    // - обновить всю доску (например, при переключении фильтра)
   };
 
 }

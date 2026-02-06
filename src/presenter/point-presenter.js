@@ -1,4 +1,5 @@
 import {render, replace, remove} from '../framework/render.js';
+import {UserAction, UpdateType} from '../const.js';
 import PointView from '../view/event-item/event-item-view.js';
 import EditFormView from '../view/form-edit/form-edit-view.js';
 
@@ -89,7 +90,12 @@ export default class PointPresenter {
   }
 
   #handleFavoriteClick = () => {
-    this.#handlePointChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    // this.#handlePointChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handlePointChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
   #replaceCardToForm() {
@@ -117,7 +123,12 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-    this.#handlePointChange(point);
+    // this.#handlePointChange(point);
+    this.#handlePointChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      point,
+    );
     this.#replaceFormToCard();
   };
 

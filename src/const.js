@@ -12,4 +12,16 @@ const SortType = {
   TIME: 'time',
 };
 
-export { DATE_FORMAT, POINTS_TYPE, SortType };
+const UserAction = {
+  UPDATE_TASK: 'UPDATE_TASK',
+  ADD_TASK: 'ADD_TASK',
+  DELETE_TASK: 'DELETE_TASK',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export { DATE_FORMAT, POINTS_TYPE, SortType, UserAction, UpdateType };
