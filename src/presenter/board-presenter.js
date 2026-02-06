@@ -31,6 +31,10 @@ export default class BoardPresenter {
     this.#destinationModel = destinationModel;
   }
 
+  get points() {
+    return this.#pointModel.total;
+  }
+
   init() {
     this.#modelBoardPoints = [...this.#pointModel.total];
     this.#startedBoardPoints = [...this.#pointModel.total];
