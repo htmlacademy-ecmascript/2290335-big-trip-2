@@ -1,5 +1,5 @@
 import AbstractView from '../../framework/view/abstract-view.js';
-import {createSortTemplate} from './sort-template.js';
+import {templateSort} from './sort-template.js';
 
 
 export default class SortView extends AbstractView {
@@ -12,7 +12,7 @@ export default class SortView extends AbstractView {
   }
 
   get template() {
-    return createSortTemplate();
+    return templateSort();
   }
 
   #sortTypeChangeHandler = (evt) => {

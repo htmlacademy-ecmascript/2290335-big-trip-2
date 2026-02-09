@@ -3,7 +3,7 @@ import {sortByTime, sortByPrice} from '../utils/task-utils.js';
 import SortView from '../view/sort/sort-view.js';
 import {SortType, UserAction, UpdateType} from '../const.js';
 import PointListView from '../view/event-list/event-list-view.js';
-import NoPointView from '../view/no-event-item/no-event-item-view.js';
+// import NoPointView from '../view/no-event-item/no-event-item-view.js';
 import PointPresenter from './point-presenter.js';
 
 export default class BoardPresenter {
@@ -102,7 +102,6 @@ export default class BoardPresenter {
 
   // - Преображаем поинт
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
     switch (actionType) {
       case UserAction.UPDATE_TASK:
         this.#pointModel.updateTask(updateType, update);
@@ -123,9 +122,11 @@ export default class BoardPresenter {
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
+        this.#renderBoard();
         break;
       case UpdateType.MAJOR:
         this.#clearBoard();
+        this.#renderBoard();
         break;
     }
   };
