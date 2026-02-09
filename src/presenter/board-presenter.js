@@ -81,11 +81,8 @@ export default class BoardPresenter {
     if (this.#currentSortType === sortType) {
       return;
     }
-    // - Сортируем задачи
     this.#currentSortType = sortType;
-    // - Очищаем список
     this.#clearTaskList();
-    // - Рендерим список заново
     render(this.#eventListComponent, this.#container);
     this.#renderPoints();
   };
