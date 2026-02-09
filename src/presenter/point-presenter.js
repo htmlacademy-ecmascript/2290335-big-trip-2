@@ -58,6 +58,7 @@ export default class PointPresenter {
       onFormClose: this.#handleFormClose,
       offers: this.#offers.total,
       destinations: this.#destinations.total,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     // - Проверка на наличие в DOM, чтобы не пытаться заменить то, что не было отрисовано
@@ -132,6 +133,14 @@ export default class PointPresenter {
 
   #handleFormClose = () => {
     this.#replaceFormToCard();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handlePointChange(
+      UserAction.DELETE_TASK,
+      UpdateType.MINOR,
+      point,
+    );
   };
 
 }

@@ -1,3 +1,5 @@
+const POINTS_COUNT = 3;
+
 const DATE_FORMAT = {
   monthDay: 'MMM DD',
   hours: 'HH mm',
@@ -24,4 +26,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { DATE_FORMAT, POINTS_TYPE, SortType, UserAction, UpdateType };
+export {POINTS_COUNT, DATE_FORMAT, POINTS_TYPE, SortType, UserAction, UpdateType};

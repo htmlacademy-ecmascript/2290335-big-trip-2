@@ -1,7 +1,7 @@
 import {render, RenderPosition, remove} from '../framework/render.js';
+import {POINTS_COUNT, SortType, UserAction, UpdateType} from '../const.js';
 import {sortByTime, sortByPrice} from '../utils/task-utils.js';
 import SortView from '../view/sort/sort-view.js';
-import {SortType, UserAction, UpdateType} from '../const.js';
 import PointListView from '../view/event-list/event-list-view.js';
 // import NoPointView from '../view/no-event-item/no-event-item-view.js';
 import PointPresenter from './point-presenter.js';
@@ -13,6 +13,7 @@ export default class BoardPresenter {
   #pointModel = null;
   #offerModel = null;
   #destinationModel = null;
+  #renderedTaskCount = null;
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
 
@@ -80,15 +81,9 @@ export default class BoardPresenter {
       return;
     }
     this.#currentSortType = sortType;
-    this.#clearTaskList();
-    render(this.#eventListComponent, this.#container);
-    this.#renderPoints();
+    this.#clearBoard({resetRenderedTaskCount: true});
+    this.#renderBoard();
   };
-
-  #clearTaskList() {
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
-  }
 
   // - Меняем режим просмотра поинта
   #handleModeChange = () => {
@@ -124,19 +119,29 @@ export default class BoardPresenter {
         this.#renderBoard();
         break;
       case UpdateType.MAJOR:
-        this.#clearBoard();
+        this.#clearBoard({resetRenderedTaskCount: true, resetSortType: true});
         this.#renderBoard();
         break;
     }
   };
 
-  #clearBoard({resetSortType = false} = {}) {
+  #clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
+    const taskCount = this.points.length;
 
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
     remove(this.#sortComponent);
     // remove(this.#noTaskComponent);
+
+    if (resetRenderedTaskCount) {
+      this.#renderedTaskCount = POINTS_COUNT;
+    } else {
+      // На случай, если перерисовка доски вызвана
+      // уменьшением количества задач (например, удаление или перенос в архив)
+      // нужно скорректировать число показанных задач
+      this.#renderedTaskCount = Math.min(taskCount, this.#renderedTaskCount);
+    }
 
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
