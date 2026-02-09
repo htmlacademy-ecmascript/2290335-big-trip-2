@@ -14,7 +14,7 @@ export default class BoardPresenter {
   #offerModel = null;
   #destinationModel = null;
   #pointPresenters = new Map();
-  #currentSortType = SortType.Day;
+  #currentSortType = SortType.DAY;
 
   constructor({
     container,
@@ -75,8 +75,6 @@ export default class BoardPresenter {
     }
   }
 
-  ///// Код, связанный с работой сортировки /////
-
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
@@ -99,6 +97,7 @@ export default class BoardPresenter {
 
   // - Преображаем поинт
   #handleViewAction = (actionType, updateType, update) => {
+    console.log(actionType, updateType, update);
     switch (actionType) {
       case UserAction.UPDATE_TASK:
         this.#pointModel.updateTask(updateType, update);
@@ -113,10 +112,13 @@ export default class BoardPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
+    console.log(updateType, data);
     switch (updateType) {
+      // Обновление одной задачи
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data);
         break;
+      // Обновление списка
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderBoard();

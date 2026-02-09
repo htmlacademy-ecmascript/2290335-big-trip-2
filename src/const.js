@@ -7,7 +7,7 @@ const DATE_FORMAT = {
 const POINTS_TYPE = ['taxi', 'train', 'flight', 'bus', 'ship', 'drive', 'check-in', 'sightseeing', 'restaurant'];
 
 const SortType = {
-  Day: 'day',
+  DAY: 'day',
   PRICE: 'price',
   TIME: 'time',
 };
