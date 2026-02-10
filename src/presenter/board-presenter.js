@@ -1,10 +1,10 @@
 import {render, RenderPosition, remove} from '../framework/render.js';
-import {POINTS_COUNT, SortType, UserAction, UpdateType} from '../const.js';
+import {POINTS_COUNT, SortType, UserAction, UpdateType, FilterType} from '../const.js';
 import {sortByTime, sortByPrice} from '../utils/task-utils.js';
 import {filter} from '../utils/filter.js';
 import SortView from '../view/sort/sort-view.js';
 import PointListView from '../view/event-list/event-list-view.js';
-// import NoPointView from '../view/no-event-item/no-event-item-view.js';
+import NoPointView from '../view/no-event-item/no-event-item-view.js';
 import PointPresenter from './point-presenter.js';
 
 export default class BoardPresenter {
@@ -18,6 +18,8 @@ export default class BoardPresenter {
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
   #filterModel = null;
+  #filterType = FilterType.ALL;
+  #NoPointComponent = null;
 
   constructor({
     container,
@@ -36,9 +38,9 @@ export default class BoardPresenter {
   }
 
   get points() {
-    const filterType = this.#filterModel.filters;
+    this.#filterType = this.#filterModel.filters;
     const points = this.#pointModel.total;
-    const filteredPoints = filter[filterType](points);
+    const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
       case SortType.PRICE:
@@ -75,11 +77,18 @@ export default class BoardPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
+  #renderNoPoints() {
+    this.#NoPointComponent = new NoPointView({
+      filterType: this.#filterType
+    });
+    render(this.#NoPointComponent, this.#container);
+  }
+
   #renderPoints() {
-    // if (this.#modelBoardPoints.length === 0) {
-    //   render(new NoPointView(), this.#eventListComponent.element);
-    //   return;
-    // }
+    if (this.#pointModel.total.length === 0) {
+      this.#renderNoPoints();
+      return;
+    }
     for (let i = 0; i < this.points.length; i++) {
       this.#renderPoint(this.points[i], this.#offerModel, this.#destinationModel);
     }
@@ -139,7 +148,9 @@ export default class BoardPresenter {
     this.#pointPresenters.clear();
 
     remove(this.#sortComponent);
-    // remove(this.#noTaskComponent);
+    if (this.#NoPointComponent) {
+      remove(this.#NoPointComponent);
+    }
 
     if (resetRenderedTaskCount) {
       this.#renderedTaskCount = POINTS_COUNT;
