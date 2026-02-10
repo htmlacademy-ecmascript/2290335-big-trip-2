@@ -1,6 +1,5 @@
-function createFilterItemTemplate(filter, isChecked) {
+function createFilterItemTemplate(filter, currentFilterType) {
   const {type, count} = filter;
-
   return (
     `
     <div class="trip-filters__filter">
@@ -9,8 +8,9 @@ function createFilterItemTemplate(filter, isChecked) {
          id="filter-${type}"
          class="trip-filters__filter-input visually-hidden"
          name="trip-filter"
-         ${isChecked ? 'checked' : ''}
+         ${type === currentFilterType ? 'checked' : ''}
          ${count === 0 ? 'disabled' : ''}
+         value="${type}"
       />
       <label for="filter-${type}" class="trip-filters__filter-label">${type}</label>
     </div>
@@ -18,9 +18,9 @@ function createFilterItemTemplate(filter, isChecked) {
   );
 }
 
-function createHeaderFiltersTemplate(filterItems) {
+function templateHeaderFilters(filterItems, currentFilterType) {
   const filterItemsTemplate = filterItems
-    .map((filter, index) => createFilterItemTemplate(filter, index === 0))
+    .map((filter) => createFilterItemTemplate(filter, currentFilterType))
     .join('');
   return (
     `<form class="trip-filters" action="#" method="get">
@@ -30,4 +30,4 @@ function createHeaderFiltersTemplate(filterItems) {
   );
 }
 
-export { createHeaderFiltersTemplate };
+export { templateHeaderFilters };

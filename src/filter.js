@@ -1,38 +1,23 @@
 import dayjs from 'dayjs';
+import {FilterType} from './const.js';
 
-const FilterType = {
-  EVERYTHING: 'everything',
-  FUTURE: 'future',
-  PRESENT: 'present',
-  PAST: 'past',
-};
+// function isPointInPastTime(dateTo) {
+//   return dateTo && dayjs(dateTo).isBefore(dayjs(), 'D');
+// }
+
+// function isPontInFutureTime(dateTo) {
+//   return dateTo && dayjs(dateTo).isAfter(dayjs(), 'D');
+// }
+
+// function isPointInPresentTime(dateTo) {
+//   return dateTo && dayjs(dateTo).isSame(dayjs(), 'D');
+// }
 
 const filter = {
-  [FilterType.EVERYTHING]: (tasks) => tasks.filter((task) => task),
-  [FilterType.PRESENT]: (tasks) => tasks.filter((task) => isPointInPresentTime(task.dueDate)),
-  [FilterType.FUTURE]: (tasks) => tasks.filter((task) => isPontInFutureTime(task.dueDate)),
-  [FilterType.PAST]: (tasks) => tasks.filter((task) => isPointInPastTime(task.dueDate)),
+  [FilterType.EVERYTHING]: (points) => points.filter((point) => point),
+  // [FilterType.FUTURE]: (points) => points.filter((point) => isPontInFutureTime(point.dateTo)),
+  // [FilterType.PRESENT]: (points) => points.filter((point) => isPointInPresentTime(point.dateTo)),
+  // [FilterType.PAST]: (points) => points.filter((point) => isPointInPastTime(point.dateTo)),
 };
 
-function isPointInPastTime(dueDate) {
-  return dueDate && dayjs(dueDate).isBefore(dayjs(), 'D');
-}
-
-function isPontInFutureTime(dueDate) {
-  return dueDate && dayjs(dueDate).isAfter(dayjs(), 'D');
-}
-
-function isPointInPresentTime(dueDate) {
-  return dueDate && dayjs(dueDate).isSame(dayjs(), 'D');
-}
-
-function generateFilter(tasks) {
-  return Object.entries(filter).map(
-    ([filterType, filterTasks]) => ({
-      type: filterType,
-      count: filterTasks(tasks).length,
-    }),
-  );
-}
-
-export {generateFilter};
+export {filter};

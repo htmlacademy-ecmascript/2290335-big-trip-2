@@ -55,6 +55,7 @@ export default class BoardPresenter {
   }
 
   #renderPoint(point, offers, destinations) {
+    console.log(point);
     const pointPresenter = new PointPresenter({
       eventListComponent: this.#eventListComponent.element,
       onDataChange: this.#handleViewAction,

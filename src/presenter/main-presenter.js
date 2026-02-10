@@ -5,13 +5,14 @@ const headerContainerElement = document.querySelector('.page-header__container .
 const pageContainerElement = document.querySelector('.page-main .trip-events');
 
 export default class MainPresenter {
-  constructor(pointModel, offerModel, destinationModel) {
-    this.headerPresenter = new HeaderPresenter({container: headerContainerElement, pointModel});
+  constructor(pointModel, offerModel, destinationModel, filterModel) {
+    this.headerPresenter = new HeaderPresenter({container: headerContainerElement, pointModel, filterModel});
     this.boardPresenter = new BoardPresenter({container: pageContainerElement, pointModel, offerModel, destinationModel});
   }
 
   init () {
     this.headerPresenter.init();
+    // this.filterPresenter.init();
     this.boardPresenter.init();
   }
 }

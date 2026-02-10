@@ -26,4 +26,11 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export {POINTS_COUNT, DATE_FORMAT, POINTS_TYPE, SortType, UserAction, UpdateType};
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+export {POINTS_COUNT, DATE_FORMAT, POINTS_TYPE, SortType, UserAction, UpdateType, FilterType};
