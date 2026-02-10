@@ -1,24 +1,23 @@
 import {render, RenderPosition} from '../framework/render.js';
 import HeaderInfoView from '../view/header-info/header-info-view.js';
-import FiltersView from '../view/filter/filter-view.js';
-
-const filters = [
-  {
-    type: 'all',
-    count: 0,
-  },
-];
+import FilterPresenter from './filter-presenter.js';
 
 export default class HeaderPresenter {
   constructor({container, pointModel, filterModel}) {
     this.container = container;
     this.pointModel = pointModel;
     this.filterModel = filterModel;
+    this.filterPresenter = new FilterPresenter({
+      container: this.container.querySelector('.trip-controls'),
+      filterModel,
+      pointModel
+    });
   }
 
   init() {
     render(new HeaderInfoView(), this.container, RenderPosition.AFTERBEGIN);
-    render(new FiltersView({filters, currentFilterType: 'all', onFilterTypeChange: () => {}}), this.container);
+    this.filterPresenter.init();
+    // render(new FiltersView({filters, currentFilterType: 'all', onFilterTypeChange: () => {}}), this.container.querySelector('.trip-controls'));
   }
 }
 
