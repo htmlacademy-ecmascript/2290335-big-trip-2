@@ -12,8 +12,8 @@ export default class MainPresenter {
 
   init () {
     this.headerPresenter.init();
-    // this.filterPresenter.init();
     this.boardPresenter.init();
   }
+
 }
 
