@@ -1,6 +1,7 @@
 import {render, RenderPosition, remove} from '../framework/render.js';
 import {POINTS_COUNT, SortType, UserAction, UpdateType} from '../const.js';
 import {sortByTime, sortByPrice} from '../utils/task-utils.js';
+import {filter} from '../utils/filter.js';
 import SortView from '../view/sort/sort-view.js';
 import PointListView from '../view/event-list/event-list-view.js';
 // import NoPointView from '../view/no-event-item/no-event-item-view.js';
@@ -16,28 +17,36 @@ export default class BoardPresenter {
   #renderedTaskCount = null;
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
+  #filterModel = null;
 
   constructor({
     container,
     pointModel,
     offerModel,
-    destinationModel
+    destinationModel,
+    filterModel
   }) {
     this.#container = container;
     this.#pointModel = pointModel;
     this.#offerModel = offerModel;
     this.#destinationModel = destinationModel;
+    this.#filterModel = filterModel;
     this.#pointModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
+    const filterType = this.#filterModel.filters;
+    const points = this.#pointModel.total;
+    const filteredPoints = filter[filterType](points);
+
     switch (this.#currentSortType) {
       case SortType.PRICE:
-        return [...this.#pointModel.total].sort(sortByPrice);
+        return filteredPoints.sort(sortByPrice);
       case SortType.TIME:
-        return [...this.#pointModel.total].sort(sortByTime);
+        return filteredPoints.sort(sortByTime);
     }
-    return this.#pointModel.total;
+    return filteredPoints;
   }
 
   init() {
@@ -92,7 +101,6 @@ export default class BoardPresenter {
 
   // - Преображаем поинт
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
     switch (actionType) {
       case UserAction.UPDATE_TASK:
         this.#pointModel.updateTask(updateType, update);
@@ -107,7 +115,6 @@ export default class BoardPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
     switch (updateType) {
       // Обновление одной задачи
       case UpdateType.PATCH:

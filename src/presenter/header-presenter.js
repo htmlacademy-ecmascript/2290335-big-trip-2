@@ -7,6 +7,7 @@ export default class HeaderPresenter {
     this.container = container;
     this.pointModel = pointModel;
     this.filterModel = filterModel;
+
     this.filterPresenter = new FilterPresenter({
       container: this.container.querySelector('.trip-controls'),
       filterModel,
@@ -17,7 +18,6 @@ export default class HeaderPresenter {
   init() {
     render(new HeaderInfoView(), this.container, RenderPosition.AFTERBEGIN);
     this.filterPresenter.init();
-    // render(new FiltersView({filters, currentFilterType: 'all', onFilterTypeChange: () => {}}), this.container.querySelector('.trip-controls'));
   }
 }
 

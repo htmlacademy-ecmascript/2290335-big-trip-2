@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {FilterType} from './const.js';
+import {FilterType} from '../const.js';
 
 function isPointInPastTime(dateTo) {
   return dateTo && dayjs(dateTo).isBefore(dayjs(), 'D');

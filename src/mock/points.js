@@ -18,8 +18,8 @@ const mockPoints = [
   },
   {
     basePrice: 2500,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-07-11T11:22:13.375Z',
+    dateFrom: '2025-07-10T22:55:56.845Z',
+    dateTo: '2025-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edbbb',
     isFavorite: true,
     offers: [
@@ -30,8 +30,8 @@ const mockPoints = [
   },
   {
     basePrice: 10000,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-07-11T11:22:13.375Z',
+    dateFrom: '2026-07-10T22:55:56.845Z',
+    dateTo: '2026-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
     offers: [
@@ -43,8 +43,8 @@ const mockPoints = [
   },
   {
     basePrice: 800,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-07-11T11:22:13.375Z',
+    dateFrom: '2026-07-10T22:55:56.845Z',
+    dateTo: '2026-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edbbb',
     isFavorite: true,
     offers: [
@@ -54,8 +54,8 @@ const mockPoints = [
   },
   {
     basePrice: 535000,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-07-11T11:22:13.375Z',
+    dateFrom: '2026-07-10T22:55:56.845Z',
+    dateTo: '2026-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
     offers: [
@@ -65,8 +65,8 @@ const mockPoints = [
   },
   {
     basePrice: 999,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-07-11T11:22:13.375Z',
+    dateFrom: '2026-07-10T22:55:56.845Z',
+    dateTo: '2026-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
     offers: [''],
@@ -74,8 +74,8 @@ const mockPoints = [
   },
   {
     basePrice: 300,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-07-11T11:22:30.375Z',
+    dateFrom: '2026-02-10T22:55:56.845Z',
+    dateTo: '2026-02-10T11:22:30.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
     offers: [''],
@@ -83,8 +83,8 @@ const mockPoints = [
   },
   {
     basePrice: 10,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-09-11T11:22:13.375Z',
+    dateFrom: '2026-02-10T22:55:56.845Z',
+    dateTo: '2026-02-10T11:22:30.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
     offers: [
@@ -95,8 +95,8 @@ const mockPoints = [
   },
   {
     basePrice: 500,
-    dateFrom: '2019-07-10T22:55:56.845Z',
-    dateTo: '2019-08-11T11:22:13.375Z',
+    dateFrom: '2025-07-10T22:55:56.845Z',
+    dateTo: '2025-08-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edbbb',
     isFavorite: false,
     offers: [

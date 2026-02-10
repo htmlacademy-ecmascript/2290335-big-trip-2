@@ -7,7 +7,7 @@ const pageContainerElement = document.querySelector('.page-main .trip-events');
 export default class MainPresenter {
   constructor(pointModel, offerModel, destinationModel, filterModel) {
     this.headerPresenter = new HeaderPresenter({container: headerContainerElement, pointModel, filterModel});
-    this.boardPresenter = new BoardPresenter({container: pageContainerElement, pointModel, offerModel, destinationModel});
+    this.boardPresenter = new BoardPresenter({container: pageContainerElement, pointModel, offerModel, destinationModel, filterModel});
   }
 
   init () {
