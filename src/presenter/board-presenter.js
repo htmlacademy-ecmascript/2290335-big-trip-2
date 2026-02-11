@@ -3,8 +3,8 @@ import {POINTS_COUNT, SortType, UserAction, UpdateType, FilterType} from '../con
 import {sortByTime, sortByPrice} from '../utils/task-utils.js';
 import {filter} from '../utils/filter.js';
 import SortView from '../view/sort/sort-view.js';
-import PointListView from '../view/event-list/event-list-view.js';
-import NoPointView from '../view/no-event-item/no-event-item-view.js';
+import PointListView from '../view/point-list/point-list-view.js';
+import EmptyListView from '../view/empty-list/empty-list-view.js';
 import PointPresenter from './point-presenter.js';
 
 export default class BoardPresenter {
@@ -56,6 +56,10 @@ export default class BoardPresenter {
   }
 
   #renderBoard() {
+    if (this.#pointModel.total.length === 0) {
+      this.#renderNoPoints();
+      return;
+    }
     this.#sortComponent = new SortView({
       currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange
@@ -78,17 +82,13 @@ export default class BoardPresenter {
   }
 
   #renderNoPoints() {
-    this.#NoPointComponent = new NoPointView({
+    this.#NoPointComponent = new EmptyListView({
       filterType: this.#filterType
     });
     render(this.#NoPointComponent, this.#container);
   }
 
   #renderPoints() {
-    if (this.#pointModel.total.length === 0) {
-      this.#renderNoPoints();
-      return;
-    }
     for (let i = 0; i < this.points.length; i++) {
       this.#renderPoint(this.points[i], this.#offerModel, this.#destinationModel);
     }

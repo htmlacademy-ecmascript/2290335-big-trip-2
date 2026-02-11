@@ -1,7 +1,7 @@
 import {DATE_FORMAT} from '../../const.js';
 import {humanizeDueDate, getDifferenceInTime} from '../../utils/task-utils.js';
 
-function createOfferTemplate({title, price}) {
+function templateOffer({title, price}) {
   return (
     `<ul class="event__selected-offers">
       <li class="event__offer">
@@ -13,7 +13,7 @@ function createOfferTemplate({title, price}) {
   );
 }
 
-function createPointTemplate(point, offers, destination) {
+function templatePoint(point, offers, destination) {
   const { type, dateFrom, dateTo, isFavorite, basePrice } = point;
   const { name } = destination;
   return `
@@ -38,7 +38,7 @@ function createPointTemplate(point, offers, destination) {
         ${offers.length > 0 ? `
         <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-            ${offers.map((offer) => createOfferTemplate(offer)).join('')}
+            ${offers.map((offer) => templateOffer(offer)).join('')}
           </ul>
         ` : ''}
         <button class="event__favorite-btn ${isFavorite && 'event__favorite-btn--active'}" type="button">
@@ -55,4 +55,4 @@ function createPointTemplate(point, offers, destination) {
   `;
 }
 
-export { createPointTemplate };
+export {templatePoint};

@@ -1,7 +1,7 @@
 import AbstractView from '../../framework/view/abstract-view.js';
-import {templateHeaderFilters} from './filter-template.js';
+import {templateHeaderFilters} from './header-filter-template.js';
 
-export default class FilterView extends AbstractView {
+export default class HeaderFilterView extends AbstractView {
   #filters = null;
   #currentFilter = null;
   #handleFilterTypeChange = null;

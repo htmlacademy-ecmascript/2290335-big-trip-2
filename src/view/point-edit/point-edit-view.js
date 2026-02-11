@@ -1,9 +1,9 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
-import {templateEditFormView} from './form-edit-template.js';
+import {templateEditPointView} from './point-edit-template.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-export default class EditFormView extends AbstractStatefulView {
+export default class EditPointView extends AbstractStatefulView {
   #checkedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
@@ -26,7 +26,7 @@ export default class EditFormView extends AbstractStatefulView {
     onDeleteClick
   }) {
     super();
-    this._setState(EditFormView.parseTaskToState({
+    this._setState(EditPointView.parseTaskToState({
       point: concretePoint,
       offers: concreateOffers,
       destination: concreateDestination
@@ -41,7 +41,7 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   get template() {
-    return templateEditFormView(this._state, this.#allDestinations, this.#checkedOffers);
+    return templateEditPointView(this._state, this.#allDestinations, this.#checkedOffers);
   }
 
   removeElement() {
@@ -99,12 +99,12 @@ export default class EditFormView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(EditFormView.parseStateToTask(this._state));
+    this.#handleFormSubmit(EditPointView.parseStateToTask(this._state));
   };
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditFormView.parseStateToTask(this._state));
+    this.#handleDeleteClick(EditPointView.parseStateToTask(this._state));
   };
 
 
@@ -120,7 +120,6 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #offerChangeHandler = () => {
-    // const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const specialOffers = this.#allOffers.find((item) => item.type === this._state.point.type);
     this.updateElement({point: {...this._state.point, offers: specialOffers.offers}});
     this.updateElement({offers: specialOffers.offers});

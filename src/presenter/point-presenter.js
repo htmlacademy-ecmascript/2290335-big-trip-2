@@ -1,7 +1,7 @@
 import {render, replace, remove} from '../framework/render.js';
 import {UserAction, UpdateType} from '../const.js';
-import PointView from '../view/event-item/event-item-view.js';
-import EditFormView from '../view/form-edit/form-edit-view.js';
+import PointView from '../view/point/point-view.js';
+import EditPointView from '../view/point-edit/point-edit-view.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -49,7 +49,7 @@ export default class PointPresenter {
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
-    this.#pointEditComponent = new EditFormView({
+    this.#pointEditComponent = new EditPointView({
       concretePoint: this.#point,
       concreateOffers: [...this.#offers.getOfferById(point.type, point.offers)],
       checkedOffers: [...this.#offers.getOfferById(this.#point.type, this.#point.offers)],

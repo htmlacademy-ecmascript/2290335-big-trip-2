@@ -1,8 +1,7 @@
-function createFilterItemTemplate(filter, currentFilterType) {
+function templateFilterItem(filter, currentFilterType) {
   const {type, count} = filter;
   return (
-    `
-    <div class="trip-filters__filter">
+    `<div class="trip-filters__filter">
       <input
          type="radio"
          id="filter-${type}"
@@ -13,14 +12,13 @@ function createFilterItemTemplate(filter, currentFilterType) {
          value="${type}"
       />
       <label for="filter-${type}" class="trip-filters__filter-label">${type}</label>
-    </div>
-    `
+    </div>`
   );
 }
 
 function templateHeaderFilters(filterItems, currentFilterType) {
   const filterItemsTemplate = filterItems
-    .map((filter) => createFilterItemTemplate(filter, currentFilterType))
+    .map((filter) => templateFilterItem(filter, currentFilterType))
     .join('');
   return (
     `<form class="trip-filters" action="#" method="get">
@@ -30,4 +28,4 @@ function templateHeaderFilters(filterItems, currentFilterType) {
   );
 }
 
-export { templateHeaderFilters };
+export {templateHeaderFilters};
