@@ -2,13 +2,13 @@ import AbstractView from '../../framework/view/abstract-view.js';
 import {templateHeaderFilters} from './header-filter-template.js';
 
 export default class HeaderFilterView extends AbstractView {
-  #filters = null;
+  #activeFilter = null;
   #currentFilter = null;
   #handleFilterTypeChange = null;
 
-  constructor({filters, currentFilterType, onFilterTypeChange}) {
+  constructor({activeFilter, currentFilterType, onFilterTypeChange}) {
     super();
-    this.#filters = filters;
+    this.#activeFilter = activeFilter;
     this.#currentFilter = currentFilterType;
     this.#handleFilterTypeChange = onFilterTypeChange;
 
@@ -16,7 +16,7 @@ export default class HeaderFilterView extends AbstractView {
   }
 
   get template() {
-    return templateHeaderFilters(this.#filters, this.#currentFilter);
+    return templateHeaderFilters(this.#activeFilter, this.#currentFilter);
   }
 
   #filterTypeChangeHandler = (evt) => {

@@ -1,5 +1,5 @@
-function templateFilterItem(filter, currentFilterType) {
-  const {type, count} = filter;
+function templateFilterItem(activeFilter, currentFilterType) {
+  const {type, count} = activeFilter;
   return (
     `<div class="trip-filters__filter">
       <input

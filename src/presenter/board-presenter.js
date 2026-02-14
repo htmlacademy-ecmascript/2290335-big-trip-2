@@ -49,7 +49,7 @@ export default class BoardPresenter {
   }
 
   get points() {
-    this.#filterType = this.#filterModel.filters;
+    this.#filterType = this.#filterModel.filter;
     const points = this.#pointModel.total;
     const filteredPoints = filter[this.#filterType](points);
 

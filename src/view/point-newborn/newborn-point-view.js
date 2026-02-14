@@ -7,7 +7,7 @@ let blankPoint = {
   basePrice: 0,
   dateFrom: '',
   dateTo: '',
-  destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edaaa',
+  destination: '',
   isFavorite: false,
   offers: [],
   type: 'taxi',
@@ -29,7 +29,8 @@ export default class CreatePointView extends AbstractStatefulView {
     offers,
     destinations,
     onFormSubmit,
-    onDeleteClick
+    onDeleteClick,
+    onFormClose
   }) {
     super();
 
@@ -42,7 +43,7 @@ export default class CreatePointView extends AbstractStatefulView {
     this.#allDestinations = destinations;
     this.#handleDeleteClick = onDeleteClick;
     this.#handleFormSubmit = onFormSubmit;
-    // this.#handleFormClose = onFormClose;
+    this.#handleFormClose = onFormClose;
     this.#registerEvents();
   }
 
@@ -59,7 +60,7 @@ export default class CreatePointView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = this.#allDestinations.find((pointDestination) => pointDestination.name === evt.target.value);
+    const selectedDestination = this.#allDestinations.total.find((pointDestination) => pointDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({point: {...this._state.point, destination: selectedDestinationId}});
     this.updateElement({destination: selectedDestination});

@@ -18,7 +18,7 @@ export default class FilterPresenter {
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
-  get filters() {
+  get filter() {
     const tasks = this.#pointModel.total;
 
     return Object.values(FilterType).map((type) => ({
@@ -28,11 +28,11 @@ export default class FilterPresenter {
   }
 
   init() {
-    const filters = this.filters;
+    const activeFilter = this.filter;
     const prevFilterComponent = this.#filterComponent;
 
     this.#filterComponent = new HeaderFilterView({
-      filters,
+      activeFilter,
       currentFilterType: this.#filterModel.filter,
       onFilterTypeChange: this.#handleFilterTypeChange
     });

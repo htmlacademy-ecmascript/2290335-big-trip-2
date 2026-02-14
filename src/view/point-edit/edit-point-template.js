@@ -16,7 +16,7 @@ function templatePicture(picture) {
   );
 }
 
-function templateDestination(description, pictures) {
+function templateDestinationDescriptionAndPictures(description, pictures) {
 
   return (
     `<section class="event__section  event__section--destination">
@@ -124,7 +124,7 @@ function templateEditPointView(state, destinations, checkedOffers) {
       </header>
       <section class="event__details">
         ${templateOffers(state.offers, checkedOffers)}
-        ${templateDestination(description, pictures)}
+        ${templateDestinationDescriptionAndPictures(description, pictures)}
       </section>
 </form>`);
 }
