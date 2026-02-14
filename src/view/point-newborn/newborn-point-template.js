@@ -75,7 +75,8 @@ function getDestinationListTemplate(name, type, destinations) {
   );
 }
 
-function templateCreatePointView(state, destinations, checkedOffers) {
+function templateCreatePointView(state, destinations) {
+  console.log(destinations);
   const { point: {type, dateFrom, dateTo, basePrice, } } = state;
   const { destination: {name, description, pictures} } = state;
   return (
@@ -123,8 +124,8 @@ function templateCreatePointView(state, destinations, checkedOffers) {
         </button>
       </header>
       <section class="event__details">
-        ${templateOffers(state.offers, checkedOffers)}
-        ${templateDestination(description, pictures)}
+
+
       </section>
 </form>`);
 }

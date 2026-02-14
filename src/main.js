@@ -13,3 +13,12 @@ const filterModel = new FilterModel();
 const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
 mainPresenter.init();
 
+
+const createPointButtonElement = document.querySelector('.trip-main__event-add-btn');
+createPointButtonElement.addEventListener('click', handleNewPointButtonClick);
+
+function handleNewPointButtonClick() {
+  mainPresenter.boardPresenter.createTask();
+  createPointButtonElement.disabled = true;
+}
+

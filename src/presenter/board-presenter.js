@@ -6,7 +6,7 @@ import SortView from '../view/sort/sort-view.js';
 import PointListView from '../view/point-list/point-list-view.js';
 import EmptyListView from '../view/empty-list/empty-list-view.js';
 import PointPresenter from './point-presenter.js';
-import NewTaskPresenter from './new-point-presenter.js';
+import NewPointPresenter from './newborn-point-presenter.js';
 
 export default class BoardPresenter {
   #sortComponent = null;
@@ -21,7 +21,7 @@ export default class BoardPresenter {
   #filterModel = null;
   #filterType = FilterType.ALL;
   #NoPointComponent = null;
-  #newTaskPresenter = null;
+  #NewPointPresenter = null;
 
   constructor({
     container,
@@ -38,7 +38,10 @@ export default class BoardPresenter {
     this.#filterModel = filterModel;
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
-    this.#newTaskPresenter = new NewTaskPresenter({
+    this.#NewPointPresenter = new NewPointPresenter({
+      allPoints: this.#pointModel,
+      allOffers: this.#offerModel,
+      allDestinations: this.#destinationModel,
       taskListContainer: this.#eventListComponent.element,
       onDataChange: this.#handleViewAction,
       onDestroy: onNewTaskDestroy
@@ -65,8 +68,8 @@ export default class BoardPresenter {
 
   createTask() {
     this.#currentSortType = SortType.DEFAULT;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
-    this.#newTaskPresenter.init();
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#NewPointPresenter.init();
   }
 
   #renderBoard() {
@@ -119,7 +122,7 @@ export default class BoardPresenter {
 
   // - Меняем режим просмотра поинта
   #handleModeChange = () => {
-    this.#newTaskPresenter.destroy();
+    this.#NewPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
@@ -158,7 +161,7 @@ export default class BoardPresenter {
 
   #clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
     const taskCount = this.points.length;
-    this.#newTaskPresenter.destroy();
+    this.#NewPointPresenter.destroy();
 
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
