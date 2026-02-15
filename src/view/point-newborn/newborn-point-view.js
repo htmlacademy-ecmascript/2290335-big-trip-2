@@ -9,7 +9,33 @@ let blankPoint = {
   dateTo: '',
   destination: '',
   isFavorite: false,
-  offers: [],
+  offers: [
+    {
+      id: 'f4b62001-293f-4c3d-a702-94eec4a2808c',
+      title: 'Luggage and overall cargo',
+      price: 150
+    },
+    {
+      id: 'f4b62002-293f-4c3d-a702-94eec4a2808c',
+      title: 'Have a heart-to-heart talk with driver',
+      price: 0
+    },
+    {
+      id: 'f4b62003-293f-4c3d-a702-94eec4a2808c',
+      title: 'City guide services',
+      price: 5000
+    },
+    {
+      id: 'f4b62004-293f-4c3d-a702-94eec4a2808c',
+      title: 'Selecting a radio station',
+      price: 50
+    },
+    {
+      id: 'f4b62005-293f-4c3d-a702-94eec4a2808b',
+      title: 'Upgrade to tariff',
+      price: 120
+    },
+  ],
   type: 'taxi',
 };
 
@@ -39,7 +65,7 @@ export default class CreatePointView extends AbstractStatefulView {
       offers: blankPoint.offers,
       destination: blankPoint.destination
     }));
-    this.#allOffers = offers;
+    this.#allOffers = offers.total;
     this.#allDestinations = destinations;
     this.#handleDeleteClick = onDeleteClick;
     this.#handleFormSubmit = onFormSubmit;
@@ -68,6 +94,7 @@ export default class CreatePointView extends AbstractStatefulView {
 
   #offerChangeHandler = () => {
     const specialOffers = this.#allOffers.find((item) => item.type === this._state.point.type);
+    console.log(specialOffers);
     this.updateElement({point: {...this._state.point, offers: specialOffers.offers}});
     this.updateElement({offers: specialOffers.offers});
   };
