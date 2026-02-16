@@ -21,9 +21,9 @@ export default class EditPointView extends AbstractStatefulView {
     selectedOffers,
     onFormSubmit,
     onFormClose,
+    onDeleteClick,
     offers,
-    destinations,
-    onDeleteClick
+    destinations
   }) {
     super();
     this._setState(EditPointView.parseTaskToState({
@@ -50,6 +50,7 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   #typeChangeHandler = (evt) => {
+    console.log('Type change');
     this.updateElement({point: {...this._state.point, type: evt.target.value, offers: []}});
   };
 
@@ -57,14 +58,12 @@ export default class EditPointView extends AbstractStatefulView {
     const selectedDestination = this.#allDestinations.find((pointDestination) => pointDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({point: {...this._state.point, destination: selectedDestinationId}});
-    this.updateElement({destination: selectedDestination});
   };
 
   #offerChangeHandler = () => {
-    const specialOffers = this.#allOffers.find((item) => item.type === this._state.point.type);
-    console.log(specialOffers);
-    this.updateElement({point: {...this._state.point, offers: specialOffers.offers}});
-    this.updateElement({offers: specialOffers.offers});
+    const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    const selectedOffersId = checkedBoxes.map((element) => element.id);
+    this._setState({point: {...this._state.point, offers: selectedOffersId}});
   };
 
   #priceChangeHandler = (evt) => {
@@ -138,14 +137,26 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   #registerEvents = () => {
-    this.element?.addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-    if (this.element.querySelector('.event__available-offers')) {
-      this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
+
+    // Меняет point/offers внутри состояния при клике на элементы от concreateOffers(без отрисовки)
+    if (this.concreateOffers > 0) {
+      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     }
+
+    // Меняет point/destination внутри состояния при изменении города(с отрисовкой)
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    // Меняет point/basePrice внутри состояния при изменении цены(без отрисовки)
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+
+    // if (this.element.querySelector('.event__available-offers')) {
+    //   this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
+    // }
+    // Сохраняет информацию point #handleFormSubmit(UserAction.UPDATE_TASK, UpdateType.MINOR, point)
+    this.element?.addEventListener('submit', this.#formSubmitHandler);
+    // Сворачивает point
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
+    // Удаляет point #handlePointChange(UserAction.DELETE_TASK, UpdateType.MINOR, point)
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.#setDatepickers();
   };

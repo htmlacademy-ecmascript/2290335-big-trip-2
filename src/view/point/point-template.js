@@ -1,7 +1,10 @@
 import {DATE_FORMAT} from '../../const.js';
 import {humanizeDueDate, getDifferenceInTime} from '../../utils/task-utils.js';
 
-function templateOffer({title, price}) {
+function templateOffer(selectedOffer) {
+  // console.log('selectedOffer: ', selectedOffer);
+  const {title, price} = selectedOffer;
+  console.log(title);
   return (
     `<ul class="event__selected-offers">
       <li class="event__offer">
@@ -13,8 +16,25 @@ function templateOffer({title, price}) {
   );
 }
 
+function templateOffers(offers, concreateOffers) {
+  const selectedOffers = [];
+  for (let i = 0; i < offers.length; i++) {
+    concreateOffers.forEach((item) => {
+      if (item.id === offers[i]) {
+        selectedOffers.push(item);
+      }
+    });
+  }
+  console.log(selectedOffers);
+  return (
+    selectedOffers.map((element) => templateOffer(element)).join('')
+  );
+}
+
 function templatePoint(concreatePoint, concreateOffers, concreateDestination, selectedOffers) {
-  const {type, dateFrom, dateTo, isFavorite, basePrice} = concreatePoint;
+  const {type, offers, dateFrom, dateTo, isFavorite, basePrice} = concreatePoint;
+  // console.log('concreatePoint: ', concreatePoint);
+
   return `
     <li class="trip-events__item">
       <div class="event">
@@ -34,12 +54,10 @@ function templatePoint(concreatePoint, concreateOffers, concreateDestination, se
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
-        ${selectedOffers.length > 0 ? `
         <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-            ${selectedOffers.map((offer) => templateOffer(offer)).join('')}
+            ${offers.length > 0 ? templateOffers(offers, concreateOffers) : ''}
           </ul>
-        ` : ''}
         <button class="event__favorite-btn ${isFavorite && 'event__favorite-btn--active'}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">

@@ -62,8 +62,14 @@ function templateCitiesList(name, type, destinations) {
 }
 
 function templateEditPointView(state, destinations) {
-  const { point: {type, dateFrom, dateTo, basePrice} } = state;
-  const { selectedOffers } = state;
+  const {point: {type, destination, dateFrom, dateTo, basePrice}} = state;
+
+  const concreateDestinationId = state.point.destination;
+  const concreateDestination = destinations.find((item) => item.id === concreateDestinationId);
+
+  const {selectedOffers} = state;
+  // console.log(state);
+  // console.log(state.destination.name);
   // console.log('В самом шаблоне: ', checkedOffers);
   return (
     `<form class="event event--edit" action="#" method="post">
@@ -84,8 +90,8 @@ function templateEditPointView(state, destinations) {
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          ${state.destination ? templateCitiesList(state.destination.name, state.point.type, destinations)
-      : templateCitiesList(state.destination, state.point.type, destinations)}
+          ${destination ? templateCitiesList(concreateDestination.name, type, destinations) :
+      templateCitiesList(destinations[0], type, destinations)}
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -112,7 +118,7 @@ function templateEditPointView(state, destinations) {
       </header>
       <section class="event__details">
         ${templateSectionOffers(state.offers, selectedOffers)}
-        ${state.destination ? templateSectionDestination(state.destination.description, state.destination.pictures) : ''}
+        ${concreateDestination ? templateSectionDestination(concreateDestination.description, concreateDestination.pictures) : ''}
       </section>
 </form>`);
 }

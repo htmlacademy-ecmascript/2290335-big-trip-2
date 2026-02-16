@@ -57,9 +57,9 @@ export default class PointPresenter {
       selectedOffers: [],
       onFormSubmit: this.#handleFormSubmit,
       onFormClose: this.#handleFormClose,
+      onDeleteClick: this.#handleDeleteClick,
       offers: this.#offers.total,
       destinations: this.#destinations.total,
-      onDeleteClick: this.#handleDeleteClick
     });
 
     // - Проверка на наличие в DOM, чтобы не пытаться заменить то, что не было отрисовано
