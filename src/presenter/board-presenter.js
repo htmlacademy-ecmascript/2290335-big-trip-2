@@ -6,7 +6,7 @@ import SortView from '../view/sort/sort-view.js';
 import PointListView from '../view/point-list/point-list-view.js';
 import EmptyListView from '../view/empty-list/empty-list-view.js';
 import PointPresenter from './point-presenter.js';
-import NewPointPresenter from './newborn-point-presenter.js';
+import NewPointPresenter from './newborn-presenter.js';
 
 export default class BoardPresenter {
   #sortComponent = null;
@@ -39,10 +39,10 @@ export default class BoardPresenter {
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
     this.#NewPointPresenter = new NewPointPresenter({
-      allPoints: this.#pointModel,
-      allOffers: this.#offerModel,
-      allDestinations: this.#destinationModel,
-      taskListContainer: this.#eventListComponent.element,
+      listContainer: this.#eventListComponent.element,
+      points: this.#pointModel,
+      offers: this.#offerModel,
+      destinations: this.#destinationModel,
       onDataChange: this.#handleViewAction,
       onDestroy: onNewTaskDestroy
     });

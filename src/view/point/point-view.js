@@ -3,22 +3,25 @@ import {templatePoint} from './point-template.js';
 
 export default class PointView extends AbstractView {
   #concretePoint = null;
-  #specialOffers = null;
+  #concreateOffers = null;
   #concreateDestination = null;
+  #selectedOffers = null;
   #handleEditClick = null;
   #handleFavoriteClick = null;
 
   constructor({
     concretePoint,
-    specialOffers,
+    concreateOffers,
     concreateDestination,
+    selectedOffers,
     onEditClick,
     onFavoriteClick,
   }) {
     super();
     this.#concretePoint = concretePoint;
-    this.#specialOffers = specialOffers;
+    this.#concreateOffers = concreateOffers;
     this.#concreateDestination = concreateDestination;
+    this.#selectedOffers = selectedOffers;
     this.#handleEditClick = onEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
@@ -26,7 +29,7 @@ export default class PointView extends AbstractView {
   }
 
   get template() {
-    return templatePoint(this.#concretePoint, this.#specialOffers, this.#concreateDestination);
+    return templatePoint(this.#concretePoint, this.#concreateOffers, this.#concreateDestination, this.#selectedOffers);
   }
 
   #editClickHandler = (evt) => {

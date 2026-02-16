@@ -13,8 +13,8 @@ function templateOffer({title, price}) {
   );
 }
 
-function templatePoint(point, offers, destination) {
-  const {type, dateFrom, dateTo, isFavorite, basePrice} = point;
+function templatePoint(concreatePoint, concreateOffers, concreateDestination, selectedOffers) {
+  const {type, dateFrom, dateTo, isFavorite, basePrice} = concreatePoint;
   return `
     <li class="trip-events__item">
       <div class="event">
@@ -22,7 +22,7 @@ function templatePoint(point, offers, destination) {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} ${destination ? destination.name : ''}</h3>
+        <h3 class="event__title">${type} ${concreateDestination ? concreateDestination.name : ''}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime=${dateFrom}>${humanizeDueDate(dateFrom, DATE_FORMAT.hours)}</time>
@@ -34,10 +34,10 @@ function templatePoint(point, offers, destination) {
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
-        ${offers.length > 0 ? `
+        ${selectedOffers.length > 0 ? `
         <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-            ${offers.map((offer) => templateOffer(offer)).join('')}
+            ${selectedOffers.map((offer) => templateOffer(offer)).join('')}
           </ul>
         ` : ''}
         <button class="event__favorite-btn ${isFavorite && 'event__favorite-btn--active'}" type="button">

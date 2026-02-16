@@ -4,7 +4,7 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EditPointView extends AbstractStatefulView {
-  #checkedOffers = null;
+  #selectedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
   #allOffers = null;
@@ -17,8 +17,8 @@ export default class EditPointView extends AbstractStatefulView {
   constructor({
     concretePoint,
     concreateOffers,
-    checkedOffers,
     concreateDestination,
+    selectedOffers,
     onFormSubmit,
     onFormClose,
     offers,
@@ -29,9 +29,10 @@ export default class EditPointView extends AbstractStatefulView {
     this._setState(EditPointView.parseTaskToState({
       point: concretePoint,
       offers: concreateOffers,
-      destination: concreateDestination
+      destination: concreateDestination,
+      selectedOffers: selectedOffers
     }));
-    this.#checkedOffers = checkedOffers;
+    this.#selectedOffers = selectedOffers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
     this.#allOffers = offers;
@@ -40,11 +41,12 @@ export default class EditPointView extends AbstractStatefulView {
     this.#registerEvents();
   }
 
-  static parseTaskToState = ({point, offers, destination}) => ({point, offers, destination});
+  static parseTaskToState = ({point, offers, destination, selectedOffers}) => ({point, offers, destination, selectedOffers});
   static parseStateToTask = (state) => state.point;
 
   get template() {
-    return templateEditPointView(this._state, this.#allDestinations, this.#checkedOffers);
+    // console.log('На входе: ', this._state);
+    return templateEditPointView(this._state, this.#allDestinations);
   }
 
   #typeChangeHandler = (evt) => {
@@ -60,6 +62,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   #offerChangeHandler = () => {
     const specialOffers = this.#allOffers.find((item) => item.type === this._state.point.type);
+    console.log(specialOffers);
     this.updateElement({point: {...this._state.point, offers: specialOffers.offers}});
     this.updateElement({offers: specialOffers.offers});
   };

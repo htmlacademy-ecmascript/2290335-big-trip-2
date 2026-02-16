@@ -1,9 +1,9 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
-import {templateCreatePointView} from './newborn-point-template.js';
+import {templateCreatePointView} from './new-point-template.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-let blankPoint = {
+const blankPoint = {
   basePrice: 0,
   dateFrom: '',
   dateTo: '',
@@ -39,7 +39,7 @@ let blankPoint = {
   type: 'taxi',
 };
 
-export default class CreatePointView extends AbstractStatefulView {
+export default class NewPoinView extends AbstractStatefulView {
   #checkedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
@@ -51,7 +51,6 @@ export default class CreatePointView extends AbstractStatefulView {
   #handleDeleteClick = null;
 
   constructor({
-    points,
     offers,
     destinations,
     onFormSubmit,
@@ -60,7 +59,7 @@ export default class CreatePointView extends AbstractStatefulView {
   }) {
     super();
 
-    this._setState(CreatePointView.parseTaskToState({
+    this._setState(NewPoinView.parseTaskToState({
       point: blankPoint,
       offers: blankPoint.offers,
       destination: blankPoint.destination
@@ -110,12 +109,12 @@ export default class CreatePointView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(CreatePointView.parseStateToTask(this._state));
+    this.#handleFormSubmit(NewPoinView.parseStateToTask(this._state));
   };
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(CreatePointView.parseStateToTask(this._state));
+    this.#handleDeleteClick(NewPoinView.parseStateToTask(this._state));
   };
 
   // Календарик. Ничего интересного

@@ -1,62 +1,58 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
-import CreatePointView from '../view/point-newborn/newborn-point-view.js';
+import NewPoinView from '../view/point-new/new-point-view.js';
 import {nanoid} from 'nanoid';
 import {UserAction, UpdateType} from '../const.js';
 
 export default class NewPointPresenter {
-  #allPoints = null;
-  #allOffers = null;
-  #allDestinations = null;
-  #taskListContainer = null;
+  #listContainer = null;
+  #points = null;
+  #offers = null;
+  #destinations = null;
   #handleDataChange = null;
   #handleDestroy = null;
 
-  #taskCreateComponent = null;
+  #newPointComponent = null;
 
   constructor({
-    allPoints,
-    allOffers,
-    allDestinations,
-    taskListContainer,
+    listContainer,
+    points,
+    offers,
+    destinations,
     onDataChange,
     onDestroy
   }) {
-    this.#allPoints = allPoints;
-    this.#allOffers = allOffers;
-    this.#allDestinations = allDestinations;
-    this.#taskListContainer = taskListContainer;
+    this.#listContainer = listContainer;
+    this.#points = points;
+    this.#offers = offers;
+    this.#destinations = destinations;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
   }
 
   init() {
-    if (this.#taskCreateComponent !== null) {
+    if (this.#newPointComponent !== null) {
       return;
     }
 
-    this.#taskCreateComponent = new CreatePointView({
-      points: this.#allPoints,
-      offers: this.#allOffers,
-      destinations: this.#allDestinations,
+    this.#newPointComponent = new NewPoinView({
+      offers: this.#offers,
+      destinations: this.#destinations,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick,
     });
 
-    render(this.#taskCreateComponent, this.#taskListContainer, RenderPosition.AFTERBEGIN);
-
+    render(this.#newPointComponent, this.#listContainer, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
   destroy() {
-    if (this.#taskCreateComponent === null) {
+    if (this.#newPointComponent === null) {
       return;
     }
 
     this.#handleDestroy();
-
-    remove(this.#taskCreateComponent);
-    this.#taskCreateComponent = null;
-
+    remove(this.#newPointComponent);
+    this.#newPointComponent = null;
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
