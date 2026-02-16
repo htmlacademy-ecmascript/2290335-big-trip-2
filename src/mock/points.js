@@ -9,11 +9,7 @@ const mockPoints = [
     dateTo: '2019-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edaaa',
     isFavorite: true,
-    offers: [
-      'f4b62001-293f-4c3d-a702-94eec4a2808c',
-      'f4b62002-293f-4c3d-a702-94eec4a2808c',
-      'f4b62003-293f-4c3d-a702-94eec4a2808c'
-    ],
+    offers: [],
     type: 'taxi',
   },
   {
@@ -22,10 +18,7 @@ const mockPoints = [
     dateTo: '2025-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edbbb',
     isFavorite: true,
-    offers: [
-      'aaaaaa1-293f-4c3d-a702-94eec4a2808b',
-      'aaaaaa2-293f-4c3d-a702-94eec4a2808b'
-    ],
+    offers: [],
     type: 'train',
   },
   {
@@ -34,11 +27,7 @@ const mockPoints = [
     dateTo: '2026-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
-    offers: [
-      'bbbbbb2-293f-4c3d-a702-94eec4a2808b',
-      'bbbbbb4-293f-4c3d-a702-94eec4a2808b',
-      'bbbbbb5-293f-4c3d-a702-94eec4a2808b'
-    ],
+    offers: [],
     type: 'flight',
   },
   {
@@ -47,9 +36,7 @@ const mockPoints = [
     dateTo: '2026-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edbbb',
     isFavorite: true,
-    offers: [
-      'cccccc1-293f-4c3d-a702-94eec4a2808b',
-    ],
+    offers: [],
     type: 'bus',
   },
   {
@@ -58,9 +45,7 @@ const mockPoints = [
     dateTo: '2026-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
-    offers: [
-      'dddddd1-293f-4c3d-a702-94eec4a2808b',
-    ],
+    offers: [],
     type: 'ship',
   },
   {
@@ -69,7 +54,7 @@ const mockPoints = [
     dateTo: '2026-07-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
-    offers: [''],
+    offers: [],
     type: 'drive',
   },
   {
@@ -78,7 +63,7 @@ const mockPoints = [
     dateTo: '2026-02-10T11:22:30.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
-    offers: [''],
+    offers: [],
     type: 'check-in',
   },
   {
@@ -87,10 +72,7 @@ const mockPoints = [
     dateTo: '2026-02-10T11:22:30.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edccc',
     isFavorite: true,
-    offers: [
-      'eeeeee1-293f-4c3d-a702-94eec4a2808b',
-      'eeeeee2-293f-4c3d-a702-94eec4a2808b'
-    ],
+    offers: [],
     type: 'sightseeing',
   },
   {
@@ -99,10 +81,7 @@ const mockPoints = [
     dateTo: '2025-08-11T11:22:13.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edbbb',
     isFavorite: false,
-    offers: [
-      'fffffff1-293f-4c3d-a702-94eec4a2808b',
-      'fffffff2-293f-4c3d-a702-94eec4a2808b',
-    ],
+    offers: [],
     type: 'restaurant',
   },
 ];

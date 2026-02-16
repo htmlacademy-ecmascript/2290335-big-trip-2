@@ -31,10 +31,9 @@ function templateOffers(offers, concreateOffers) {
   );
 }
 
-function templatePoint(concreatePoint, concreateOffers, concreateDestination, selectedOffers) {
+function templatePoint(concreatePoint, concreateOffers, concreateDestination) {
   const {type, offers, dateFrom, dateTo, isFavorite, basePrice} = concreatePoint;
   // console.log('concreatePoint: ', concreatePoint);
-
   return `
     <li class="trip-events__item">
       <div class="event">

@@ -4,11 +4,10 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EditPointView extends AbstractStatefulView {
-  #selectedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
-  #allOffers = null;
-  #allDestinations = null;
+  #offers = null;
+  #destinations = null;
   #datepicker = null;
   #datepickerFrom = null;
   #datepickerTo = null;
@@ -18,7 +17,6 @@ export default class EditPointView extends AbstractStatefulView {
     concretePoint,
     concreateOffers,
     concreateDestination,
-    selectedOffers,
     onFormSubmit,
     onFormClose,
     onDeleteClick,
@@ -30,23 +28,21 @@ export default class EditPointView extends AbstractStatefulView {
       point: concretePoint,
       offers: concreateOffers,
       destination: concreateDestination,
-      selectedOffers: selectedOffers
     }));
-    this.#selectedOffers = selectedOffers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
-    this.#allOffers = offers;
-    this.#allDestinations = destinations;
+    this.#offers = offers;
+    this.#destinations = destinations;
     this.#handleDeleteClick = onDeleteClick;
     this.#registerEvents();
   }
 
-  static parseTaskToState = ({point, offers, destination, selectedOffers}) => ({point, offers, destination, selectedOffers});
+  static parseTaskToState = ({point, offers, destination}) => ({point, offers, destination});
   static parseStateToTask = (state) => state.point;
 
   get template() {
     // console.log('На входе: ', this._state);
-    return templateEditPointView(this._state, this.#allDestinations);
+    return templateEditPointView(this._state, this.#destinations, this.#offers);
   }
 
   #typeChangeHandler = (evt) => {
@@ -55,7 +51,7 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = this.#allDestinations.find((pointDestination) => pointDestination.name === evt.target.value);
+    const selectedDestination = this.#destinations.find((pointDestination) => pointDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({point: {...this._state.point, destination: selectedDestinationId}});
   };
@@ -64,6 +60,7 @@ export default class EditPointView extends AbstractStatefulView {
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const selectedOffersId = checkedBoxes.map((element) => element.id);
     this._setState({point: {...this._state.point, offers: selectedOffersId}});
+    console.log(this._state.point);
   };
 
   #priceChangeHandler = (evt) => {
@@ -140,9 +137,9 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
 
     // Меняет point/offers внутри состояния при клике на элементы от concreateOffers(без отрисовки)
-    if (this.concreateOffers > 0) {
-      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
-    }
+    // if (this.concreateOffers > 0) {
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
+    // }
 
     // Меняет point/destination внутри состояния при изменении города(с отрисовкой)
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);

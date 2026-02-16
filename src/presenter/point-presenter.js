@@ -45,7 +45,6 @@ export default class PointPresenter {
       concretePoint: this.#point,
       concreateOffers: [...this.#offers.getOfferById(point.type, point.offers)],
       concreateDestination: this.#destinations.getDestinationById(point.destination),
-      selectedOffers: [],
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
@@ -54,7 +53,6 @@ export default class PointPresenter {
       concretePoint: this.#point,
       concreateOffers: [...this.#offers.getOfferById(point.type, point.offers)],
       concreateDestination: this.#destinations.getDestinationById(point.destination),
-      selectedOffers: [],
       onFormSubmit: this.#handleFormSubmit,
       onFormClose: this.#handleFormClose,
       onDeleteClick: this.#handleDeleteClick,

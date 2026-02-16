@@ -24,8 +24,8 @@ function templateSectionDestination(description, pictures) {
   );
 }
 
-function templateOffersItem(offer, checkedOffers) {
-  const {id, title, price} = offer;
+function templateOffersItem(concreateOffer, checkedOffers) {
+  const {id, title, price} = concreateOffer;
   const isChecked = checkedOffers.map((item) => item.id).includes(id) ? 'checked' : '';
   // console.log('isChecked равен: ', isChecked);
   return (
@@ -40,12 +40,12 @@ function templateOffersItem(offer, checkedOffers) {
   );
 }
 
-function templateSectionOffers(offers, checkedOffers) {
-  return offers.length > 0 ? `
+function templateSectionOffers(concreateOffers, offers) {
+  return concreateOffers.length > 0 ? `
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        ${offers.map((offer) => templateOffersItem(offer, checkedOffers)).join('')}
+        ${concreateOffers.map((concreateOffer) => templateOffersItem(concreateOffer, offers)).join('')}
       </dv>
     </section>
     ` : '';
@@ -61,16 +61,14 @@ function templateCitiesList(name, type, destinations) {
   );
 }
 
-function templateEditPointView(state, destinations) {
-  const {point: {type, destination, dateFrom, dateTo, basePrice}} = state;
+function templateEditPointView(state, destinations, allOffers) {
+  const {point: {type, offers, destination, dateFrom, dateTo, basePrice}} = state;
 
   const concreateDestinationId = state.point.destination;
   const concreateDestination = destinations.find((item) => item.id === concreateDestinationId);
 
-  const {selectedOffers} = state;
-  // console.log(state);
-  // console.log(state.destination.name);
-  // console.log('В самом шаблоне: ', checkedOffers);
+  const concreateOffers = allOffers.find((item) => item.type === type).offers;
+  console.log(offers);
   return (
     `<form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -117,7 +115,7 @@ function templateEditPointView(state, destinations) {
         </button>
       </header>
       <section class="event__details">
-        ${templateSectionOffers(state.offers, selectedOffers)}
+        ${templateSectionOffers(concreateOffers, offers)}
         ${concreateDestination ? templateSectionDestination(concreateDestination.description, concreateDestination.pictures) : ''}
       </section>
 </form>`);
