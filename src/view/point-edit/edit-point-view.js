@@ -15,8 +15,6 @@ export default class EditPointView extends AbstractStatefulView {
 
   constructor({
     concretePoint,
-    concreateOffers,
-    concreateDestination,
     onFormSubmit,
     onFormClose,
     onDeleteClick,
@@ -24,11 +22,7 @@ export default class EditPointView extends AbstractStatefulView {
     destinations
   }) {
     super();
-    this._setState(EditPointView.parseTaskToState({
-      point: concretePoint,
-      offers: concreateOffers,
-      destination: concreateDestination,
-    }));
+    this._setState(EditPointView.parseTaskToState({point: concretePoint}));
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
     this.#offers = offers;
@@ -37,16 +31,14 @@ export default class EditPointView extends AbstractStatefulView {
     this.#registerEvents();
   }
 
-  static parseTaskToState = ({point, offers, destination}) => ({point, offers, destination});
+  static parseTaskToState = ({point}) => ({point});
   static parseStateToTask = (state) => state.point;
 
   get template() {
-    // console.log('На входе: ', this._state);
     return templateEditPointView(this._state, this.#destinations, this.#offers);
   }
 
   #typeChangeHandler = (evt) => {
-    console.log('Type change');
     this.updateElement({point: {...this._state.point, type: evt.target.value, offers: []}});
   };
 
@@ -60,7 +52,7 @@ export default class EditPointView extends AbstractStatefulView {
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const selectedOffersId = checkedBoxes.map((element) => element.id);
     this._setState({point: {...this._state.point, offers: selectedOffersId}});
-    console.log(this._state.point);
+    // console.log(this._state.point.offers);
   };
 
   #priceChangeHandler = (evt) => {
@@ -137,9 +129,9 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
 
     // Меняет point/offers внутри состояния при клике на элементы от concreateOffers(без отрисовки)
-    // if (this.concreateOffers > 0) {
-    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
-    // }
+    if (this.element.querySelector('.event__available-offers')) {
+      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
+    }
 
     // Меняет point/destination внутри состояния при изменении города(с отрисовкой)
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);

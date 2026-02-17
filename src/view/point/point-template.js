@@ -2,9 +2,7 @@ import {DATE_FORMAT} from '../../const.js';
 import {humanizeDueDate, getDifferenceInTime} from '../../utils/task-utils.js';
 
 function templateOffer(selectedOffer) {
-  // console.log('selectedOffer: ', selectedOffer);
   const {title, price} = selectedOffer;
-  console.log(title);
   return (
     `<ul class="event__selected-offers">
       <li class="event__offer">
@@ -25,7 +23,6 @@ function templateOffers(offers, concreateOffers) {
       }
     });
   }
-  console.log(selectedOffers);
   return (
     selectedOffers.map((element) => templateOffer(element)).join('')
   );
@@ -33,7 +30,6 @@ function templateOffers(offers, concreateOffers) {
 
 function templatePoint(concreatePoint, concreateOffers, concreateDestination) {
   const {type, offers, dateFrom, dateTo, isFavorite, basePrice} = concreatePoint;
-  // console.log('concreatePoint: ', concreatePoint);
   return `
     <li class="trip-events__item">
       <div class="event">

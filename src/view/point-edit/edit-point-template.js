@@ -68,7 +68,6 @@ function templateEditPointView(state, destinations, allOffers) {
   const concreateDestination = destinations.find((item) => item.id === concreateDestinationId);
 
   const concreateOffers = allOffers.find((item) => item.type === type).offers;
-  console.log(offers);
   return (
     `<form class="event event--edit" action="#" method="post">
       <header class="event__header">

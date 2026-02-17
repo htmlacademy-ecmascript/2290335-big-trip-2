@@ -51,8 +51,6 @@ export default class PointPresenter {
 
     this.#pointEditComponent = new EditPointView({
       concretePoint: this.#point,
-      concreateOffers: [...this.#offers.getOfferById(point.type, point.offers)],
-      concreateDestination: this.#destinations.getDestinationById(point.destination),
       onFormSubmit: this.#handleFormSubmit,
       onFormClose: this.#handleFormClose,
       onDeleteClick: this.#handleDeleteClick,
