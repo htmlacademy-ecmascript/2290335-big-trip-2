@@ -1,7 +1,19 @@
-import { mockOffers } from '../mock/offers.js';
+import Observable from '../framework/observable.js';
+import {mockOffers} from '../mock/offers.js';
 
-export default class OffersModel {
+export default class OffersModel extends Observable {
+  #tasksApiService = null;
   #offers = mockOffers;
+
+  constructor({tasksApiService}) {
+    super();
+    this.#tasksApiService = tasksApiService;
+
+    this.#tasksApiService.offers.then((offers) => {
+      console.log(offers);
+    });
+  }
+
   // Все возможные офферы
   get total() {
     return this.#offers;
