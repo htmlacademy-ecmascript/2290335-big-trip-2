@@ -1,6 +1,7 @@
 import {render, replace, remove} from '../framework/render.js';
-import PointView from '../view/event-item/event-item-view.js';
-import EditFormView from '../view/form-edit/form-edit-view.js';
+import {UserAction, UpdateType} from '../const.js';
+import PointView from '../view/point/point-view.js';
+import EditPointView from '../view/point-edit/edit-point-view.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -42,19 +43,17 @@ export default class PointPresenter {
 
     this.#pointComponent = new PointView({
       concretePoint: this.#point,
-      specialOffers: [...this.#offers.getOfferById(point.type, point.offers)],
+      concreateOffers: [...this.#offers.getOfferById(point.type, point.offers)],
       concreateDestination: this.#destinations.getDestinationById(point.destination),
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
-    this.#pointEditComponent = new EditFormView({
+    this.#pointEditComponent = new EditPointView({
       concretePoint: this.#point,
-      concreateOffers: [...this.#offers.getOfferById(point.type, point.offers)],
-      checkedOffers: [...this.#offers.getOfferById(this.#point.type, this.#point.offers)],
-      concreateDestination: this.#destinations.getDestinationById(point.destination),
       onFormSubmit: this.#handleFormSubmit,
       onFormClose: this.#handleFormClose,
+      onDeleteClick: this.#handleDeleteClick,
       offers: this.#offers.total,
       destinations: this.#destinations.total,
     });
@@ -89,7 +88,11 @@ export default class PointPresenter {
   }
 
   #handleFavoriteClick = () => {
-    this.#handlePointChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handlePointChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
   #replaceCardToForm() {
@@ -117,12 +120,24 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-    this.#handlePointChange(point);
+    this.#handlePointChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      point,
+    );
     this.#replaceFormToCard();
   };
 
   #handleFormClose = () => {
     this.#replaceFormToCard();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handlePointChange(
+      UserAction.DELETE_TASK,
+      UpdateType.MINOR,
+      point,
+    );
   };
 
 }

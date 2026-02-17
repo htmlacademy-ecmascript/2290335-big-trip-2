@@ -1,23 +1,23 @@
 import AbstractView from '../../framework/view/abstract-view.js';
-import { createPointTemplate } from './event-item-template.js';
+import {templatePoint} from './point-template.js';
 
 export default class PointView extends AbstractView {
   #concretePoint = null;
-  #specialOffers = null;
+  #concreateOffers = null;
   #concreateDestination = null;
   #handleEditClick = null;
   #handleFavoriteClick = null;
 
   constructor({
     concretePoint,
-    specialOffers,
+    concreateOffers,
     concreateDestination,
     onEditClick,
     onFavoriteClick,
   }) {
     super();
     this.#concretePoint = concretePoint;
-    this.#specialOffers = specialOffers;
+    this.#concreateOffers = concreateOffers;
     this.#concreateDestination = concreateDestination;
     this.#handleEditClick = onEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
@@ -26,7 +26,7 @@ export default class PointView extends AbstractView {
   }
 
   get template() {
-    return createPointTemplate(this.#concretePoint, this.#specialOffers, this.#concreateDestination);
+    return templatePoint(this.#concretePoint, this.#concreateOffers, this.#concreateDestination);
   }
 
   #editClickHandler = (evt) => {

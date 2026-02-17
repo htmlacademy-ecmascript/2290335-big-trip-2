@@ -1,7 +1,8 @@
 import {DATE_FORMAT} from '../../const.js';
 import {humanizeDueDate, getDifferenceInTime} from '../../utils/task-utils.js';
 
-function createOfferTemplate({title, price}) {
+function templateOffer(selectedOffer) {
+  const {title, price} = selectedOffer;
   return (
     `<ul class="event__selected-offers">
       <li class="event__offer">
@@ -13,9 +14,22 @@ function createOfferTemplate({title, price}) {
   );
 }
 
-function createPointTemplate(point, offers, destination) {
-  const { type, dateFrom, dateTo, isFavorite, basePrice } = point;
-  const { name } = destination;
+function templateOffers(offers, concreateOffers) {
+  const selectedOffers = [];
+  for (let i = 0; i < offers.length; i++) {
+    concreateOffers.forEach((item) => {
+      if (item.id === offers[i]) {
+        selectedOffers.push(item);
+      }
+    });
+  }
+  return (
+    selectedOffers.map((element) => templateOffer(element)).join('')
+  );
+}
+
+function templatePoint(concreatePoint, concreateOffers, concreateDestination) {
+  const {type, offers, dateFrom, dateTo, isFavorite, basePrice} = concreatePoint;
   return `
     <li class="trip-events__item">
       <div class="event">
@@ -23,7 +37,7 @@ function createPointTemplate(point, offers, destination) {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} ${name}</h3>
+        <h3 class="event__title">${type} ${concreateDestination ? concreateDestination.name : ''}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime=${dateFrom}>${humanizeDueDate(dateFrom, DATE_FORMAT.hours)}</time>
@@ -35,12 +49,10 @@ function createPointTemplate(point, offers, destination) {
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
-        ${offers.length > 0 ? `
         <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-            ${offers.map((offer) => createOfferTemplate(offer)).join('')}
+            ${offers.length > 0 ? templateOffers(offers, concreateOffers) : ''}
           </ul>
-        ` : ''}
         <button class="event__favorite-btn ${isFavorite && 'event__favorite-btn--active'}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -55,4 +67,4 @@ function createPointTemplate(point, offers, destination) {
   `;
 }
 
-export { createPointTemplate };
+export {templatePoint};

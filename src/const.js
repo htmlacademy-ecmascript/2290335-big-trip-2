@@ -1,3 +1,5 @@
+const POINTS_COUNT = 3;
+
 const DATE_FORMAT = {
   monthDay: 'MMM DD',
   hours: 'HH mm',
@@ -7,9 +9,28 @@ const DATE_FORMAT = {
 const POINTS_TYPE = ['taxi', 'train', 'flight', 'bus', 'ship', 'drive', 'check-in', 'sightseeing', 'restaurant'];
 
 const SortType = {
-  Day: 'day',
+  DAY: 'day',
   PRICE: 'price',
   TIME: 'time',
 };
 
-export { DATE_FORMAT, POINTS_TYPE, SortType };
+const UserAction = {
+  UPDATE_TASK: 'UPDATE_TASK',
+  ADD_TASK: 'ADD_TASK',
+  DELETE_TASK: 'DELETE_TASK',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+export {POINTS_COUNT, DATE_FORMAT, POINTS_TYPE, SortType, UserAction, UpdateType, FilterType};
