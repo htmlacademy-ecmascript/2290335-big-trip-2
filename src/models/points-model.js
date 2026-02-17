@@ -3,7 +3,21 @@ import {getRandomPoint} from '../mock/points.js';
 import {POINTS_COUNT} from '../const.js';
 
 export default class PointsModel extends Observable {
+  #tasksApiService = null;
   #points = Array.from({length: POINTS_COUNT}, getRandomPoint);
+
+  constructor({tasksApiService}) {
+    super();
+    this.#tasksApiService = tasksApiService;
+
+    this.#tasksApiService.tasks.then((tasks) => {
+      console.log(tasks);
+      // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
+      // а ещё на сервере используется snake_case, а у нас camelCase.
+      // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
+      // Есть вариант получше - паттерн "Адаптер"
+    });
+  }
 
   // Все возможные поинты
   get total() {
