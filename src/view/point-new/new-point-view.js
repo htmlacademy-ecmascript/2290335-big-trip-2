@@ -9,33 +9,7 @@ const blankPoint = {
   dateTo: '',
   destination: '',
   isFavorite: false,
-  offers: [
-    {
-      id: 'f4b62001-293f-4c3d-a702-94eec4a2808c',
-      title: 'Luggage and overall cargo',
-      price: 150
-    },
-    {
-      id: 'f4b62002-293f-4c3d-a702-94eec4a2808c',
-      title: 'Have a heart-to-heart talk with driver',
-      price: 0
-    },
-    {
-      id: 'f4b62003-293f-4c3d-a702-94eec4a2808c',
-      title: 'City guide services',
-      price: 5000
-    },
-    {
-      id: 'f4b62004-293f-4c3d-a702-94eec4a2808c',
-      title: 'Selecting a radio station',
-      price: 50
-    },
-    {
-      id: 'f4b62005-293f-4c3d-a702-94eec4a2808b',
-      title: 'Upgrade to tariff',
-      price: 120
-    },
-  ],
+  offers: [],
   type: 'taxi',
 };
 
@@ -43,59 +17,52 @@ export default class NewPoinView extends AbstractStatefulView {
   #checkedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
-  #allOffers = null;
-  #allDestinations = null;
+  #offers = null;
+  #destinations = null;
   #datepicker = null;
   #datepickerFrom = null;
   #datepickerTo = null;
   #handleDeleteClick = null;
 
   constructor({
+    onFormSubmit,
+    onFormClose,
+    onDeleteClick,
     offers,
     destinations,
-    onFormSubmit,
-    onDeleteClick,
-    onFormClose
   }) {
     super();
-
-    this._setState(NewPoinView.parseTaskToState({
-      point: blankPoint,
-      offers: blankPoint.offers,
-      destination: blankPoint.destination
-    }));
-    this.#allOffers = offers.total;
-    this.#allDestinations = destinations;
+    this._setState(NewPoinView.parseTaskToState({point: blankPoint}));
+    this.#offers = offers;
+    this.#destinations = destinations;
     this.#handleDeleteClick = onDeleteClick;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
     this.#registerEvents();
   }
 
-  get template() {
-    return templateCreatePointView(this._state, this.#allDestinations.total);
-  }
-
-  static parseTaskToState = ({point, offers, destination}) => ({point, offers, destination});
+  static parseTaskToState = ({point}) => ({point});
   static parseStateToTask = (state) => state.point;
 
+  get template() {
+    return templateCreatePointView(this._state, this.#destinations, this.#offers);
+  }
 
   #typeChangeHandler = (evt) => {
     this.updateElement({point: {...this._state.point, type: evt.target.value, offers: []}});
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = this.#allDestinations.total.find((pointDestination) => pointDestination.name === evt.target.value);
+    const selectedDestination = this.#destinations.find((pointDestination) => pointDestination.name === evt.target.value);
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
     this.updateElement({point: {...this._state.point, destination: selectedDestinationId}});
-    this.updateElement({destination: selectedDestination});
   };
 
   #offerChangeHandler = () => {
-    const specialOffers = this.#allOffers.find((item) => item.type === this._state.point.type);
-    console.log(specialOffers);
-    this.updateElement({point: {...this._state.point, offers: specialOffers.offers}});
-    this.updateElement({offers: specialOffers.offers});
+    const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    const selectedOffersId = checkedBoxes.map((element) => element.id);
+    this._setState({point: {...this._state.point, offers: selectedOffersId}});
+    // console.log(this._state.point.offers);
   };
 
   #priceChangeHandler = (evt) => {
@@ -117,7 +84,7 @@ export default class NewPoinView extends AbstractStatefulView {
     this.#handleDeleteClick(NewPoinView.parseStateToTask(this._state));
   };
 
-  // Календарик. Ничего интересного
+  // Календарик
   #setDatepickers() {
     const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
     const commonConfig = {
@@ -169,14 +136,26 @@ export default class NewPoinView extends AbstractStatefulView {
   }
 
   #registerEvents = () => {
-    this.element?.addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+
+    // Меняет point/offers внутри состояния при клике на элементы от concreateOffers(без отрисовки)
     if (this.element.querySelector('.event__available-offers')) {
-      this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
+      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     }
+
+    // Меняет point/destination внутри состояния при изменении города(с отрисовкой)
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    // Меняет point/basePrice внутри состояния при изменении цены(без отрисовки)
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+
+    // if (this.element.querySelector('.event__available-offers')) {
+    //   this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
+    // }
+    // Сохраняет информацию point #handleFormSubmit(UserAction.UPDATE_TASK, UpdateType.MINOR, point)
+    this.element?.addEventListener('submit', this.#formSubmitHandler);
+    // Сворачивает point
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
+    // Удаляет point #handlePointChange(UserAction.DELETE_TASK, UpdateType.MINOR, point)
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.#setDatepickers();
   };

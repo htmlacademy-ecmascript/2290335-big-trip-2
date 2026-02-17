@@ -35,10 +35,11 @@ export default class NewPointPresenter {
     }
 
     this.#newPointComponent = new NewPoinView({
-      offers: this.#offers,
-      destinations: this.#destinations,
       onFormSubmit: this.#handleFormSubmit,
+      onFormClose: this.#handlCloseForm,
       onDeleteClick: this.#handleDeleteClick,
+      offers: this.#offers.total,
+      destinations: this.#destinations.total,
     });
 
     render(this.#newPointComponent, this.#listContainer, RenderPosition.AFTERBEGIN);
@@ -74,5 +75,9 @@ export default class NewPointPresenter {
       evt.preventDefault();
       this.destroy();
     }
+  };
+
+  #handlCloseForm = () => {
+    this.destroy();
   };
 }

@@ -24,12 +24,13 @@ function templateSectionDestination(description, pictures) {
   );
 }
 
-function templateOffersItem(offer) {
-  const {id, title, price} = offer;
-  // const isChecked = checkedOffers.map((item) => item.id).includes(id) ? 'checked' : '';
+function templateOffersItem(concreateOffer, checkedOffers) {
+  const {id, title, price} = concreateOffer;
+  const isChecked = checkedOffers.map((item) => item.id).includes(id) ? 'checked' : '';
+  // console.log('isChecked равен: ', isChecked);
   return (
     `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="${id}" >
+        <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="${id}" ${isChecked}>
         <label class="event__offer-label" for="${id}">
           <span class="event__offer-title">${title}</span>
           &plus;&euro;&nbsp;
@@ -39,18 +40,18 @@ function templateOffersItem(offer) {
   );
 }
 
-function templateSectionOffers(offers) {
-  return offers.length > 0 ? `
+function templateSectionOffers(concreateOffers, offers) {
+  return concreateOffers.length > 0 ? `
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        ${offers.map((offer) => templateOffersItem(offer)).join('')}
+        ${concreateOffers.map((concreateOffer) => templateOffersItem(concreateOffer, offers)).join('')}
       </dv>
     </section>
     ` : '';
 }
 
-function templateCitiesList(name = 'Томск', type, destinations) {
+function templateCitiesList(name, type, destinations) {
   return (
     `<label class="event__label  event__type-output" for="event-destination-1">${type}</label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
@@ -60,10 +61,13 @@ function templateCitiesList(name = 'Томск', type, destinations) {
   );
 }
 
-function templateCreatePointView(state, destinations) {
-  // console.log(state);
-  const { point: {type, dateFrom, dateTo, basePrice, } } = state;
-  const { destination: {name, description, pictures} } = state;
+function templateCreatePointView(state, destinations, allOffers) {
+  const {point: {type, offers, destination, dateFrom, dateTo, basePrice}} = state;
+
+  const concreateDestinationId = state.point.destination;
+  const concreateDestination = destinations.find((item) => item.id === concreateDestinationId);
+
+  const concreateOffers = allOffers.find((item) => item.type === type).offers;
   return (
     `<form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -83,7 +87,8 @@ function templateCreatePointView(state, destinations) {
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          ${templateCitiesList(name, type, destinations)}
+          ${destination ? templateCitiesList(concreateDestination.name, type, destinations) :
+      templateCitiesList(destinations[0], type, destinations)}
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -109,8 +114,8 @@ function templateCreatePointView(state, destinations) {
         </button>
       </header>
       <section class="event__details">
-        ${templateSectionOffers(state.offers)}
-        ${description && pictures ? templateSectionDestination(description, pictures) : ''}
+        ${templateSectionOffers(concreateOffers, offers)}
+        ${concreateDestination ? templateSectionDestination(concreateDestination.description, concreateDestination.pictures) : ''}
       </section>
 </form>`);
 }
