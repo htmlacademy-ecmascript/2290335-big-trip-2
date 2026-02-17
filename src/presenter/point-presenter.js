@@ -35,12 +35,11 @@ export default class PointPresenter {
     this.#handleModeChange = onModeChange;
   }
 
-  init(point) {
+  async init(point) {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
-
     this.#pointComponent = new PointView({
       concretePoint: this.#point,
       concreateOffers: [...this.#offers.getOfferById(point.type, point.offers)],

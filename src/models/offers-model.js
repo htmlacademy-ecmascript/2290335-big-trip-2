@@ -8,6 +8,9 @@ export default class OffersModel extends Observable {
   constructor({tasksApiService}) {
     super();
     this.#tasksApiService = tasksApiService;
+    this.#tasksApiService.offers.then((offers) => {
+      console.log(offers);
+    });
   }
 
   get total() {

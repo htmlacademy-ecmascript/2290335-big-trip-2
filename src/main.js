@@ -19,7 +19,9 @@ const destinationModel = new DestinationsModel({
 });
 
 const filterModel = new FilterModel();
-
+pointModel.init();
+offerModel.init();
+destinationModel.init();
 const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
 mainPresenter.init();
 
@@ -31,8 +33,4 @@ function handleNewPointButtonClick() {
   mainPresenter.boardPresenter.createTask();
   createPointButtonElement.disabled = true;
 }
-
-pointModel.init();
-offerModel.init();
-destinationModel.init();
 
