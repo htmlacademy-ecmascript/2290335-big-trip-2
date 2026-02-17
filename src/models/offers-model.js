@@ -1,22 +1,26 @@
 import Observable from '../framework/observable.js';
-import {mockOffers} from '../mock/offers.js';
+import {UpdateType} from '../const.js';
 
 export default class OffersModel extends Observable {
   #tasksApiService = null;
-  #offers = mockOffers;
+  #offers = [];
 
   constructor({tasksApiService}) {
     super();
     this.#tasksApiService = tasksApiService;
-
-    this.#tasksApiService.offers.then((offers) => {
-      console.log(offers);
-    });
   }
 
-  // Все возможные офферы
   get total() {
     return this.#offers;
+  }
+
+  async init() {
+    try {
+      this.#offers = await this.#tasksApiService.offers;
+    } catch(err) {
+      this.#offers = [];
+    }
+    this._notify(UpdateType.INIT);
   }
 
   // Все офферы по определенным типам: такси, автобус и прочее

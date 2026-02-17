@@ -17,9 +17,8 @@ const offerModel = new OffersModel({
 const destinationModel = new DestinationsModel({
   tasksApiService: new TasksApiService(END_POINT, AUTHORIZATION)
 });
-// const destinationModel = new DestinationsModel();
-const filterModel = new FilterModel();
 
+const filterModel = new FilterModel();
 
 const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
 mainPresenter.init();
@@ -32,4 +31,8 @@ function handleNewPointButtonClick() {
   mainPresenter.boardPresenter.createTask();
   createPointButtonElement.disabled = true;
 }
+
+pointModel.init();
+offerModel.init();
+destinationModel.init();
 
