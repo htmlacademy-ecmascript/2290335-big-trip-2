@@ -17,11 +17,12 @@ const offerModel = new OffersModel({
 const destinationModel = new DestinationsModel({
   tasksApiService: new TasksApiService(END_POINT, AUTHORIZATION)
 });
-
 const filterModel = new FilterModel();
-pointModel.init();
-offerModel.init();
-destinationModel.init();
+
+Promise.all([offerModel.init(), destinationModel.init()]).finally(() => {
+  pointModel.init();
+});
+
 const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
 mainPresenter.init();
 
