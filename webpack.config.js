@@ -25,14 +25,6 @@ module.exports = {
         },
       ],
     }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, 'src/mock/images'),
-          to: path.resolve(__dirname, 'build/images')
-        }
-      ]
-    })
   ],
     module: {
     rules: [

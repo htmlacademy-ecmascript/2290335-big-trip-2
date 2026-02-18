@@ -3,12 +3,25 @@ import PointsModel from './models/points-model.js';
 import OffersModel from './models/offers-model.js';
 import DestinationsModel from './models/destinations-model.js';
 import FilterModel from './models/filters-model.js';
+import TasksApiService from './tasks-api-service.js';
 
-const pointModel = new PointsModel();
-const offerModel = new OffersModel();
-const destinationModel = new DestinationsModel();
+const AUTHORIZATION = 'Basic lalala123';
+const END_POINT = 'https://22.objects.htmlacademy.pro/big-trip';
+
+const pointModel = new PointsModel({
+  tasksApiService: new TasksApiService(END_POINT, AUTHORIZATION)
+});
+const offerModel = new OffersModel({
+  tasksApiService: new TasksApiService(END_POINT, AUTHORIZATION)
+});
+const destinationModel = new DestinationsModel({
+  tasksApiService: new TasksApiService(END_POINT, AUTHORIZATION)
+});
 const filterModel = new FilterModel();
 
+Promise.all([offerModel.init(), destinationModel.init()]).finally(() => {
+  pointModel.init();
+});
 
 const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
 mainPresenter.init();
