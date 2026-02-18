@@ -25,7 +25,6 @@ export default class TasksApiService extends ApiService {
     const response = await this._load({
       url: `points/${task.id}`,
       method: Method.PUT,
-      // body: JSON.stringify(point),
       body: JSON.stringify(this.#adaptToServer(task)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });

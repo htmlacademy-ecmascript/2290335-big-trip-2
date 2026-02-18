@@ -24,16 +24,24 @@ export default class PointsModel extends Observable {
     this._notify(UpdateType.INIT);
   }
 
-  updateTask(updateType, update) {
+  async updateTask(updateType, update) {
     const index = this.#points.findIndex((point) => point.id === update.id);
-
     if (index === -1) {
       throw new Error('Нельзя обновить несуществующий элемент');
     }
 
-    this.#points = [...this.#points.slice(0, index), update, ...this.#points.slice(index + 1),];
-
-    this._notify(updateType, update);
+    try {
+      const response = await this.#tasksApiService.updateTask(update);
+      const updatedTask = this.#adaptToClient(response);
+      this.#points = [
+        ...this.#points.slice(0, index),
+        updatedTask,
+        ...this.#points.slice(index + 1),
+      ];
+      this._notify(updateType, updatedTask);
+    } catch(err) {
+      throw new Error('Can\'t update task');
+    }
   }
 
   addTask(updateType, update) {
