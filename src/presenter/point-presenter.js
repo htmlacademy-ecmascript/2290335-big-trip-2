@@ -102,6 +102,7 @@ export default class PointPresenter {
   };
 
   setSaving() {
+    console.log('fdfd');
     if (this.#mode === Mode.EDITING) {
       this.#pointEditComponent.updateElement({
         isDisabled: true,

@@ -57,6 +57,7 @@ export default class NewPointPresenter {
   }
 
   setSaving() {
+    console.log('Works');
     this.#newPointComponent.updateElement({
       isDisabled: true,
       isSaving: true,
