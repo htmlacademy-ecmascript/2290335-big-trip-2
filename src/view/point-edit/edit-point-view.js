@@ -36,7 +36,6 @@ export default class EditPointView extends AbstractStatefulView {
     task.point.isDisabled = false;
     task.point.isSaving = false;
     task.point.isDeleting = false;
-
     return task;
   }
 
@@ -45,7 +44,7 @@ export default class EditPointView extends AbstractStatefulView {
     delete task.isDisabled;
     delete task.isSaving;
     delete task.isDeleting;
-
+    console.log(task);
     return task;
   }
 

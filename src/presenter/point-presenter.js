@@ -87,10 +87,15 @@ export default class PointPresenter {
   }
 
   #handleFavoriteClick = () => {
+    const task = {...this.#point, isFavorite: !this.#point.isFavorite};
+    delete task.isDisabled;
+    delete task.isSaving;
+    delete task.isDeleting;
+
     this.#handlePointChange(
       UserAction.UPDATE_TASK,
       UpdateType.MINOR,
-      {...this.#point, isFavorite: !this.#point.isFavorite},
+      task,
     );
   };
 
