@@ -10,7 +10,7 @@ const blankPoint = {
   destination: '',
   isFavorite: false,
   offers: [],
-  type: 'taxi',
+  type: 'flight',
 };
 
 export default class NewPoinView extends AbstractStatefulView {
