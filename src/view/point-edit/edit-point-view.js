@@ -31,8 +31,21 @@ export default class EditPointView extends AbstractStatefulView {
     this.#registerEvents();
   }
 
-  static parseTaskToState = ({point}) => ({point});
-  static parseStateToTask = (state) => state.point;
+  static parseTaskToState ({point}) {
+    const task = {point};
+    task.point.isDisabled = false;
+    task.point.isSaving = false;
+    task.point.isDeleting = false;
+    return task;
+  }
+
+  static parseStateToTask(state) {
+    const task = state.point;
+    delete task.isDisabled;
+    delete task.isSaving;
+    delete task.isDeleting;
+    return task;
+  }
 
   get template() {
     return templateEditPointView(this._state, this.#destinations, this.#offers);

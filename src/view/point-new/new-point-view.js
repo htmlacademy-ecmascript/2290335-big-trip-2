@@ -4,13 +4,13 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const blankPoint = {
-  basePrice: 0,
+  basePrice: 1,
   dateFrom: '',
   dateTo: '',
   destination: '',
   isFavorite: false,
   offers: [],
-  type: 'taxi',
+  type: 'flight',
 };
 
 export default class NewPoinView extends AbstractStatefulView {
@@ -41,8 +41,23 @@ export default class NewPoinView extends AbstractStatefulView {
     this.#registerEvents();
   }
 
-  static parseTaskToState = ({point}) => ({point});
-  static parseStateToTask = (state) => state.point;
+  static parseTaskToState ({point}) {
+    const task = {point};
+    task.point.isDisabled = false;
+    task.point.isSaving = false;
+    task.point.isDeleting = false;
+
+    return task;
+  }
+
+  static parseStateToTask(state) {
+    const task = state.point;
+    delete task.isDisabled;
+    delete task.isSaving;
+    delete task.isDeleting;
+
+    return task;
+  }
 
   get template() {
     return templateCreatePointView(this._state, this.#destinations, this.#offers);
