@@ -3,6 +3,7 @@ import HeaderInfoView from '../view/header-info/header-info-view.js';
 import FilterPresenter from './filter-presenter.js';
 
 export default class HeaderPresenter {
+  #points = null;
   constructor({container, pointModel, filterModel}) {
     this.container = container;
     this.pointModel = pointModel;
@@ -16,8 +17,11 @@ export default class HeaderPresenter {
   }
 
   init() {
+    // const points = this.pointModel;
+    // console.log(this.pointModel);
     render(new HeaderInfoView(), this.container, RenderPosition.AFTERBEGIN);
     this.filterPresenter.init();
   }
+
 }
 

@@ -86,6 +86,8 @@ export default class BoardPresenter {
   }
 
   #renderBoard() {
+    // console.log(this.#offerModel.total);
+    // console.log(this.#pointModel.total);
     if (this.#isLoading) {
       this.#renderLoading();
       return;

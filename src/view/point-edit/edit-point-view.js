@@ -1,6 +1,6 @@
+import flatpickr from 'flatpickr';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import {templateEditPointView} from './edit-point-template.js';
-import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EditPointView extends AbstractStatefulView {

@@ -1,3 +1,4 @@
+import he from 'he';
 import {DATE_FORMAT, POINTS_TYPE} from '../../const.js';
 import {humanizeDueDate} from '../../utils/task-utils.js';
 
@@ -51,10 +52,10 @@ function templateSectionOffers(concreateOffers, offers) {
     ` : '';
 }
 
-function templateCitiesList(name, type, destinations) {
+function templateCitiesList(name = '', type, destinations) {
   return (
     `<label class="event__label  event__type-output" for="event-destination-1">${type}</label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(name)}" list="destination-list-1">
       <datalist id="destination-list-1">
         ${destinations.map((item) => `<option value="${item.name}">${item.name}</option>`).join('')}
       </datalist>`
@@ -87,8 +88,7 @@ function templateCreatePointView(state, destinations, allOffers) {
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          ${destination ? templateCitiesList(concreateDestination.name, type, destinations) :
-      templateCitiesList(destinations[0], type, destinations)}
+          ${templateCitiesList(concreateDestination ? concreateDestination.name : '', type, destinations)}
         </div>
 
         <div class="event__field-group  event__field-group--time">

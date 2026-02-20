@@ -1,3 +1,4 @@
+import he from 'he';
 import {DATE_FORMAT, POINTS_TYPE} from '../../const.js';
 import {humanizeDueDate} from '../../utils/task-utils.js';
 
@@ -24,13 +25,13 @@ function templateSectionDestination(description, pictures) {
   );
 }
 
-function templateOffersItem(concreateOffer, checkedOffers) {
+function templateOffersItem(concreateOffers, concreateOffer, checkedOffers) {
   const {id, title, price} = concreateOffer;
-  const isChecked = checkedOffers.map((item) => item.id).includes(id) ? 'checked' : '';
-  // console.log('isChecked равен: ', isChecked);
+  const isChecked = checkedOffers.map((item) => item === id).includes(true);
+
   return (
     `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="${id}" ${isChecked}>
+        <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="${id}" ${isChecked ? 'checked' : ''}>
         <label class="event__offer-label" for="${id}">
           <span class="event__offer-title">${title}</span>
           &plus;&euro;&nbsp;
@@ -45,7 +46,7 @@ function templateSectionOffers(concreateOffers, offers) {
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        ${concreateOffers.map((concreateOffer) => templateOffersItem(concreateOffer, offers)).join('')}
+        ${concreateOffers.map((concreateOffer) => templateOffersItem(concreateOffers, concreateOffer, offers)).join('')}
       </dv>
     </section>
     ` : '';
@@ -54,7 +55,7 @@ function templateSectionOffers(concreateOffers, offers) {
 function templateCitiesList(name, type, destinations) {
   return (
     `<label class="event__label  event__type-output" for="event-destination-1">${type}</label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(name)}" list="destination-list-1">
       <datalist id="destination-list-1">
         ${destinations.map((item) => `<option value="${item.name}">${item.name}</option>`).join('')}
       </datalist>`
