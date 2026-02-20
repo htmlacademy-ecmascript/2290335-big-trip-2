@@ -19,7 +19,6 @@ export default class FilterPresenter {
   }
 
   get filter() {
-    // console.log(this.#pointModel);
     const tasks = this.#pointModel.total;
 
     return Object.values(FilterType).map((type) => ({

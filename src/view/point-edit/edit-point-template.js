@@ -25,7 +25,7 @@ function templateSectionDestination(description, pictures) {
   );
 }
 
-function templateOffersItem(concreateOffers, concreateOffer, checkedOffers) {
+function templateOffersItem(concreateOffer, checkedOffers) {
   const {id, title, price} = concreateOffer;
   const isChecked = checkedOffers.map((item) => item === id).includes(true);
 
@@ -46,7 +46,7 @@ function templateSectionOffers(concreateOffers, offers) {
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        ${concreateOffers.map((concreateOffer) => templateOffersItem(concreateOffers, concreateOffer, offers)).join('')}
+        ${concreateOffers.map((concreateOffer) => templateOffersItem(concreateOffer, offers)).join('')}
       </dv>
     </section>
     ` : '';

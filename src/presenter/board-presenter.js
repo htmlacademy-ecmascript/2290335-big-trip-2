@@ -26,7 +26,7 @@ export default class BoardPresenter {
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
   #filterModel = null;
-  #filterType = FilterType.ALL;
+  #filterType = FilterType.EVERYTHING;
   #NoPointComponent = null;
   #NewPointPresenter = null;
   #loadingComponent = new LoadingView();
@@ -86,8 +86,6 @@ export default class BoardPresenter {
   }
 
   #renderBoard() {
-    // console.log(this.#offerModel.total);
-    // console.log(this.#pointModel.total);
     if (this.#isLoading) {
       this.#renderLoading();
       return;
