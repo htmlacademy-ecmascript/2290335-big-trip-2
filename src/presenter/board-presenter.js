@@ -139,19 +139,31 @@ export default class BoardPresenter {
   };
 
   // - Преображаем поинт
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_TASK:
         this.#pointPresenters.get(update.id).setSaving();
-        this.#pointModel.updateTask(updateType, update);
+        try {
+          await this.#pointModel.updateTask(updateType, update);
+        } catch(err) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
       case UserAction.ADD_TASK:
         this.#NewPointPresenter.setSaving();
-        this.#pointModel.addTask(updateType, update);
+        try {
+          await this.#pointModel.addTask(updateType, update);
+        } catch(err) {
+          this.#NewPointPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_TASK:
         this.#pointPresenters.get(update.id).setDeleting();
-        this.#pointModel.deleteTask(updateType, update);
+        try {
+          await this.#pointModel.deleteTask(updateType, update);
+        } catch(err) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
     }
   };

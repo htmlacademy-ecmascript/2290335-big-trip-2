@@ -85,4 +85,16 @@ export default class NewPointPresenter {
   #handlCloseForm = () => {
     this.destroy();
   };
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#newPointComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#newPointComponent.shake(resetFormState);
+  }
 }
