@@ -7,8 +7,8 @@ const Method = {
   DELETE: 'DELETE',
 };
 
-export default class TasksApiService extends ApiService {
-  get tasks() {
+export default class ProjectApiService extends ApiService {
+  get points() {
     return this._load({url: 'points'})
       .then(ApiService.parseResponse);
   }
@@ -32,7 +32,6 @@ export default class TasksApiService extends ApiService {
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
-
     return parsedResponse;
   }
 
@@ -45,7 +44,6 @@ export default class TasksApiService extends ApiService {
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
-
     return parsedResponse;
   }
 
@@ -67,7 +65,6 @@ export default class TasksApiService extends ApiService {
       'is_favorite': task.isFavorite,
     };
 
-    // Ненужные ключи мы удаляем
     delete adaptedTask.basePrice;
     delete adaptedTask.dateFrom;
     delete adaptedTask.dateTo;

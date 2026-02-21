@@ -1,6 +1,6 @@
 import he from 'he';
 import {DATE_FORMAT, POINTS_TYPE} from '../../const.js';
-import {humanizeDueDate} from '../../utils/task-utils.js';
+import {humanizeDueDate} from '../../utils/utils-point.js';
 
 function templateEventTypes(type) {
   return (

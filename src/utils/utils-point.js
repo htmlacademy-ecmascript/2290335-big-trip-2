@@ -8,7 +8,7 @@ function humanizeDueDate(dueDate, dateFormat) {
 }
 
 function getDifferenceInTime(start, end) {
-  const difference = dayjs(end).diff(start); // По умолчанию: Миллисекунды в минутах
+  const difference = dayjs(end).diff(start);
   switch (difference) {
     case difference < SECONDS_IN_MINUTES:
       return dayjs(difference).format('mm[M]');
@@ -19,14 +19,14 @@ function getDifferenceInTime(start, end) {
   }
 }
 
+function getEventDuration(event) {
+  return dayjs(event.dateTo).diff(dayjs(event.dateFrom));
+}
+
 function sortByTime(pointA, pointB) {
   const pointADuration = getEventDuration(pointA);
   const pointBDuration = getEventDuration(pointB);
   return pointBDuration - pointADuration;
-}
-
-function getEventDuration(event) {
-  return dayjs(event.dateTo).diff(dayjs(event.dateFrom));
 }
 
 function sortByPrice(pointA, pointB) {

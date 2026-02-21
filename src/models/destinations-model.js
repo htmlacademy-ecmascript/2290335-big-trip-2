@@ -2,12 +2,12 @@ import Observable from '../framework/observable.js';
 import {UpdateType} from '../const.js';
 
 export default class DestinationsModel extends Observable{
-  #tasksApiService = null;
+  #projectApiService = null;
   #destinations = [];
 
-  constructor({tasksApiService}) {
+  constructor({projectApiService}) {
     super();
-    this.#tasksApiService = tasksApiService;
+    this.#projectApiService = projectApiService;
   }
 
   get total() {
@@ -16,7 +16,7 @@ export default class DestinationsModel extends Observable{
 
   async init() {
     try {
-      this.#destinations = await this.#tasksApiService.destinations;
+      this.#destinations = await this.#projectApiService.destinations;
     } catch(err) {
       this.#destinations = [];
     }

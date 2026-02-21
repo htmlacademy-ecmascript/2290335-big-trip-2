@@ -1,6 +1,6 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
-import NewPoinView from '../view/point-new/new-point-view.js';
 import {UserAction, UpdateType} from '../const.js';
+import NewPoinView from '../views/point-new/new-point-view.js';
 
 export default class NewPointPresenter {
   #listContainer = null;

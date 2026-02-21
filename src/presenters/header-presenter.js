@@ -1,6 +1,6 @@
 import {render, RenderPosition} from '../framework/render.js';
-import HeaderInfoView from '../view/header-info/header-info-view.js';
 import FilterPresenter from './filter-presenter.js';
+import HeaderInfoView from '../views/header-info/header-info-view.js';
 
 export default class HeaderPresenter {
   #points = null;
@@ -17,11 +17,18 @@ export default class HeaderPresenter {
   }
 
   init() {
-    // const points = this.pointModel;
-    // console.log(this.pointModel);
+    // const points = this.pointModel.total;
+    // console.log(points);
     render(new HeaderInfoView(), this.container, RenderPosition.AFTERBEGIN);
     this.filterPresenter.init();
   }
+
+  get points() {
+    const points = this.pointModel.total;
+    console.log(points);
+  }
+
+  render
 
 }
 

@@ -1,5 +1,5 @@
 import {DATE_FORMAT} from '../../const.js';
-import {humanizeDueDate, getDifferenceInTime} from '../../utils/task-utils.js';
+import {humanizeDueDate, getDifferenceInTime} from '../../utils/utils-point.js';
 
 function templateOffer(selectedOffer) {
   const {title, price} = selectedOffer;
