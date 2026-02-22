@@ -18,14 +18,12 @@ const destinationModel = new DestinationsModel({
   projectApiService: new ProjectApiService(END_POINT, AUTHORIZATION)
 });
 const filterModel = new FilterModel();
+const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
 
 Promise.all([offerModel.init(), destinationModel.init()]).finally(() => {
   pointModel.init();
+  // mainPresenter.init();
 });
-
-const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
-mainPresenter.init();
-
 
 const createPointButtonElement = document.querySelector('.trip-main__event-add-btn');
 createPointButtonElement.addEventListener('click', handleNewPointButtonClick);
