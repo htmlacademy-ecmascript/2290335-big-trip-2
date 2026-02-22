@@ -1,6 +1,5 @@
-import {render, RenderPosition} from '../framework/render.js';
+import InfoPresenter from './info-presenter.js';
 import FilterPresenter from './filter-presenter.js';
-import HeaderInfoView from '../views/header-info/header-info-view.js';
 
 export default class HeaderPresenter {
   #points = null;
@@ -9,26 +8,31 @@ export default class HeaderPresenter {
     this.pointModel = pointModel;
     this.filterModel = filterModel;
 
+    this.infoPresenter = new InfoPresenter({
+      container: this.container,
+      pointModel
+    });
+
     this.filterPresenter = new FilterPresenter({
       container: this.container.querySelector('.trip-controls'),
       filterModel,
       pointModel
     });
+
   }
 
   init() {
     // const points = this.pointModel.total;
     // console.log(points);
-    render(new HeaderInfoView(), this.container, RenderPosition.AFTERBEGIN);
+    this.infoPresenter.init();
     this.filterPresenter.init();
   }
 
   get points() {
     const points = this.pointModel.total;
-    console.log(points);
+    // console.log(points);
+    return points;
   }
-
-  render
 
 }
 

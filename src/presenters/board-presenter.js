@@ -65,7 +65,7 @@ export default class BoardPresenter {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointModel.total;
     const filteredPoints = filter[this.#filterType](points);
-    console.log(points);
+    // console.log(points);
 
     switch (this.#currentSortType) {
       case SortType.PRICE:
@@ -77,7 +77,7 @@ export default class BoardPresenter {
   }
 
   init() {
-    console.log(this.#pointModel.total);
+    // console.log(this.#pointModel.total);
     this.#renderBoard();
   }
 
