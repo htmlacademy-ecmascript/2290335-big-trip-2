@@ -1,21 +1,23 @@
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 
-const SECONDS_IN_MINUTES = 60;
-const HOURS_IN_DAY = 24;
+const MSEC_IN_A_DAY = 86400000;
+const MSEC_IN_A_HOUR = 3600000;
 
 function humanizeDueDate(dueDate, dateFormat) {
   return dueDate ? dayjs(dueDate).format(dateFormat) : '';
 }
 
 function getDifferenceInTime(start, end) {
-  const difference = dayjs(end).diff(start);
-  switch (difference) {
-    case difference < SECONDS_IN_MINUTES:
-      return dayjs(difference).format('mm[M]');
-    case difference > SECONDS_IN_MINUTES && difference < SECONDS_IN_MINUTES * HOURS_IN_DAY:
-      return dayjs(difference).format('HH[H] mm[M]');
-    default:
-      return dayjs(difference).format('DD[D] HH[H] mm[M]');
+  const durationInMsec = dayjs(end).diff(start);
+  switch (true) {
+    case durationInMsec < MSEC_IN_A_HOUR:
+      return dayjs.duration(durationInMsec).format('mm[M]');
+    case durationInMsec > MSEC_IN_A_HOUR && durationInMsec < MSEC_IN_A_DAY:
+      return dayjs.duration(durationInMsec).format('HH[H] mm[M]');
+    case durationInMsec > MSEC_IN_A_DAY:
+      return dayjs.duration(durationInMsec).format('DD[D] HH[H] mm[M]');
   }
 }
 

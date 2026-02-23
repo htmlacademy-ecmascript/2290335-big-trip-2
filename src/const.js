@@ -2,7 +2,7 @@ const POINTS_COUNT = 3;
 
 const DATE_FORMAT = {
   monthDay: 'MMM DD',
-  hours: 'HH mm',
+  hours: 'HH[:]mm',
   dayHours: 'DD[/]MM[/]YY HH[:]MM'
 };
 

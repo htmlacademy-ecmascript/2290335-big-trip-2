@@ -8,7 +8,6 @@ export default class InfoPresenter {
   #pointModel = null;
   #offerModel = null;
   #destinationModel = null;
-  #points = null;
   #infoViewComponent = null;
   #totalPrice = null;
   #firstCity = null;
@@ -32,18 +31,18 @@ export default class InfoPresenter {
   }
 
   init() {
-    // console.table(this.#pointModel.total);
     this.renderContent();
   }
 
   renderComponent() {
-    render(new InfoView(
+    this.#infoViewComponent = new InfoView(
       this.#startTripDay,
       this.#endTripDay,
       this.#firstCity,
       this.#middleCity,
       this.#lastCity,
-      this.#totalPrice), this.#container, RenderPosition.AFTERBEGIN);
+      this.#totalPrice);
+    render(this.#infoViewComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
   clearComponent() {
@@ -51,11 +50,12 @@ export default class InfoPresenter {
   }
 
   renderContent() {
-    console.log('renderContent');
+    this.clearComponent();
     this.defineRouteCities();
     this.defineRouteDates();
     this.calculateTotalPrice();
     this.renderComponent();
+    console.table(this.#pointModel.total);
   }
 
   defineRouteCities() {
