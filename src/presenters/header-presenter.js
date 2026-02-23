@@ -3,7 +3,7 @@ import FilterPresenter from './filter-presenter.js';
 
 export default class HeaderPresenter {
   #points = null;
-  constructor({container, pointModel, offerModel, filterModel}) {
+  constructor({container, pointModel, offerModel, destinationModel, filterModel}) {
     this.container = container;
     this.pointModel = pointModel;
     this.offerModel = offerModel;
@@ -12,7 +12,8 @@ export default class HeaderPresenter {
     this.infoPresenter = new InfoPresenter({
       container: this.container,
       pointModel,
-      offerModel
+      offerModel,
+      destinationModel,
     });
 
     this.filterPresenter = new FilterPresenter({

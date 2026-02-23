@@ -1,21 +1,34 @@
 import {render, RenderPosition, remove} from '../framework/render.js';
+import {DATE_FORMAT} from '../const.js';
+import {humanizeDueDate} from '../utils/utils-point.js';
 import InfoView from '../views/header-info/info-view.js';
 
 export default class InfoPresenter {
   #container = null;
   #pointModel = null;
   #offerModel = null;
+  #destinationModel = null;
   #points = null;
   #infoViewComponent = null;
   #totalPrice = null;
+  #firstCity = null;
+  #middleCity = null;
+  #lastCity = null;
+  #startTripDay = null;
+  #endTripDay = null;
 
-  constructor({container, pointModel, offerModel}) {
+  constructor({container, pointModel, destinationModel, offerModel}) {
     this.#container = container;
     this.#pointModel = pointModel;
+    this.#destinationModel = destinationModel;
     this.#offerModel = offerModel;
     this.#pointModel.addObserver(this.#handleModelEvent);
+    this.#startTripDay = '';
+    this.#endTripDay = '';
+    this.#firstCity = '';
+    this.#middleCity = ' ... ';
+    this.#lastCity = '';
     this.#totalPrice = 0;
-    // this.#infoViewComponent = new InfoView(this.#pointModel, this.#offerModel, this.#totalPrice);
   }
 
   init() {
@@ -24,7 +37,13 @@ export default class InfoPresenter {
   }
 
   renderComponent() {
-    render(new InfoView(this.#pointModel, this.#offerModel, this.#totalPrice), this.#container, RenderPosition.AFTERBEGIN);
+    render(new InfoView(
+      this.#startTripDay,
+      this.#endTripDay,
+      this.#firstCity,
+      this.#middleCity,
+      this.#lastCity,
+      this.#totalPrice), this.#container, RenderPosition.AFTERBEGIN);
   }
 
   clearComponent() {
@@ -33,15 +52,36 @@ export default class InfoPresenter {
 
   renderContent() {
     console.log('renderContent');
+    this.defineRouteCities();
+    this.defineRouteDates();
     this.calculateTotalPrice();
-    console.log(this.#totalPrice);
     this.renderComponent();
+  }
+
+  defineRouteCities() {
+    const allPoints = this.#pointModel.total;
+    const allDestinations = this.#destinationModel.total;
+    const firstCity = allDestinations.find((item) => item.id === allPoints[0].destination).name,
+      lastCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 1].destination).name;
+
+    if (allPoints.length <= 3) {
+      this.#middleCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 2].destination).name;
+    }
+    this.#firstCity = firstCity;
+    this.#lastCity = lastCity;
+  }
+
+  defineRouteDates() {
+    const allPoints = this.#pointModel.total;
+    const startTripDay = humanizeDueDate(allPoints[0].dateFrom, DATE_FORMAT.monthDay),
+      endTripDay = humanizeDueDate(allPoints[allPoints.length - 1].dateTo, DATE_FORMAT.monthDay);
+    this.#startTripDay = startTripDay;
+    this.#endTripDay = endTripDay;
   }
 
   calculatePointsPrice() {
     const allPoints = this.#pointModel.total;
     const allPointsPrices = allPoints.reduce((sum, current) => sum + current.basePrice, 0);
-    console.log('allPointsPrices', allPointsPrices);
     return allPointsPrices;
   }
 
@@ -61,7 +101,6 @@ export default class InfoPresenter {
       }
     });
     const allSelectedOffersPrices = allSelectedOffers.flat().reduce((sum, current) => sum + current.price, 0);
-    console.log('allSelectedOffersPrices', allSelectedOffersPrices);
     return allSelectedOffersPrices;
   }
 
@@ -70,7 +109,6 @@ export default class InfoPresenter {
     this.#totalPrice = totalPrice;
     return totalPrice;
   }
-
 
   #handleModelEvent = () => {
     this.init();
