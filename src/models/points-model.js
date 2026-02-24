@@ -86,7 +86,6 @@ export default class PointsModel extends Observable {
     delete adaptedTask['date_from'];
     delete adaptedTask['date_to'];
     delete adaptedTask['is_favorite'];
-
     return adaptedTask;
   }
 }

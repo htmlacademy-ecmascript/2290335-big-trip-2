@@ -59,7 +59,7 @@ export default class ProjectApiService extends ApiService {
 
   #adaptToServer(task) {
     const adaptedTask = {...task,
-      'base_price': task.basePrice,
+      'base_price': Number(task.basePrice),
       'date_from': task.dateFrom,
       'date_to': task.dateTo,
       'is_favorite': task.isFavorite,
@@ -69,7 +69,6 @@ export default class ProjectApiService extends ApiService {
     delete adaptedTask.dateFrom;
     delete adaptedTask.dateTo;
     delete adaptedTask.isFavorite;
-
     return adaptedTask;
   }
 }
