@@ -4,7 +4,7 @@ import {POINTS_COUNT, SortType, UserAction, UpdateType, FilterType} from '../con
 import {sortByTime, sortByPrice} from '../utils/utils-point.js';
 import {filter} from '../utils/utils-filter.js';
 import PointPresenter from './point-presenter.js';
-import NewPointPresenter from './newborn-presenter.js';
+import NewPointPresenter from './new-point-presenter.js';
 import SortView from '../views/sort/sort-view.js';
 import PointListView from '../views/point-list/point-list-view.js';
 import EmptyListView from '../views/empty-list/empty-list-view.js';

@@ -1,6 +1,6 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import {UserAction, UpdateType} from '../const.js';
-import NewPoinView from '../views/point-new/new-point-view.js';
+import NewPointView from '../views/point-new/new-point-view.js';
 
 export default class NewPointPresenter {
   #listContainer = null;
@@ -9,7 +9,6 @@ export default class NewPointPresenter {
   #destinations = null;
   #handleDataChange = null;
   #handleDestroy = null;
-
   #newPointComponent = null;
 
   constructor({
@@ -33,9 +32,9 @@ export default class NewPointPresenter {
       return;
     }
 
-    this.#newPointComponent = new NewPoinView({
+    this.#newPointComponent = new NewPointView({
       onFormSubmit: this.#handleFormSubmit,
-      onFormClose: this.#handlCloseForm,
+      onFormClose: this.#handleCloseForm,
       onDeleteClick: this.#handleDeleteClick,
       offers: this.#offers.total,
       destinations: this.#destinations.total,
@@ -82,7 +81,7 @@ export default class NewPointPresenter {
     }
   };
 
-  #handlCloseForm = () => {
+  #handleCloseForm = () => {
     this.destroy();
   };
 

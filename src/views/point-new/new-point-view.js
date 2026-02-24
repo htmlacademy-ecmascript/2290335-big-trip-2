@@ -13,7 +13,7 @@ const blankPoint = {
   type: 'flight',
 };
 
-export default class NewPoinView extends AbstractStatefulView {
+export default class NewPointView extends AbstractStatefulView {
   #checkedOffers = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
@@ -32,7 +32,7 @@ export default class NewPoinView extends AbstractStatefulView {
     destinations,
   }) {
     super();
-    this._setState(NewPoinView.parseTaskToState({point: blankPoint}));
+    this._setState(NewPointView.parseTaskToState({point: blankPoint}));
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleDeleteClick = onDeleteClick;
@@ -90,12 +90,12 @@ export default class NewPoinView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(NewPoinView.parseStateToTask(this._state));
+    this.#handleFormSubmit(NewPointView.parseStateToTask(this._state));
   };
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(NewPoinView.parseStateToTask(this._state));
+    this.#handleDeleteClick(NewPointView.parseStateToTask(this._state));
   };
 
   // Календарик
