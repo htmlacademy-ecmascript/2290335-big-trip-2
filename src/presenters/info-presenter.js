@@ -51,24 +51,35 @@ export default class InfoPresenter {
 
   renderContent() {
     this.clearComponent();
-    this.defineRouteCities();
-    this.defineRouteDates();
+    this.calculateInfo();
     this.calculateTotalPrice();
     this.renderComponent();
     console.log(this.#pointModel.total);
   }
 
+  calculateInfo() {
+    const allPoints = this.#pointModel.total;
+    if (allPoints > 0) {
+      this.defineRouteCities();
+      this.defineRouteDates();
+    }
+  }
+
   defineRouteCities() {
     const allPoints = this.#pointModel.total;
     const allDestinations = this.#destinationModel.total;
-    const firstCity = allDestinations.find((item) => item.id === allPoints[0].destination).name,
-      lastCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 1].destination).name;
 
+    const firstCity = allDestinations.find((item) => item.id === allPoints[0].destination).name;
+    const lastCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 1].destination).name;
     if (allPoints.length === 3) {
       this.#middleCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 2].destination).name;
     }
+    if (allPoints.length < 3) {
+      this.#middleCity = '...';
+    }
     this.#firstCity = firstCity;
     this.#lastCity = lastCity;
+
   }
 
   defineRouteDates() {

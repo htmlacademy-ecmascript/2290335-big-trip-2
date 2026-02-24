@@ -37,11 +37,14 @@ export default class NewPointPresenter {
       onFormClose: this.#handleCloseForm,
       onDeleteClick: this.#handleDeleteClick,
     });
-    const listContainer = document.querySelector('.trip-events__list');
-    if (!listContainer) {
+    let listContainerElement = document.querySelector('.trip-events__list');
+
+    if (!listContainerElement) {
       render(this.#eventListComponent, document.querySelector('.trip-events'), RenderPosition.AFTERBEGIN);
+      listContainerElement = this.#eventListComponent.element;
     }
-    render(this.#newPointComponent, document.querySelector('.trip-events__list'), RenderPosition.AFTERBEGIN);
+
+    render(this.#newPointComponent, listContainerElement, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
