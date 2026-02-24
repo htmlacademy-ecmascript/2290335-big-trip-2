@@ -5,8 +5,8 @@ dayjs.extend(duration);
 const MSEC_IN_A_DAY = 86400000;
 const MSEC_IN_A_HOUR = 3600000;
 
-function humanizeDueDate(dueDate, dateFormat) {
-  return dueDate ? dayjs(dueDate).format(dateFormat) : '';
+function humanizeDueDate(date, dateFormat) {
+  return date ? dayjs(date).format(dateFormat) : '';
 }
 
 function getDifferenceInTime(start, end) {
@@ -16,7 +16,7 @@ function getDifferenceInTime(start, end) {
       return dayjs.duration(durationInMsec).format('mm[M]');
     case durationInMsec > MSEC_IN_A_HOUR && durationInMsec < MSEC_IN_A_DAY:
       return dayjs.duration(durationInMsec).format('HH[H] mm[M]');
-    case durationInMsec > MSEC_IN_A_DAY:
+    case durationInMsec >= MSEC_IN_A_DAY:
       return dayjs.duration(durationInMsec).format('DD[D] HH[H] mm[M]');
   }
 }

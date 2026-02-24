@@ -54,12 +54,11 @@ export default class InfoPresenter {
     this.calculateInfo();
     this.calculateTotalPrice();
     this.renderComponent();
-    console.log(this.#pointModel.total);
   }
 
   calculateInfo() {
     const allPoints = this.#pointModel.total;
-    if (allPoints > 0) {
+    if (allPoints.length > 0) {
       this.defineRouteCities();
       this.defineRouteDates();
     }
@@ -79,7 +78,6 @@ export default class InfoPresenter {
     }
     this.#firstCity = firstCity;
     this.#lastCity = lastCity;
-
   }
 
   defineRouteDates() {
