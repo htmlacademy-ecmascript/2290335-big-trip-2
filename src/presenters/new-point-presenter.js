@@ -1,7 +1,7 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import {UserAction, UpdateType} from '../const.js';
 import PointListView from '../views/point-list/point-list-view.js';
-import NewPointView from '../views/point-new/new-point-view.js';
+import EditPointView from '../views/point-edit/edit-point-view.js';
 
 export default class NewPointPresenter {
   #eventListComponent = new PointListView();
@@ -30,21 +30,18 @@ export default class NewPointPresenter {
     if (this.#newPointComponent !== null) {
       return;
     }
-
-    this.#newPointComponent = new NewPointView({
+    this.#newPointComponent = new EditPointView({
+      offers: this.#offers.total,
+      destinations: this.#destinations.total,
       onFormSubmit: this.#handleFormSubmit,
       onFormClose: this.#handleCloseForm,
       onDeleteClick: this.#handleDeleteClick,
-      offers: this.#offers.total,
-      destinations: this.#destinations.total,
     });
     const listContainer = document.querySelector('.trip-events__list');
     if (!listContainer) {
-      render(this.#eventListComponent, document.querySelector('.page-main .trip-events'));
+      render(this.#eventListComponent, document.querySelector('.trip-events'), RenderPosition.AFTERBEGIN);
     }
-    console.log(listContainer);
-
-    render(this.#newPointComponent, listContainer, RenderPosition.AFTERBEGIN);
+    render(this.#newPointComponent, document.querySelector('.trip-events__list'), RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 

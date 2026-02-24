@@ -99,6 +99,7 @@ export default class BoardPresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
     render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
+    console.log(this.#container);
     render(this.#eventListComponent, this.#container);
     this.#renderPoints();
   }

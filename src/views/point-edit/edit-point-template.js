@@ -66,7 +66,7 @@ function templateEditPointView(state, destinations, allOffers) {
   const {point: {type, offers, destination, dateFrom, dateTo, basePrice}} = state;
   const {isDisabled, isSaving, isDeleting} = state;
 
-  const concreateDestinationId = state.point.destination;
+  const concreateDestinationId = destination;
   const concreateDestination = destinations.find((item) => item.id === concreateDestinationId);
 
   const concreateOffers = allOffers.find((item) => item.type === type).offers;
@@ -89,8 +89,7 @@ function templateEditPointView(state, destinations, allOffers) {
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          ${destination ? templateCitiesList(concreateDestination.name, type, destinations) :
-      templateCitiesList(destinations[0], type, destinations)}
+          ${templateCitiesList(concreateDestination ? concreateDestination.name : '', type, destinations)}
         </div>
 
         <div class="event__field-group  event__field-group--time">

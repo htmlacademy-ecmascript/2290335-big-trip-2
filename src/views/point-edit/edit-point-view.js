@@ -3,7 +3,18 @@ import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js
 import {templateEditPointView} from './edit-point-template.js';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const pointBlank = {
+  basePrice: 1,
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: 'flight',
+};
+
 export default class EditPointView extends AbstractStatefulView {
+  #concretePoint = null;
   #offers = null;
   #destinations = null;
   #handleFormSubmit = null;
@@ -22,13 +33,23 @@ export default class EditPointView extends AbstractStatefulView {
     onDeleteClick,
   }) {
     super();
-    this._setState(EditPointView.parseTaskToState({point: concretePoint}));
+    this.#concretePoint = concretePoint;
+    this.kek();
+    // console.log(this.#concretePoint);
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
     this.#handleDeleteClick = onDeleteClick;
+    this._setState(EditPointView.parseTaskToState({point: this.#concretePoint}));
+    // console.log(this._state);
     this.#registerEvents();
+  }
+
+  kek() {
+    if (!this.#concretePoint) {
+      this.#concretePoint = pointBlank;
+    }
   }
 
   static parseTaskToState ({point}) {

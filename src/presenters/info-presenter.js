@@ -64,7 +64,7 @@ export default class InfoPresenter {
     const firstCity = allDestinations.find((item) => item.id === allPoints[0].destination).name,
       lastCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 1].destination).name;
 
-    if (allPoints.length <= 3) {
+    if (allPoints.length === 3) {
       this.#middleCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 2].destination).name;
     }
     this.#firstCity = firstCity;
