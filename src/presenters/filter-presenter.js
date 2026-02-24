@@ -7,7 +7,6 @@ export default class FilterPresenter {
   #filterContainer = null;
   #filterModel = null;
   #pointModel = null;
-
   #filterComponent = null;
 
   constructor({container, filterModel, pointModel}) {

@@ -65,7 +65,6 @@ export default class BoardPresenter {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointModel.total;
     const filteredPoints = filter[this.#filterType](points);
-    // console.log(points);
 
     switch (this.#currentSortType) {
       case SortType.PRICE:
@@ -77,7 +76,6 @@ export default class BoardPresenter {
   }
 
   init() {
-    // console.log(this.#pointModel.total);
     this.#renderBoard();
   }
 
@@ -186,11 +184,9 @@ export default class BoardPresenter {
 
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
-      // Обновление одной задачи
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data);
         break;
-      // Обновление списка
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderBoard();
@@ -223,9 +219,6 @@ export default class BoardPresenter {
     if (resetRenderedTaskCount) {
       this.#renderedTaskCount = POINTS_COUNT;
     } else {
-      // На случай, если перерисовка доски вызвана
-      // уменьшением количества задач (например, удаление или перенос в архив)
-      // нужно скорректировать число показанных задач
       this.#renderedTaskCount = Math.min(taskCount, this.#renderedTaskCount);
     }
 

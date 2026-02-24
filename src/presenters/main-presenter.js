@@ -32,6 +32,5 @@ export default class MainPresenter {
   handleNewPointFormClose() {
     createPointButtonElement.disabled = false;
   }
-
 }
 

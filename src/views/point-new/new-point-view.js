@@ -77,7 +77,6 @@ export default class NewPoinView extends AbstractStatefulView {
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const selectedOffersId = checkedBoxes.map((element) => element.id);
     this._setState({point: {...this._state.point, offers: selectedOffersId}});
-    // console.log(this._state.point.offers);
   };
 
   #priceChangeHandler = (evt) => {
@@ -152,20 +151,14 @@ export default class NewPoinView extends AbstractStatefulView {
 
   #registerEvents = () => {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
-
     // Меняет point/offers внутри состояния при клике на элементы от concreateOffers(без отрисовки)
     if (this.element.querySelector('.event__available-offers')) {
       this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     }
-
     // Меняет point/destination внутри состояния при изменении города(с отрисовкой)
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     // Меняет point/basePrice внутри состояния при изменении цены(без отрисовки)
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
-
-    // if (this.element.querySelector('.event__available-offers')) {
-    //   this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
-    // }
     // Сохраняет информацию point #handleFormSubmit(UserAction.UPDATE_TASK, UpdateType.MINOR, point)
     this.element?.addEventListener('submit', this.#formSubmitHandler);
     // Сворачивает point

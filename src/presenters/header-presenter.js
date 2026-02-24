@@ -2,7 +2,6 @@ import InfoPresenter from './info-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 
 export default class HeaderPresenter {
-  #points = null;
   constructor({container, pointModel, offerModel, destinationModel, filterModel}) {
     this.container = container;
     this.pointModel = pointModel;
@@ -25,17 +24,13 @@ export default class HeaderPresenter {
   }
 
   init() {
-    // const points = this.pointModel.total;
-    // console.log(points);
     this.infoPresenter.init();
     this.filterPresenter.init();
   }
 
   get points() {
     const points = this.pointModel.total;
-    // console.log(points);
     return points;
   }
-
 }
 

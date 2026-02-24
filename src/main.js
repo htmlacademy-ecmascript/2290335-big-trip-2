@@ -8,6 +8,8 @@ import ProjectApiService from './project-api-service.js';
 const AUTHORIZATION = 'Basic lalala123';
 const END_POINT = 'https://22.objects.htmlacademy.pro/big-trip';
 
+const createPointButtonElement = document.querySelector('.trip-main__event-add-btn');
+
 const pointModel = new PointsModel({
   projectApiService: new ProjectApiService(END_POINT, AUTHORIZATION)
 });
@@ -18,14 +20,13 @@ const destinationModel = new DestinationsModel({
   projectApiService: new ProjectApiService(END_POINT, AUTHORIZATION)
 });
 const filterModel = new FilterModel();
+
 const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
 
 Promise.all([offerModel.init(), destinationModel.init()]).finally(() => {
   pointModel.init();
-  // mainPresenter.init();
 });
 
-const createPointButtonElement = document.querySelector('.trip-main__event-add-btn');
 createPointButtonElement.addEventListener('click', handleNewPointButtonClick);
 
 function handleNewPointButtonClick() {
