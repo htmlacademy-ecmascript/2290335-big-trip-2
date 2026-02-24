@@ -14,30 +14,30 @@ const blankPoint = {
 };
 
 export default class NewPointView extends AbstractStatefulView {
-  #checkedOffers = null;
-  #handleFormSubmit = null;
-  #handleFormClose = null;
   #offers = null;
   #destinations = null;
+  #handleFormSubmit = null;
+  #handleFormClose = null;
+  #handleDeleteClick = null;
   #datepicker = null;
   #datepickerFrom = null;
   #datepickerTo = null;
-  #handleDeleteClick = null;
 
   constructor({
+
+    offers,
+    destinations,
     onFormSubmit,
     onFormClose,
     onDeleteClick,
-    offers,
-    destinations,
   }) {
     super();
     this._setState(NewPointView.parseTaskToState({point: blankPoint}));
     this.#offers = offers;
     this.#destinations = destinations;
-    this.#handleDeleteClick = onDeleteClick;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
+    this.#handleDeleteClick = onDeleteClick;
     this.#registerEvents();
   }
 

@@ -4,29 +4,29 @@ import {templateEditPointView} from './edit-point-template.js';
 import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EditPointView extends AbstractStatefulView {
-  #handleFormSubmit = null;
-  #handleFormClose = null;
   #offers = null;
   #destinations = null;
+  #handleFormSubmit = null;
+  #handleFormClose = null;
+  #handleDeleteClick = null;
   #datepicker = null;
   #datepickerFrom = null;
   #datepickerTo = null;
-  #handleDeleteClick = null;
 
   constructor({
     concretePoint,
+    offers,
+    destinations,
     onFormSubmit,
     onFormClose,
     onDeleteClick,
-    offers,
-    destinations
   }) {
     super();
     this._setState(EditPointView.parseTaskToState({point: concretePoint}));
-    this.#handleFormSubmit = onFormSubmit;
-    this.#handleFormClose = onFormClose;
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleFormClose = onFormClose;
     this.#handleDeleteClick = onDeleteClick;
     this.#registerEvents();
   }

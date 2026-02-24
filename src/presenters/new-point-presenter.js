@@ -1,9 +1,10 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import {UserAction, UpdateType} from '../const.js';
+import PointListView from '../views/point-list/point-list-view.js';
 import NewPointView from '../views/point-new/new-point-view.js';
 
 export default class NewPointPresenter {
-  #listContainer = null;
+  #eventListComponent = new PointListView();
   #points = null;
   #offers = null;
   #destinations = null;
@@ -12,14 +13,12 @@ export default class NewPointPresenter {
   #newPointComponent = null;
 
   constructor({
-    listContainer,
     points,
     offers,
     destinations,
     onDataChange,
     onDestroy
   }) {
-    this.#listContainer = listContainer;
     this.#points = points;
     this.#offers = offers;
     this.#destinations = destinations;
@@ -39,8 +38,13 @@ export default class NewPointPresenter {
       offers: this.#offers.total,
       destinations: this.#destinations.total,
     });
+    const listContainer = document.querySelector('.trip-events__list');
+    if (!listContainer) {
+      render(this.#eventListComponent, document.querySelector('.page-main .trip-events'));
+    }
+    console.log(listContainer);
 
-    render(this.#newPointComponent, this.#listContainer, RenderPosition.AFTERBEGIN);
+    render(this.#newPointComponent, listContainer, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 

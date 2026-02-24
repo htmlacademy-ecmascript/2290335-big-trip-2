@@ -55,6 +55,7 @@ export default class InfoPresenter {
     this.defineRouteDates();
     this.calculateTotalPrice();
     this.renderComponent();
+    console.log(this.#pointModel.total);
   }
 
   defineRouteCities() {

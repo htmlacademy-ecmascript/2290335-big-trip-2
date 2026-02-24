@@ -52,7 +52,6 @@ export default class BoardPresenter {
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
     this.#newPointPresenter = new NewPointPresenter({
-      listContainer: this.#eventListComponent.element,
       points: this.#pointModel,
       offers: this.#offerModel,
       destinations: this.#destinationModel,
