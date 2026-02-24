@@ -1,26 +1,24 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
-import NewPoinView from '../view/point-new/new-point-view.js';
 import {UserAction, UpdateType} from '../const.js';
+import PointListView from '../views/point-list/point-list-view.js';
+import EditPointView from '../views/point-edit/edit-point-view.js';
 
 export default class NewPointPresenter {
-  #listContainer = null;
+  #eventListComponent = new PointListView();
   #points = null;
   #offers = null;
   #destinations = null;
   #handleDataChange = null;
   #handleDestroy = null;
-
   #newPointComponent = null;
 
   constructor({
-    listContainer,
     points,
     offers,
     destinations,
     onDataChange,
     onDestroy
   }) {
-    this.#listContainer = listContainer;
     this.#points = points;
     this.#offers = offers;
     this.#destinations = destinations;
@@ -32,16 +30,21 @@ export default class NewPointPresenter {
     if (this.#newPointComponent !== null) {
       return;
     }
-
-    this.#newPointComponent = new NewPoinView({
-      onFormSubmit: this.#handleFormSubmit,
-      onFormClose: this.#handlCloseForm,
-      onDeleteClick: this.#handleDeleteClick,
+    this.#newPointComponent = new EditPointView({
       offers: this.#offers.total,
       destinations: this.#destinations.total,
+      onFormSubmit: this.#handleFormSubmit,
+      onFormClose: this.#handleCloseForm,
+      onDeleteClick: this.#handleDeleteClick,
     });
+    let listContainerElement = document.querySelector('.trip-events__list');
 
-    render(this.#newPointComponent, this.#listContainer, RenderPosition.AFTERBEGIN);
+    if (!listContainerElement) {
+      render(this.#eventListComponent, document.querySelector('.trip-events'), RenderPosition.AFTERBEGIN);
+      listContainerElement = this.#eventListComponent.element;
+    }
+
+    render(this.#newPointComponent, listContainerElement, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
@@ -82,7 +85,7 @@ export default class NewPointPresenter {
     }
   };
 
-  #handlCloseForm = () => {
+  #handleCloseForm = () => {
     this.destroy();
   };
 

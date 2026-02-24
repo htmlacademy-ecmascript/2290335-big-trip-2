@@ -1,41 +1,62 @@
+import flatpickr from 'flatpickr';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import {templateEditPointView} from './edit-point-template.js';
-import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const pointBlank = {
+  basePrice: 1,
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: 'flight',
+};
+
 export default class EditPointView extends AbstractStatefulView {
-  #handleFormSubmit = null;
-  #handleFormClose = null;
+  #concretePoint = null;
   #offers = null;
   #destinations = null;
+  #handleFormSubmit = null;
+  #handleFormClose = null;
+  #handleDeleteClick = null;
   #datepicker = null;
   #datepickerFrom = null;
   #datepickerTo = null;
-  #handleDeleteClick = null;
 
   constructor({
     concretePoint,
+    offers,
+    destinations,
     onFormSubmit,
     onFormClose,
     onDeleteClick,
-    offers,
-    destinations
   }) {
     super();
-    this._setState(EditPointView.parseTaskToState({point: concretePoint}));
-    this.#handleFormSubmit = onFormSubmit;
-    this.#handleFormClose = onFormClose;
+    this.#concretePoint = concretePoint;
+    this.kek();
+    // console.log(this.#concretePoint);
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleFormClose = onFormClose;
     this.#handleDeleteClick = onDeleteClick;
+    this._setState(EditPointView.parseTaskToState({point: this.#concretePoint}));
+    // console.log(this._state);
     this.#registerEvents();
+  }
+
+  kek() {
+    if (!this.#concretePoint) {
+      this.#concretePoint = pointBlank;
+    }
   }
 
   static parseTaskToState ({point}) {
     const task = {point};
-    task.point.isDisabled = false;
-    task.point.isSaving = false;
-    task.point.isDeleting = false;
+    task.isDisabled = false;
+    task.isSaving = false;
+    task.isDeleting = false;
     return task;
   }
 
@@ -65,7 +86,6 @@ export default class EditPointView extends AbstractStatefulView {
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const selectedOffersId = checkedBoxes.map((element) => element.id);
     this._setState({point: {...this._state.point, offers: selectedOffersId}});
-    // console.log(this._state.point.offers);
   };
 
   #priceChangeHandler = (evt) => {
@@ -140,20 +160,14 @@ export default class EditPointView extends AbstractStatefulView {
 
   #registerEvents = () => {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
-
     // Меняет point/offers внутри состояния при клике на элементы от concreateOffers(без отрисовки)
     if (this.element.querySelector('.event__available-offers')) {
       this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     }
-
     // Меняет point/destination внутри состояния при изменении города(с отрисовкой)
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     // Меняет point/basePrice внутри состояния при изменении цены(без отрисовки)
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
-
-    // if (this.element.querySelector('.event__available-offers')) {
-    //   this.element.querySelector('.event__type-group').addEventListener('change', this.#offerChangeHandler);
-    // }
     // Сохраняет информацию point #handleFormSubmit(UserAction.UPDATE_TASK, UpdateType.MINOR, point)
     this.element?.addEventListener('submit', this.#formSubmitHandler);
     // Сворачивает point

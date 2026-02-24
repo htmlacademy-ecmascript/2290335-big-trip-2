@@ -1,5 +1,6 @@
+import he from 'he';
 import {DATE_FORMAT, POINTS_TYPE} from '../../const.js';
-import {humanizeDueDate} from '../../utils/task-utils.js';
+import {humanizeDueDate} from '../../utils/utils-point.js';
 
 function templateEventTypes(type) {
   return (
@@ -26,11 +27,11 @@ function templateSectionDestination(description, pictures) {
 
 function templateOffersItem(concreateOffer, checkedOffers) {
   const {id, title, price} = concreateOffer;
-  const isChecked = checkedOffers.map((item) => item.id).includes(id) ? 'checked' : '';
-  // console.log('isChecked равен: ', isChecked);
+  const isChecked = checkedOffers.map((item) => item === id).includes(true);
+
   return (
     `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="${id}" ${isChecked}>
+        <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="${id}" ${isChecked ? 'checked' : ''}>
         <label class="event__offer-label" for="${id}">
           <span class="event__offer-title">${title}</span>
           &plus;&euro;&nbsp;
@@ -54,17 +55,18 @@ function templateSectionOffers(concreateOffers, offers) {
 function templateCitiesList(name, type, destinations) {
   return (
     `<label class="event__label  event__type-output" for="event-destination-1">${type}</label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(name)}" list="destination-list-1">
       <datalist id="destination-list-1">
         ${destinations.map((item) => `<option value="${item.name}">${item.name}</option>`).join('')}
       </datalist>`
   );
 }
 
-function templateCreatePointView(state, destinations, allOffers) {
-  const {point: {type, offers, destination, dateFrom, dateTo, basePrice, isDisabled, isSaving, isDeleting}} = state;
+function templateEditPointView(state, destinations, allOffers) {
+  const {point: {type, offers, destination, dateFrom, dateTo, basePrice}} = state;
+  const {isDisabled, isSaving, isDeleting} = state;
 
-  const concreateDestinationId = state.point.destination;
+  const concreateDestinationId = destination;
   const concreateDestination = destinations.find((item) => item.id === concreateDestinationId);
 
   const concreateOffers = allOffers.find((item) => item.type === type).offers;
@@ -87,8 +89,7 @@ function templateCreatePointView(state, destinations, allOffers) {
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          ${destination ? templateCitiesList(concreateDestination.name, type, destinations) :
-      templateCitiesList(destinations[0], type, destinations)}
+          ${templateCitiesList(concreateDestination ? concreateDestination.name : '', type, destinations)}
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -120,4 +121,4 @@ function templateCreatePointView(state, destinations, allOffers) {
 </form>`);
 }
 
-export {templateCreatePointView};
+export {templateEditPointView};

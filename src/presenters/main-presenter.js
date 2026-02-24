@@ -7,7 +7,13 @@ const createPointButtonElement = document.querySelector('.trip-main__event-add-b
 
 export default class MainPresenter {
   constructor(pointModel, offerModel, destinationModel, filterModel) {
-    this.headerPresenter = new HeaderPresenter({container: headerContainerElement, pointModel, filterModel});
+    this.headerPresenter = new HeaderPresenter({
+      container: headerContainerElement,
+      pointModel,
+      offerModel,
+      destinationModel,
+      filterModel
+    });
     this.boardPresenter = new BoardPresenter({
       container: pageContainerElement,
       pointModel,
@@ -26,6 +32,5 @@ export default class MainPresenter {
   handleNewPointFormClose() {
     createPointButtonElement.disabled = false;
   }
-
 }
 

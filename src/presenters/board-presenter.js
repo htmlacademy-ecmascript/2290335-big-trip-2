@@ -1,14 +1,14 @@
-import {render, RenderPosition, remove} from '../framework/render.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import {render, RenderPosition, remove} from '../framework/render.js';
 import {POINTS_COUNT, SortType, UserAction, UpdateType, FilterType} from '../const.js';
-import {sortByTime, sortByPrice} from '../utils/task-utils.js';
-import {filter} from '../utils/filter.js';
-import SortView from '../view/sort/sort-view.js';
-import PointListView from '../view/point-list/point-list-view.js';
-import EmptyListView from '../view/empty-list/empty-list-view.js';
+import {sortByTime, sortByPrice} from '../utils/utils-point.js';
+import {filter} from '../utils/utils-filter.js';
 import PointPresenter from './point-presenter.js';
-import NewPointPresenter from './newborn-presenter.js';
-import LoadingView from '../view/loading/loading-view.js';
+import NewPointPresenter from './new-point-presenter.js';
+import SortView from '../views/sort/sort-view.js';
+import PointListView from '../views/point-list/point-list-view.js';
+import EmptyListView from '../views/empty-list/empty-list-view.js';
+import LoadingView from '../views/loading/loading-view.js';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -26,9 +26,9 @@ export default class BoardPresenter {
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
   #filterModel = null;
-  #filterType = FilterType.ALL;
-  #NoPointComponent = null;
-  #NewPointPresenter = null;
+  #filterType = FilterType.EVERYTHING;
+  #noPointComponent = null;
+  #newPointPresenter = null;
   #loadingComponent = new LoadingView();
   #isLoading = true;
   #uiBlocker = new UiBlocker({
@@ -51,8 +51,7 @@ export default class BoardPresenter {
     this.#filterModel = filterModel;
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
-    this.#NewPointPresenter = new NewPointPresenter({
-      listContainer: this.#eventListComponent.element,
+    this.#newPointPresenter = new NewPointPresenter({
       points: this.#pointModel,
       offers: this.#offerModel,
       destinations: this.#destinationModel,
@@ -80,9 +79,9 @@ export default class BoardPresenter {
   }
 
   createTask() {
-    this.#currentSortType = SortType.DEFAULT;
+    this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#NewPointPresenter.init();
+    this.#newPointPresenter.init();
   }
 
   #renderBoard() {
@@ -100,6 +99,7 @@ export default class BoardPresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
     render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
+    // console.log(this.#container);
     render(this.#eventListComponent, this.#container);
     this.#renderPoints();
   }
@@ -117,10 +117,10 @@ export default class BoardPresenter {
   }
 
   #renderNoPoints() {
-    this.#NoPointComponent = new EmptyListView({
+    this.#noPointComponent = new EmptyListView({
       filterType: this.#filterType
     });
-    render(this.#NoPointComponent, this.#container);
+    render(this.#noPointComponent, this.#container);
   }
 
   #renderPoints() {
@@ -144,7 +144,7 @@ export default class BoardPresenter {
 
   // - Меняем режим просмотра поинта
   #handleModeChange = () => {
-    this.#NewPointPresenter.destroy();
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
@@ -162,11 +162,11 @@ export default class BoardPresenter {
         }
         break;
       case UserAction.ADD_TASK:
-        this.#NewPointPresenter.setSaving();
+        this.#newPointPresenter.setSaving();
         try {
           await this.#pointModel.addTask(updateType, update);
         } catch(err) {
-          this.#NewPointPresenter.setAborting();
+          this.#newPointPresenter.setAborting();
         }
         break;
       case UserAction.DELETE_TASK:
@@ -184,11 +184,9 @@ export default class BoardPresenter {
 
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
-      // Обновление одной задачи
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data);
         break;
-      // Обновление списка
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderBoard();
@@ -207,28 +205,25 @@ export default class BoardPresenter {
 
   #clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
     const taskCount = this.points.length;
-    this.#NewPointPresenter.destroy();
+    this.#newPointPresenter.destroy();
 
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
     remove(this.#sortComponent);
-    if (this.#NoPointComponent) {
-      remove(this.#NoPointComponent);
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
     }
     remove(this.#loadingComponent);
 
     if (resetRenderedTaskCount) {
       this.#renderedTaskCount = POINTS_COUNT;
     } else {
-      // На случай, если перерисовка доски вызвана
-      // уменьшением количества задач (например, удаление или перенос в архив)
-      // нужно скорректировать число показанных задач
       this.#renderedTaskCount = Math.min(taskCount, this.#renderedTaskCount);
     }
 
     if (resetSortType) {
-      this.#currentSortType = SortType.DEFAULT;
+      this.#currentSortType = SortType.DAY;
     }
   }
 }

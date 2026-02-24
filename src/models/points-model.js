@@ -2,12 +2,12 @@ import Observable from '../framework/observable.js';
 import {UpdateType} from '../const.js';
 
 export default class PointsModel extends Observable {
-  #tasksApiService = null;
+  #projectApiService = null;
   #points = [];
 
-  constructor({tasksApiService}) {
+  constructor({projectApiService}) {
     super();
-    this.#tasksApiService = tasksApiService;
+    this.#projectApiService = projectApiService;
   }
 
   get total() {
@@ -16,8 +16,8 @@ export default class PointsModel extends Observable {
 
   async init() {
     try {
-      const tasks = await this.#tasksApiService.tasks;
-      this.#points = tasks.map(this.#adaptToClient);
+      const points = await this.#projectApiService.points;
+      this.#points = points.map(this.#adaptToClient);
     } catch(err) {
       this.#points = [];
     }
@@ -31,7 +31,7 @@ export default class PointsModel extends Observable {
     }
 
     try {
-      const response = await this.#tasksApiService.updateTask(update);
+      const response = await this.#projectApiService.updateTask(update);
       const updatedTask = this.#adaptToClient(response);
       this.#points = [
         ...this.#points.slice(0, index),
@@ -46,7 +46,7 @@ export default class PointsModel extends Observable {
 
   async addTask(updateType, update) {
     try {
-      const response = await this.#tasksApiService.addTask(update);
+      const response = await this.#projectApiService.addTask(update);
       const newTask = this.#adaptToClient(response);
       this.#points = [newTask, ...this.#points];
       this._notify(updateType, newTask);
@@ -63,7 +63,7 @@ export default class PointsModel extends Observable {
     }
 
     try {
-      await this.#tasksApiService.deleteTask(update);
+      await this.#projectApiService.deleteTask(update);
       this.#points = [
         ...this.#points.slice(0, index),
         ...this.#points.slice(index + 1),
@@ -86,7 +86,6 @@ export default class PointsModel extends Observable {
     delete adaptedTask['date_from'];
     delete adaptedTask['date_to'];
     delete adaptedTask['is_favorite'];
-
     return adaptedTask;
   }
 }
