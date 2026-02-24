@@ -63,7 +63,8 @@ function templateCitiesList(name = '', type, destinations) {
 }
 
 function templateCreatePointView(state, destinations, allOffers) {
-  const {point: {type, offers, destination, dateFrom, dateTo, basePrice, isDisabled, isSaving, isDeleting}} = state;
+  const {point: {type, offers, destination, dateFrom, dateTo, basePrice}} = state;
+  const {isDisabled, isSaving, isDeleting} = state;
 
   const concreateDestinationId = state.point.destination;
   const concreateDestination = destinations.find((item) => item.id === concreateDestinationId);

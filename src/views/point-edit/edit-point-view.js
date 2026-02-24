@@ -33,9 +33,9 @@ export default class EditPointView extends AbstractStatefulView {
 
   static parseTaskToState ({point}) {
     const task = {point};
-    task.point.isDisabled = false;
-    task.point.isSaving = false;
-    task.point.isDeleting = false;
+    task.isDisabled = false;
+    task.isSaving = false;
+    task.isDeleting = false;
     return task;
   }
 
