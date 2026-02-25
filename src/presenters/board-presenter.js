@@ -126,7 +126,6 @@ export default class BoardPresenter {
   }
 
   #renderPoints() {
-    console.log(this.#currentSortType);
     for (let i = 0; i < this.points.length; i++) {
       this.#renderPoint(this.points[i], this.#offerModel, this.#destinationModel);
     }

@@ -4,7 +4,7 @@ import {templateEditPointView} from './edit-point-template.js';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const pointBlank = {
-  basePrice: 1,
+  basePrice: 0,
   dateFrom: '',
   dateTo: '',
   destination: '',
@@ -174,6 +174,12 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
     // Удаляет point #handlePointChange(UserAction.DELETE_TASK, UpdateType.MINOR, point)
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+    this.element.querySelector('.event__input--price').addEventListener('input', (evt) => {
+      let value = evt.target.value;
+      value = value.replace(/\D/g, '');
+      value = value.replace(/^0+/, '');
+      evt.target.value = value;
+    });
     this.#setDatepickers();
   };
 }
