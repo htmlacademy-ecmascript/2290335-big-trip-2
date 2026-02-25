@@ -50,6 +50,7 @@ export default class InfoPresenter {
   }
 
   renderContent() {
+    console.log(this.#pointModel.total);
     this.clearComponent();
     this.calculateInfo();
     this.calculateTotalPrice();

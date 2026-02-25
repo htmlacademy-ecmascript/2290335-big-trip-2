@@ -1,7 +1,7 @@
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import {render, RenderPosition, remove} from '../framework/render.js';
 import {POINTS_COUNT, SortType, UserAction, UpdateType, FilterType} from '../const.js';
-import {sortByTime, sortByPrice} from '../utils/utils-point.js';
+import {sortByTime, sortByPrice, sortByDefault} from '../utils/utils-point.js';
 import {filter} from '../utils/utils-filter.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
@@ -66,6 +66,8 @@ export default class BoardPresenter {
     const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
+      case SortType.DAY:
+        return filteredPoints.sort(sortByDefault);
       case SortType.PRICE:
         return filteredPoints.sort(sortByPrice);
       case SortType.TIME:
@@ -124,6 +126,7 @@ export default class BoardPresenter {
   }
 
   #renderPoints() {
+    console.log(this.#currentSortType);
     for (let i = 0; i < this.points.length; i++) {
       this.#renderPoint(this.points[i], this.#offerModel, this.#destinationModel);
     }
