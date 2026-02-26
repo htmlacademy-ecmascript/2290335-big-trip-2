@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {render, RenderPosition, remove} from '../framework/render.js';
 import {DATE_FORMAT} from '../const.js';
 import {humanizeDueDate} from '../utils/utils-point.js';
@@ -50,7 +51,7 @@ export default class InfoPresenter {
   }
 
   renderContent() {
-    console.log(this.#pointModel.total);
+    console.log('Изначальный: ', this.#pointModel.total);
     this.clearComponent();
     this.calculateInfo();
     this.calculateTotalPrice();
@@ -69,24 +70,30 @@ export default class InfoPresenter {
     const allPoints = this.#pointModel.total;
     const allDestinations = this.#destinationModel.total;
 
-    const firstCity = allDestinations.find((item) => item.id === allPoints[0].destination).name;
-    const lastCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 1].destination).name;
+    const oldestCityId = allPoints.reduce((min, current) => dayjs(current.dateFrom).isBefore(dayjs(min.dateFrom)) ? current : min).destination;
+    const oldestCity = allDestinations.find((item) => item.id === oldestCityId).name;
+    const freshCityId = allPoints.reduce((max, current) => dayjs(current.dateFrom).isAfter(dayjs(max.dateFrom)) ? current : max).destination;
+    const freshCity = allDestinations.find((item) => item.id === freshCityId).name;
+    this.#firstCity = oldestCity;
+    this.#lastCity = freshCity;
+    this.#middleCity = ' ... ';
     if (allPoints.length === 3) {
       this.#middleCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 2].destination).name;
     }
-    if (allPoints.length < 3) {
-      this.#middleCity = '...';
+    if (allPoints.length === 0) {
+      this.#firstCity = ' ... ';
+      this.#lastCity = ' ... ';
     }
-    this.#firstCity = firstCity;
-    this.#lastCity = lastCity;
   }
 
   defineRouteDates() {
     const allPoints = this.#pointModel.total;
-    const startTripDay = humanizeDueDate(allPoints[0].dateFrom, DATE_FORMAT.monthDay),
-      endTripDay = humanizeDueDate(allPoints[allPoints.length - 1].dateTo, DATE_FORMAT.monthDay);
-    this.#startTripDay = startTripDay;
-    this.#endTripDay = endTripDay;
+    const oldestTimeISO = allPoints.reduce((min, current) => dayjs(current.dateFrom).isBefore(dayjs(min.dateFrom)) ? current : min).dateFrom;
+    const oldestTime = humanizeDueDate(oldestTimeISO, DATE_FORMAT.monthDay);
+    const freshTimeISO = allPoints.reduce((max, current) => dayjs(current.dateFrom).isAfter(dayjs(max.dateFrom)) ? current : max).dateFrom;
+    const freshTime = humanizeDueDate(freshTimeISO, DATE_FORMAT.monthDay);
+    this.#startTripDay = oldestTime;
+    this.#endTripDay = freshTime;
   }
 
   calculatePointsPrice() {

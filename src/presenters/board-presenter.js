@@ -73,6 +73,7 @@ export default class BoardPresenter {
       case SortType.TIME:
         return filteredPoints.sort(sortByTime);
     }
+    console.log('Отфильтрованный и отсортированный: ', filteredPoints);
     return filteredPoints;
   }
 
