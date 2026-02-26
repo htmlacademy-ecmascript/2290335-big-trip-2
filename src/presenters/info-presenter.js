@@ -42,7 +42,9 @@ export default class InfoPresenter {
       this.#firstCity,
       this.#middleCity,
       this.#lastCity,
-      this.#totalPrice);
+      this.#totalPrice,
+      this.#pointModel
+    );
     render(this.#infoViewComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
