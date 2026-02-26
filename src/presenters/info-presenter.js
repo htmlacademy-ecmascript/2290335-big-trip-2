@@ -32,7 +32,7 @@ export default class InfoPresenter {
   }
 
   init() {
-    this.renderContent();
+    this.renderBoard();
   }
 
   renderComponent() {
@@ -50,8 +50,7 @@ export default class InfoPresenter {
     remove(this.#infoViewComponent);
   }
 
-  renderContent() {
-    console.log('Изначальный: ', this.#pointModel.total);
+  renderBoard() {
     this.clearComponent();
     this.calculateInfo();
     this.calculateTotalPrice();
@@ -89,9 +88,9 @@ export default class InfoPresenter {
   defineRouteDates() {
     const allPoints = this.#pointModel.total;
     const oldestTimeISO = allPoints.reduce((min, current) => dayjs(current.dateFrom).isBefore(dayjs(min.dateFrom)) ? current : min).dateFrom;
-    const oldestTime = humanizeDueDate(oldestTimeISO, DATE_FORMAT.monthDay);
+    const oldestTime = humanizeDueDate(oldestTimeISO, DATE_FORMAT.MONTHDAY);
     const freshTimeISO = allPoints.reduce((max, current) => dayjs(current.dateFrom).isAfter(dayjs(max.dateFrom)) ? current : max).dateFrom;
-    const freshTime = humanizeDueDate(freshTimeISO, DATE_FORMAT.monthDay);
+    const freshTime = humanizeDueDate(freshTimeISO, DATE_FORMAT.MONTHDAY);
     this.#startTripDay = oldestTime;
     this.#endTripDay = freshTime;
   }

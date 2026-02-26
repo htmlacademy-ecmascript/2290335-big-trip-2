@@ -17,13 +17,13 @@ export default class DestinationsModel extends Observable{
   async init() {
     try {
       this.#destinations = await this.#projectApiService.destinations;
+      this._notify(UpdateType.INIT);
     } catch(err) {
       this.#destinations = [];
+      this._notify(UpdateType.ERROR);
     }
-    this._notify(UpdateType.INIT);
   }
 
-  // Только маршруты из поинтов
   getDestinationById(id) {
     return this.total.find((item) => item.id === id);
   }

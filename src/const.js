@@ -1,17 +1,17 @@
 const POINTS_COUNT = 3;
 
 const DATE_FORMAT = {
-  monthDay: 'MMM DD',
-  hours: 'HH[:]mm',
-  dayHours: 'DD[/]MM[/]YY HH[:]MM'
+  MONTHDAY: 'MMM DD',
+  HOURS: 'HH[:]mm',
+  DAYHOURS: 'DD[/]MM[/]YY HH[:]MM'
 };
 
 const POINTS_TYPE = ['taxi', 'train', 'flight', 'bus', 'ship', 'drive', 'check-in', 'sightseeing', 'restaurant'];
 
 const SortType = {
-  DAY: 'day',
-  PRICE: 'price',
-  TIME: 'time',
+  DAY: 'DAY',
+  PRICE: 'PRICE',
+  TIME: 'TIME',
 };
 
 const UserAction = {
@@ -25,13 +25,14 @@ const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+  ERROR: 'ERROR',
 };
 
 const FilterType = {
-  EVERYTHING: 'everything',
-  FUTURE: 'future',
-  PRESENT: 'present',
-  PAST: 'past',
+  EVERYTHING: 'EVERYTHING',
+  FUTURE: 'FUTURE',
+  PRESENT: 'PRESENT',
+  PAST: 'PAST',
 };
 
 export {POINTS_COUNT, DATE_FORMAT, POINTS_TYPE, SortType, UserAction, UpdateType, FilterType};

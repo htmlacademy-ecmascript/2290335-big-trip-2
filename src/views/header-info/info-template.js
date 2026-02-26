@@ -1,6 +1,4 @@
 function templateInfo(startTripDay, endTripDay, firstCity, middleCity, lastCity, totalPrice) {
-  // console.log(startTripDay, endTripDay);
-  // console.log(firstCity);
   return (
     `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
