@@ -21,8 +21,12 @@ function getDifferenceInTime(start, end) {
   }
 }
 
-function getEventDuration(event) {
-  return dayjs(event.dateTo).diff(dayjs(event.dateFrom));
+function getEventDuration(point) {
+  return dayjs(point.dateTo).diff(dayjs(point.dateFrom));
+}
+
+function sortByDefault(pointA, pointB) {
+  return dayjs(pointA.dateFrom).valueOf() - dayjs(pointB.dateFrom).valueOf();
 }
 
 function sortByTime(pointA, pointB) {
@@ -35,4 +39,4 @@ function sortByPrice(pointA, pointB) {
   return pointB.basePrice - pointA.basePrice;
 }
 
-export {humanizeDueDate, getDifferenceInTime, sortByTime, sortByPrice};
+export {humanizeDueDate, getDifferenceInTime, sortByTime, sortByPrice, sortByDefault};

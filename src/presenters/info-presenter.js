@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {render, RenderPosition, remove} from '../framework/render.js';
 import {DATE_FORMAT} from '../const.js';
 import {humanizeDueDate} from '../utils/utils-point.js';
@@ -8,13 +9,13 @@ export default class InfoPresenter {
   #pointModel = null;
   #offerModel = null;
   #destinationModel = null;
-  #infoViewComponent = null;
-  #totalPrice = null;
+  #startTripDay = null;
+  #endTripDay = null;
   #firstCity = null;
   #middleCity = null;
   #lastCity = null;
-  #startTripDay = null;
-  #endTripDay = null;
+  #totalPrice = null;
+  #infoViewComponent = null;
 
   constructor({container, pointModel, destinationModel, offerModel}) {
     this.#container = container;
@@ -31,29 +32,11 @@ export default class InfoPresenter {
   }
 
   init() {
-    this.renderContent();
-  }
-
-  renderComponent() {
-    this.#infoViewComponent = new InfoView(
-      this.#startTripDay,
-      this.#endTripDay,
-      this.#firstCity,
-      this.#middleCity,
-      this.#lastCity,
-      this.#totalPrice);
-    render(this.#infoViewComponent, this.#container, RenderPosition.AFTERBEGIN);
+    this.renderBoard();
   }
 
   clearComponent() {
     remove(this.#infoViewComponent);
-  }
-
-  renderContent() {
-    this.clearComponent();
-    this.calculateInfo();
-    this.calculateTotalPrice();
-    this.renderComponent();
   }
 
   calculateInfo() {
@@ -68,24 +51,30 @@ export default class InfoPresenter {
     const allPoints = this.#pointModel.total;
     const allDestinations = this.#destinationModel.total;
 
-    const firstCity = allDestinations.find((item) => item.id === allPoints[0].destination).name;
-    const lastCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 1].destination).name;
+    const oldestCityId = allPoints.reduce((min, current) => dayjs(current.dateFrom).isBefore(dayjs(min.dateFrom)) ? current : min).destination;
+    const oldestCity = allDestinations.find((item) => item.id === oldestCityId).name;
+    const freshCityId = allPoints.reduce((max, current) => dayjs(current.dateFrom).isAfter(dayjs(max.dateFrom)) ? current : max).destination;
+    const freshCity = allDestinations.find((item) => item.id === freshCityId).name;
+    this.#firstCity = oldestCity;
+    this.#lastCity = freshCity;
+    this.#middleCity = ' ... ';
     if (allPoints.length === 3) {
       this.#middleCity = allDestinations.find((item) => item.id === allPoints[allPoints.length - 2].destination).name;
     }
-    if (allPoints.length < 3) {
-      this.#middleCity = '...';
+    if (allPoints.length === 0) {
+      this.#firstCity = ' ... ';
+      this.#lastCity = ' ... ';
     }
-    this.#firstCity = firstCity;
-    this.#lastCity = lastCity;
   }
 
   defineRouteDates() {
     const allPoints = this.#pointModel.total;
-    const startTripDay = humanizeDueDate(allPoints[0].dateFrom, DATE_FORMAT.monthDay),
-      endTripDay = humanizeDueDate(allPoints[allPoints.length - 1].dateTo, DATE_FORMAT.monthDay);
-    this.#startTripDay = startTripDay;
-    this.#endTripDay = endTripDay;
+    const oldestTimeISO = allPoints.reduce((min, current) => dayjs(current.dateFrom).isBefore(dayjs(min.dateFrom)) ? current : min).dateFrom;
+    const oldestTime = humanizeDueDate(oldestTimeISO, DATE_FORMAT.MONTHDAY);
+    const freshTimeISO = allPoints.reduce((max, current) => dayjs(current.dateFrom).isAfter(dayjs(max.dateFrom)) ? current : max).dateFrom;
+    const freshTime = humanizeDueDate(freshTimeISO, DATE_FORMAT.MONTHDAY);
+    this.#startTripDay = oldestTime;
+    this.#endTripDay = freshTime;
   }
 
   calculatePointsPrice() {
@@ -117,6 +106,21 @@ export default class InfoPresenter {
     const totalPrice = this.calculatePointsPrice() + this.calculateOffersPrice();
     this.#totalPrice = totalPrice;
     return totalPrice;
+  }
+
+  renderBoard() {
+    this.clearComponent();
+    this.calculateInfo();
+    this.calculateTotalPrice();
+    this.#infoViewComponent = new InfoView(
+      this.#startTripDay,
+      this.#endTripDay,
+      this.#firstCity,
+      this.#middleCity,
+      this.#lastCity,
+      this.#totalPrice,
+    );
+    render(this.#infoViewComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
   #handleModelEvent = () => {

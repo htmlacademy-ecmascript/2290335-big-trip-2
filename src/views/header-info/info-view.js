@@ -16,6 +16,7 @@ export default class InfoView extends AbstractView {
     this.#startTripDay = startTripDay;
     this.#endTripDay = endTripDay;
     this.#totalPrice = totalPrice;
+
   }
 
   get template() {
