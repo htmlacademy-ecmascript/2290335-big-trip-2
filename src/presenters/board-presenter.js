@@ -79,8 +79,6 @@ export default class BoardPresenter {
   }
 
   #renderLoading() {
-    console.log(this.#loadingComponent);
-    console.log(this.#container);
     render(this.#loadingComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
@@ -95,8 +93,6 @@ export default class BoardPresenter {
   }
 
   #renderBoard() {
-    console.log(this.#isLoading);
-    console.log(this.#loadingComponent);
     if (this.#isLoading) {
       this.#renderLoading();
       return;
@@ -194,7 +190,6 @@ export default class BoardPresenter {
         this.#isLoading = false;
         remove(this.#loadingComponent);
         this.#renderBoard();
-        console.log(this.#loadingComponent);
         break;
       case UpdateType.ERROR:
         this.#isLoading = false;

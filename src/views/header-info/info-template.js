@@ -1,6 +1,5 @@
-function templateInfo(startTripDay, endTripDay, firstCity, middleCity, lastCity, totalPrice, pointModel) {
-  const pointsLength = pointModel.total.length;
-  return pointsLength > 0 ?
+function templateInfo(startTripDay, endTripDay, firstCity, middleCity, lastCity, totalPrice) {
+  return (
     `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">${firstCity} &mdash; ${middleCity} &mdash; ${lastCity}</h1>
@@ -11,7 +10,8 @@ function templateInfo(startTripDay, endTripDay, firstCity, middleCity, lastCity,
       <p class="trip-info__cost">
         Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span>
       </p>
-    </section>` : '';
+    </section>`
+  );
 }
 
 export {templateInfo};

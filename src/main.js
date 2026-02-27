@@ -21,11 +21,13 @@ const destinationModel = new DestinationsModel({
 });
 const filterModel = new FilterModel();
 
-const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
 
 Promise.all([offerModel.init(), destinationModel.init()]).finally(() => {
   pointModel.init();
 });
+
+const mainPresenter = new MainPresenter(pointModel, offerModel, destinationModel, filterModel);
+mainPresenter.init();
 
 createPointButtonElement.addEventListener('click', handleNewPointButtonClick);
 

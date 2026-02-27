@@ -9,13 +9,13 @@ export default class InfoPresenter {
   #pointModel = null;
   #offerModel = null;
   #destinationModel = null;
-  #infoViewComponent = null;
-  #totalPrice = null;
+  #startTripDay = null;
+  #endTripDay = null;
   #firstCity = null;
   #middleCity = null;
   #lastCity = null;
-  #startTripDay = null;
-  #endTripDay = null;
+  #totalPrice = null;
+  #infoViewComponent = null;
 
   constructor({container, pointModel, destinationModel, offerModel}) {
     this.#container = container;
@@ -35,28 +35,8 @@ export default class InfoPresenter {
     this.renderBoard();
   }
 
-  renderComponent() {
-    this.#infoViewComponent = new InfoView(
-      this.#startTripDay,
-      this.#endTripDay,
-      this.#firstCity,
-      this.#middleCity,
-      this.#lastCity,
-      this.#totalPrice,
-      this.#pointModel
-    );
-    render(this.#infoViewComponent, this.#container, RenderPosition.AFTERBEGIN);
-  }
-
   clearComponent() {
     remove(this.#infoViewComponent);
-  }
-
-  renderBoard() {
-    this.clearComponent();
-    this.calculateInfo();
-    this.calculateTotalPrice();
-    this.renderComponent();
   }
 
   calculateInfo() {
@@ -126,6 +106,21 @@ export default class InfoPresenter {
     const totalPrice = this.calculatePointsPrice() + this.calculateOffersPrice();
     this.#totalPrice = totalPrice;
     return totalPrice;
+  }
+
+  renderBoard() {
+    this.clearComponent();
+    this.calculateInfo();
+    this.calculateTotalPrice();
+    this.#infoViewComponent = new InfoView(
+      this.#startTripDay,
+      this.#endTripDay,
+      this.#firstCity,
+      this.#middleCity,
+      this.#lastCity,
+      this.#totalPrice,
+    );
+    render(this.#infoViewComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
   #handleModelEvent = () => {

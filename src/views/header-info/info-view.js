@@ -8,8 +8,7 @@ export default class InfoView extends AbstractView {
   #middleCity = null;
   #lastCity = null;
   #totalPrice = null;
-  #pointModel = null;
-  constructor(startTripDay, endTripDay, firstCity, middleCity, lastCity, totalPrice, pointModel) {
+  constructor(startTripDay, endTripDay, firstCity, middleCity, lastCity, totalPrice) {
     super();
     this.#firstCity = firstCity;
     this.#middleCity = middleCity;
@@ -17,11 +16,11 @@ export default class InfoView extends AbstractView {
     this.#startTripDay = startTripDay;
     this.#endTripDay = endTripDay;
     this.#totalPrice = totalPrice;
-    this.#pointModel = pointModel;
+
   }
 
   get template() {
-    return templateInfo(this.#startTripDay, this.#endTripDay, this.#firstCity, this.#middleCity, this.#lastCity, this.#totalPrice, this.#pointModel);
+    return templateInfo(this.#startTripDay, this.#endTripDay, this.#firstCity, this.#middleCity, this.#lastCity, this.#totalPrice);
   }
 }
 
