@@ -33,16 +33,16 @@ function templatePoint(concreatePoint, concreateOffers, concreateDestination) {
   return `
     <li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime=${dateFrom}>${humanizeDueDate(dateFrom, DATE_FORMAT.monthDay)}</time>
+        <time class="event__date" datetime=${dateFrom}>${humanizeDueDate(dateFrom, DATE_FORMAT.MONTHDAY)}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${concreateDestination ? concreateDestination.name : ''}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime=${dateFrom}>${humanizeDueDate(dateFrom, DATE_FORMAT.hours)}</time>
+            <time class="event__start-time" datetime=${dateFrom}>${humanizeDueDate(dateFrom, DATE_FORMAT.HOURS)}</time>
             &mdash;
-            <time class="event__end-time" datetime=${dateTo}>${humanizeDueDate(dateTo, DATE_FORMAT.hours)}</time>
+            <time class="event__end-time" datetime=${dateTo}>${humanizeDueDate(dateTo, DATE_FORMAT.HOURS)}</time>
           </p>
           <p class="event__duration">${getDifferenceInTime(dateFrom, dateTo)}</p>
         </div>

@@ -1,23 +1,33 @@
 import dayjs from 'dayjs';
 import {FilterType} from '../const.js';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 
-function isPointInPastTime(dateTo) {
-  return dateTo && dayjs(dateTo).isBefore(dayjs(), 'D');
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+
+function getPointsFromPast(point) {
+  const endTime = point.dateTo;
+  return endTime && dayjs(endTime).isBefore(dayjs(), 'D');
 }
 
-function isPontInFutureTime(dateTo) {
-  return dateTo && dayjs(dateTo).isAfter(dayjs(), 'D');
+function getPointsFromFuture(point) {
+  const startTime = point.dateFrom;
+  return startTime && dayjs(startTime).isAfter(dayjs(), 'D');
 }
 
-function isPointInPresentTime(dateTo) {
-  return dateTo && dayjs(dateTo).isSame(dayjs(), 'D');
+function getPointsFromPresent(point) {
+  const startTime = point.dateFrom;
+  const endTime = point.dateTo;
+  const now = dayjs();
+  return dayjs(startTime).isSameOrBefore(now, 'D') && dayjs(endTime).isSameOrAfter(now, 'D');
 }
 
 const filter = {
   [FilterType.EVERYTHING]: (points) => points.filter((point) => point),
-  [FilterType.FUTURE]: (points) => points.filter((point) => isPontInFutureTime(point.dateTo)),
-  [FilterType.PRESENT]: (points) => points.filter((point) => isPointInPresentTime(point.dateTo)),
-  [FilterType.PAST]: (points) => points.filter((point) => isPointInPastTime(point.dateTo)),
+  [FilterType.FUTURE]: (points) => points.filter((point) => getPointsFromFuture(point)),
+  [FilterType.PRESENT]: (points) => points.filter((point) => getPointsFromPresent(point)),
+  [FilterType.PAST]: (points) => points.filter((point) => getPointsFromPast(point)),
 };
 
 export {filter};

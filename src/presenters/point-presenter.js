@@ -57,7 +57,6 @@ export default class PointPresenter {
       destinations: this.#destinations.total,
     });
 
-    // - Проверка на наличие в DOM, чтобы не пытаться заменить то, что не было отрисовано
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointComponent, this.#eventListComponent);
       return;

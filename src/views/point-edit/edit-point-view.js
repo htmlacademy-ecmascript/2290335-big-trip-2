@@ -4,7 +4,7 @@ import {templateEditPointView} from './edit-point-template.js';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const pointBlank = {
-  basePrice: 1,
+  basePrice: 0,
   dateFrom: '',
   dateTo: '',
   destination: '',
@@ -34,19 +34,17 @@ export default class EditPointView extends AbstractStatefulView {
   }) {
     super();
     this.#concretePoint = concretePoint;
-    this.kek();
-    // console.log(this.#concretePoint);
+    this.getPointBlank();
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
     this.#handleDeleteClick = onDeleteClick;
     this._setState(EditPointView.parseTaskToState({point: this.#concretePoint}));
-    // console.log(this._state);
     this.#registerEvents();
   }
 
-  kek() {
+  getPointBlank() {
     if (!this.#concretePoint) {
       this.#concretePoint = pointBlank;
     }
@@ -107,7 +105,6 @@ export default class EditPointView extends AbstractStatefulView {
     this.#handleDeleteClick(EditPointView.parseStateToTask(this._state));
   };
 
-  // Календарик
   #setDatepickers() {
     const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
     const commonConfig = {
@@ -160,20 +157,20 @@ export default class EditPointView extends AbstractStatefulView {
 
   #registerEvents = () => {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
-    // Меняет point/offers внутри состояния при клике на элементы от concreateOffers(без отрисовки)
     if (this.element.querySelector('.event__available-offers')) {
       this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     }
-    // Меняет point/destination внутри состояния при изменении города(с отрисовкой)
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-    // Меняет point/basePrice внутри состояния при изменении цены(без отрисовки)
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
-    // Сохраняет информацию point #handleFormSubmit(UserAction.UPDATE_TASK, UpdateType.MINOR, point)
     this.element?.addEventListener('submit', this.#formSubmitHandler);
-    // Сворачивает point
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
-    // Удаляет point #handlePointChange(UserAction.DELETE_TASK, UpdateType.MINOR, point)
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+    this.element.querySelector('.event__input--price').addEventListener('input', (evt) => {
+      let value = evt.target.value;
+      value = value.replace(/\D/g, '');
+      value = value.replace(/^0+/, '');
+      evt.target.value = value;
+    });
     this.#setDatepickers();
   };
 }
