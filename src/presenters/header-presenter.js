@@ -5,8 +5,6 @@ export default class HeaderPresenter {
   constructor({container, pointModel, offerModel, destinationModel, filterModel}) {
     this.container = container;
     this.pointModel = pointModel;
-    this.offerModel = offerModel;
-    this.filterModel = filterModel;
 
     this.infoPresenter = new InfoPresenter({
       container: this.container,
